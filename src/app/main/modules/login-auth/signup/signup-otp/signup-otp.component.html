@@ -1,0 +1,105 @@
+<!-- / _begin > Page Header / -->
+<header class="user-action-header">
+    <div class="container">
+        <a class="brand-logo contain-image" [routerLink]="'/accounts/login'">
+            <img src="assets/images/logo.svg" alt="brand"/>
+        </a>
+    </div>
+</header>
+<!-- / _end > Page Header / -->
+<section class="user-action-section signupotppage">
+    <div class="container">
+        <div class="row">
+            <div class='col-md-5 col-lg-6 order-2 order-md-1'>    
+                <app-owlcarousel></app-owlcarousel>
+            </div>
+            <div class="col-md-7 col-lg-6 order-1 order-md-2">
+                <div class="user-action-card max-height-100">
+                    <div class="top-section-action">
+                        <div class="user-action-card-heading-wrap">
+                            <h1 class="user-action-card-heading">Register (Personal Account)</h1>
+                        </div>
+                        <form class="action-form" id="login-form" (ngSubmit)="signupotp(f)" [formGroup]="phoneForm">
+
+                            <div class="formElement-bottomSpace country-code-flag">
+                                <div class="position-relative w-100">
+                                    <ngx-intl-tel-input [cssClass]="'custom form-control input-field user-action-input input-phone'" [preferredCountries]="preferredCountries"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="false" [searchCountryFlag]="false"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false" 
+                                    [selectedCountryISO]="selectedCountryCode" maxLength="15"
+                                    [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" name="phone" formControlName="phone" #phoneinyr>
+                                    </ngx-intl-tel-input>
+                                    <label class="mt-1 text-danger" *ngIf="f.controls.phone.invalid && f.controls.phone.touched">
+                                        <div *ngIf="f.controls.phone.errors.required; else phonevalid">Phone is required</div>
+                                        <ng-template #phonevalid>Phone must be a valid phone numbers</ng-template>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="formElement-bottomSpace">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control input-field user-action-input otp-input" placeholder="Enter Mobile OTP" formControlName="mobileotp">
+                                    <a class="otp-resend-link cursor-pointer" (click)="resendotp()">Resend</a>
+                                    <label class="mt-1 text-danger" *ngIf="f.controls.mobileotp.invalid && f.controls.mobileotp.touched">
+                                        Otp is required
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="formElement-bottomSpace">
+                                <input type="password" class="form-control input-field user-action-input m-0" placeholder="Create Password" formControlName="createpassword">
+                                <label class="mt-1 text-danger" *ngIf="f.controls.createpassword.invalid && f.controls.createpassword.touched">
+                                    Password is required
+                                </label>
+                            </div>
+                            <div class="formElement-bottomSpace">
+                                <input type="text"  class="form-control input-field user-action-input m-0" placeholder="Enter your age" formControlName="age">
+                            </div>
+                            <div class="formElement-bottomSpace">
+                                <div class="gender-option-wrapper">
+                                    <div class="custom-input-radio">
+                                        <label><input type="radio" value="Male" name="gender" formControlName="gender">Male
+                                            <span class="radio-checked"></span>
+                                        </label>
+                                    </div>
+                                    <div class="custom-input-radio">
+                                        <label><input type="radio" value="Famale" name="gender" formControlName="gender">Famale
+                                            <span class="radio-checked"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="formElement-bottomSpace">
+                                <button type="submit" class="btn btn-user-action btn-register">Register</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="user-action-internal-links-wrapper">
+                        <div class="bottom-section-action">
+                            <p class="an-account-heading">Already have an account?</p>
+                            <div class="create-account">
+                                <a class="create-account-link" [routerLink]="['/accounts/login']">Login</a>
+                                <a class="create-account-link" [routerLink]="['/accounts/signup']">or create a personal account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-download-box">
+                    <p class="app-download-box-heading">Get the app</p>
+                    <div class="app-download-store">
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-playstore.png" alt="playstore" />
+                        </a>
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-appstore.png" alt="appstore" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / _end > User Action Section < SHB / -->
+    </div>
+</section>            

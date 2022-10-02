@@ -1,0 +1,162 @@
+<div class="right-sidebar-msg">
+  <div class="mail-action-group email-right-side-bar">
+      <ul class="mail-action-list mail-action-ul">
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/privatechannel']" class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/your_channel.svg" alt="flag" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">
+                      <span class="mail-action-text">Private Channel</span>
+                  </div>
+              </a>
+          </li>
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/publicchannel']"  class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/public_channel.svg"
+                          alt="assign" />
+                   </span>
+                  <div
+                      class="d-flex flex-row align-items-center justify-content-between w-100">
+                      <span class="mail-action-text">Public Channels</span>
+                  </div>
+              </a>
+          </li>
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/messages']"  class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/message.svg" alt="message" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">                                                
+                      <span class="mail-action-text">Messages</span>
+                  </div>
+              </a>
+          </li>
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/done']" class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/done.svg" alt="done" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">                                                
+                      <span class="mail-action-text">Done</span>
+                  </div>
+              </a>
+          </li>
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/spam']"  class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/spam.svg" alt="spam" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">                                                
+                      <span class="mail-action-text">Spam</span>
+                  </div>
+              </a>
+          </li>
+
+          <li class="mail-action-list-items" routerLinkActive="router-link-active">
+              <a [routerLink]="['/message/comments']" class="mail-action-link">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/comment.svg" alt="comment" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">                                                
+                      <span class="mail-action-text">Comments</span>
+                  </div>
+              </a>
+          </li>
+
+          <!-- <li class="mail-action-list-items current" routerLinkActive="router-link-active" *ngIf="IsSeller == true">
+              <a [routerLink]="['/message/directmessage']"  class="mail-action-link ">
+                  <span class="mail-action-icon">
+                      <img src="assets/images/message/direct_message.svg" alt="spam" />
+                  </span>
+                  <div class="d-flex flex-row align-items-center justify-content-between w-100">
+                  <span class="mail-action-text">Direct Message</span>
+                  <span class="mail-action-counter">8</span>
+                  </div>                                            
+              </a>      
+              <div class="user-available-status bg-colord-msg" *ngIf="IsSeller == true || IsInfluencer == true">
+                  <ul class="user-available-list mt-0 pt-2">
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>Atman Kakadiya</label>
+
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/message-offline.svg"
+                                  alt="available" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>Shubham Joshi</label>
+
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/message-offline.svg"
+                                  alt="available" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>Mayank Singvi</label>
+
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/message-offline.svg" alt="offline" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>Guru Ji</label>
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>NIkunj Dhanani</label>
+
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>DM1</label>
+
+                          </div>
+                      </li>
+                      <li class="user-available-list-items">
+                          <span class="user-online-indicator">
+                              <img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online" />
+                          </span>
+                          <div
+                              class="d-flex align-items-center justify-content-between user-online-info">
+                              <label>Kevin Mulani</label>
+
+                          </div>
+                      </li>                                                                                                       
+
+                  </ul>
+              </div>                                                                                         
+          </li>                                      -->
+      </ul>
+  </div>
+</div>

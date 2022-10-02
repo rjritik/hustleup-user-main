@@ -1,0 +1,130 @@
+<div class="user-profile">
+    <app-header></app-header>
+    <div class="container-xl content">
+        <div class="d-flex">
+           <!-- / _begin > Page Navigation Sidebar < SHB / -->
+            <section id="menu-user" class="slidebar user-profile-services" [ngStyle]="{'left': sliderbarOpen ? '0px' : ''}">
+                <ul id="menu" class="nav nav-tabs" role="tablist">
+                    <li class="edit-profile">
+                        <a [routerLink]="['/user-profile']" routerLinkActive="active">
+                            <img src={{userdefaultimg}} onerror="this.src='assets/images/logo.svg'" alt="user-profile">
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/user-profile/Saveditems']" routerLinkActive="active">
+                            <img src="./assets/images/icons/icons-post-save.svg" alt="Saved Items">
+                            Saved Items
+                        </a>
+                    </li>
+                    <li *ngIf="seller || Influencer">
+                        <a [routerLink]="['/user-profile/Ordershipment']" routerLinkActive="active">
+                            <img src="./assets/images/icons/order_shipment.svg" alt="My Earnings">
+                            Order Shipment
+                        </a>
+                    </li>
+                    <li *ngIf="seller || Influencer">
+                        <a [routerLink]="['/user-profile/ProductListings']" routerLinkActive="active">
+                            <img src="./assets/images/icons/products.svg" alt="Products Listings">
+                            Products Listings
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/user-profile/OrderHistory']" routerLinkActive="active">
+                            <img src="assets/images/icons/order_history.svg" alt="Order History">
+                            Order History
+                        </a>
+                    </li>
+                    <li *ngIf="seller || Influencer">
+                        <a [routerLink]="['/user-profile/ReportEarning']" routerLinkActive="active">
+                            <img src="./assets/images/icons/earnings_reports.svg" alt="My Earnings">
+                            Reports & Earnings
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/user-profile/MutedAccounts']" routerLinkActive="active">
+                            <img src="./assets/images/icons/muted_accounts.svg" alt="Muted Accounts">
+                            Muted Accounts
+                        </a>
+                    </li>
+                    <li *ngIf="Influencer">
+                        <a [routerLink]="['/user-profile/CoffeeCollection']" routerLinkActive="active">
+                            <img src="./assets/images/icons/coffee.svg" alt="Coffee Collection">
+                            Coffee Collection
+                        </a>
+                    </li>
+                    <li *ngIf="Influencer || user">
+                        <a [routerLink]="['/user-profile/MyAddress']" routerLinkActive="active">
+                            <img src="./assets/images/icons/address.svg" alt="My Address">
+                            My Address
+                        </a>
+                    </li>
+                    <li *ngIf="Influencer || user">
+                        <a [routerLink]="['/user-profile/PantextDetails']" routerLinkActive="active">
+                            <img src="./assets/images/icons/pan_tax_details.svg" alt="PAN">
+                            PAN / Tax Details
+                        </a>
+                    </li>
+                    <li *ngIf="Influencer || user">
+                        <a [routerLink]="['/user-profile/BankPaymentDetails']" routerLinkActive="active">
+                            <img src="./assets/images/icons/bank_payments.svg" alt="Bank">
+                            Bank & Payments Details
+                        </a>
+                    </li>
+                    <li *ngIf="seller">
+                        <a [routerLink]="['/user-profile/StoreDetails']" routerLinkActive="active">
+                            <img src="./assets/images/icons/store_details.svg" alt="Store Details">
+                            Store Details
+                        </a>
+                    </li>
+                    <li *ngIf="seller">
+                        <a [routerLink]="['/user-profile/BrandDetails']" routerLinkActive="active">
+                            <img src="./assets/images/icons/brand_details.svg" alt="brand_details">
+                            Brand Details
+                        </a>
+                    </li>
+                    <li *ngIf="seller">
+                        <a [routerLink]="['/user-profile/OfferPromocode']" routerLinkActive="active">
+                            <img src="./assets/images/icons/coupon_promocodes.svg" alt="coupon_promocodes">
+                            Offer & Promo Codes
+                        </a>
+                    </li>
+                    <li *ngIf="seller || Influencer">
+                        <a [routerLink]="['/user-profile/UserRoles']" routerLinkActive="active">
+                            <img src="./assets/images/icons/users_roles.svg" alt="Users">
+                            Users & Roles
+                        </a>
+                    </li>
+                    <li *ngIf="seller">
+                        <a [routerLink]="['/user-profile/YourStoremap']" routerLinkActive="active">
+                            <img src="./assets/images/icons/map.svg" alt="Your Store">
+                            Your Store on Maps
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/user-profile/EditProfile']" routerLinkActive="active">
+                            <img src="./assets/images/icons/edit_profile.svg" alt="Edit Profile">
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li *ngIf="user || Influencer" class="convert-into-business">
+                        <a [routerLink]="['/user-profile/Businessaccount']" routerLinkActive="active" style="color:#0092FF !important;" class="Convert-into-business-account">
+                            Convert into business account
+                        </a>
+                    </li>
+                    <li *ngIf="user">
+                        <a [routerLink]="['/user-profile/InfluencerAccount']" routerLinkActive="active" style="color:#0092FF !important;">
+                            Convert into Influencer Account
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+            <div class="main-content py-3 pr-0 user-profile-services">
+                <div class="tab-content">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

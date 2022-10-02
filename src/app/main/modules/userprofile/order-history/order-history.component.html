@@ -1,0 +1,172 @@
+<div *ngIf="orderhistorymain">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title pb-2">
+            <p>Order History</p>
+         </li>
+      </ul>
+   </div>
+   <div class="row" *ngIf="docslength">
+      <div class="order-history-main col-12 overflow-y-auto">
+         <div class="order-history-inner" *ngFor="let item of OrderHistoryList;index as i">
+            <div class="col-md-1 order-history-images"><img src="{{item?.product_details[0]?.productPhotos[0]?.image}}" onerror="src='assets/images/logo.svg'" alt="order-history"></div>
+            <div class="col-md-4">
+               <p><b>Product ID :<span>{{item.productId}}</span></b></p>
+               <p>Order ID :<span>{{item.orderNumber}}</span></p>
+               <p>Ordered Date :<span>{{item.created_date |date}}</span></p>
+               <p>Color :<span>{{item.color_details?.colorName}}</span></p>
+               <p>Size :<span>{{item.size}}</span></p>
+            </div>
+            <div class="col-md-3">
+               <p>Qty<span>{{item.quantity}}</span></p>
+               <p>Selling Price<span>{{item.netAmount |currency:'INR':'code'}}</span></p>
+               <p>Tax Amount<span>{{item.taxAmount |currency:'INR':'code'}}</span></p>
+               <p>total Price<span>{{item.totalPrice |currency:'INR':'code'}}</span></p>
+            </div>
+            <div class="col-md-2">
+               <div class="order-status" *ngIf="item.status == 4">
+                  <div [ngClass]="{'order-status-icon-blue':item.status == 4}"></div>
+                  <p>Delivered</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 5">
+                  <div [ngClass]="{'order-status-icon-red':item.status ==5}"></div>
+                  <p>Cancelled</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 6">
+                  <div [ngClass]="{'order-status-icon-red-border':item.status == 6}"></div>
+                  <p>Returned</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 2">
+                  <div [ngClass]="{'order-status-icon-grey-border':item.status == 2}"></div>
+                  <p>Pending for Shipment</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 0">
+                  <div [ngClass]="{'order-status-icon-grey-border':item.status == 0}"></div>
+                  <p>New Order</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 1">
+                  <div [ngClass]="{'order-status-icon-grey':item.status == 1}"></div>
+                  <p>Order Confirmation</p>
+               </div>
+               <div class="order-status" *ngIf="item.status == 3">
+                  <div [ngClass]="{'order-status-icon-grey':item.status ==3}"></div>
+                  <p>Shipped</p>
+               </div>
+            </div>
+            <div class="col-md-2 order-invoice" >
+               <button type="button" class="cancel-no-effect btn btn-outline-secondary" *ngIf="item.status == 4 ||item.status == 3 || item.status == 6 || item.status == 1" (click)="PrintInvoice(item)">Print Invoice</button>
+               <button type="button" class="cancel-no-effect btn btn-outline-secondary return-order-btn" *ngIf="item.status == 4 && IsUser == true" (click)="returnorder(item)">Return the Order</button>
+               <button type="button" class="cancel-no-effect btn btn-outline-secondary" *ngIf="(item.status == 6 ||item.status == 5) && IsUser == true">Buy Again</button>
+               <button type="button" class="cancel-no-effect btn btn-outline-secondary" *ngIf="(item.status == 4 ||item.status == 3 || item.status == 6 || item.status == 2 || item.status == 5 || item.status == 1 || item.status == 0) && IsUser == true" (click)="ContactSeller(item)">Contact Seller</button>
+               <button type="button" class="cancel-no-effect btn btn-outline-secondary cancel-order-btn" *ngIf="(item.status == 3 ||item.status == 2 || item.status == 1 || item.status == 0) && IsUser == true" (click)="CancelOrder(item)">Cancel Order</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="order-history-defalut" *ngIf="!docslength">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/order_history.svg" alt="order-history-defalut"></div>
+      <p>You have not made any purchases yet. Give us a chance to deliver high quality products and a good experience.</p>
+      <p>We do not sale below average rating products<img width="22px" src="assets/images/icons/emoji1.svg" alt="emoji"></p>
+      <p>Happy Shopping !</p>
+   </div>
+   <div *ngIf="docslength" class="col-12 p-0">
+      <div class="page-pagination-Ordershipment">
+         <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+            <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+               <option value="10">10</option>
+               <option value="20">20</option>
+               <option value="30">30</option>
+               <option value="40">40</option>
+            </select>
+            <label class="mb-0">Items </label>
+            <label class="page-count mb-0">{{PageNo}} / {{totalPages}} pages</label>
+            <nav aria-label="Page navigation example">
+               <ul class="pagination">
+                 <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></button></li>
+                  <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></button></li>
+                  <li class="page-item"><button class="page-link active" href="javascript:void(0)">{{PageNo}}</button></li>
+                  <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></button></li>
+                  <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></button></li>
+               </ul>
+            </nav>
+         </div>
+      </div>
+     </div>
+</div>
+
+
+ <div *ngIf="orderhistoryreturn" id="order-history-return" >
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p *ngIf="IsRequest == true">Return the order</p>
+            <p *ngIf="IsRequest == false">Cancel the order</p>
+         </li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <form class="mt-3" [formGroup]="ReturnForm">
+            <div class="admin-form-table table">
+               <div class="form-row return-order">
+                  <div class="form-group col-sm-4">
+                     <label>Reason for Reason</label>
+                     
+                  </div>
+                  <div class="form-group col-sm-8">
+                    <div class="form-control-big  select2-val ">
+                      <ng-select2 width="100%" [data]="Reasons" formControlName="reasontype"  [placeholder]="'Select Reasons'"></ng-select2>
+                   </div>
+                     <!-- <select class="select form-control form-control-big select-box-order" name="">
+                        <option>Select Reason</option>
+                        <option>Ordered out of excitement and realised it's of no need</option>
+                        <option>Recipient not available at the estimated time/day of delivery</option>
+                        <option>Found the same product on another website or a shop at a lower price</option>
+                        <option>Changed my mind and opt for another product/brand instead</option>
+                        <option>Product is taking too long to be delivered</option>
+                        <option>My reason is not listed above</option>
+                     </select> -->
+                  </div>
+               </div>
+               <div class="form-row return-order">
+                  <div class="form-group col-sm-4">
+                     <label>Comments</label>
+                  </div>
+                  <div class="form-group col-sm-8">
+                     <textarea rows="6" class="select form-control form-control-big return-order-comment" placeholder="Write..." formControlName="comment" ></textarea>
+                     <div class="d-flex flex-row align-items-center justify-content-end flex-wrap form-control-big mt-4">
+                        <button (click)="returnordercancel()" type="button" class="cancel-no-effect btn btn-outline-secondary mr-3 pr-4 pl-4 return-order-btn-cancel">Cancel</button>
+                        <button type="button" class="btn btn-outline-primary pr-4 pl-4 #req-return" (click)="RequestForReturn(f)" *ngIf="IsRequest == true">Request for Return</button>
+                        <button type="button" class="btn btn-outline-primary pr-4 pl-4 #req-return" *ngIf="IsRequest == false" (click)="ConfirmCancelOrder(f)">Confirm CancelOrder</button>
+                     </div>
+                     <div class="alert alert-bg-white d-none" role="alert" id="req-return">
+                        Request for return has been sent.
+                        <button type="button" class="close">
+                        <span class="contain-image"><img src="assets/images/icons/close_white.svg" alt="close" /></span>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade action-modal delete-item-modal" id="contactseller" tabindex="-1" role="dialog" aria-labelledby="contactseller" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+         <div class="images-search-close d-flex justify-content-end">
+             <img data-dismiss="modal" aria-label="Close" class="product-icon mt-0" src="assets/images/icons/close.svg" alt="close" />
+         </div>
+          <b>Seller's Contact Detail</b>
+          <p class="mt-3">Name:-{{SellerName}}</p>
+          <p class="mt-3">E-mail:-{{SellerEmail}}</p>
+          <p class="mt-3">phone:-{{SellerMobile}}</p>
+          <p class="mt-3">Website:-{{SellerWebsite}}</p>
+        </div>
+      </div>
+   </div>
+</div>
+<app-invoicedata [PrintInvoicedata]="invoiceform" style="display: none;"></app-invoicedata>

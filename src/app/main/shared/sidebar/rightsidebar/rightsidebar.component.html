@@ -1,0 +1,60 @@
+<div id="stickyFix">
+    <!-- |< Trending Products List _begin >| -->
+    <div class="trending-chart-table">
+        <ul class="trending-chart-data">
+            <li class="trending-chart-head"># Trending Products</li>
+            <li class="trending-chart-items" *ngFor="let item of TrendingProductList;let i = index">
+                <div class="d-flex align-items-center justify-content-between" (click)="ProductName(item)">
+                    <div class="trend-number-wrapper">
+                        <h6><span>#{{i+1}}</span> {{item.productName}}</h6>
+                        <label class="trending-product-detail">
+                            {{item.variations[0]?.sellingPrice | currency:currencyUnit:'symbol'}}
+                        </label>
+                        <label class="trending-product-detail">{{item.brandName}}</label>
+                    </div>
+                    <div class="trending-items-thumb">
+                        <img src="{{item.productPhotos[0]?.image}}" alt="trend-thumb">
+                    </div>
+                </div>
+                <!-- <a href="javascript:void()" class="abs-trending-link"></a> -->
+            </li>
+            <li class="trending-chart-items py-3" *ngIf="TrendingProductList.length === 5">
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="more-trending-product" href="javascript:void(0)" (click)="TrendingProductShowMore()">Show More</a>
+                </div>
+            </li>
+            <li class="trending-chart-items py-3" *ngIf="TrendingProductList.length === 0">
+                <div class="d-flex align-items-center justify-content-center">
+                    <p class="more-trending-product">Trending Product Not Available</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- |< Trending Products List _end >| -->
+
+    <!-- |< Trending HashTags _begin >| -->
+    <div class="trending-chart-table">
+        <ul class="trending-chart-data">
+            <li class="trending-chart-head"># Trending Hashtags</li>
+            <li class="trending-chart-hastags" *ngFor="let item of TrendinghashtagsList;let i = index">
+                <div class="trend-number-wrapper" (click)="hashtagname(item)">
+                    <h6><span>{{i+1}}</span> {{item.hashtagName}}</h6>
+                    <label class="trending-product-detail">{{item.counter | thousandSuff}} Hastags</label>
+                </div>
+                <!-- <a href="javascript:void()" class="abs-trending-link"></a> -->
+            </li>
+            <li class="trending-chart-items py-3">
+                <div class="d-flex align-items-center justify-content-center" *ngIf="TrendinghashtagsList.length === 5">
+                    <a class="more-trending-product" href="javascript:void(0)" (click)="TrendingHashtagsShowMore()">Show More</a>
+                </div>
+                
+            </li> 
+            <li class="trending-chart-items py-3" *ngIf="TrendinghashtagsList.length === 0">
+                <div class="d-flex align-items-center justify-content-center">
+                    <p class="more-trending-product">Trending Hashtags Not Available</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- |< Trending HashTags _end >| -->
+</div>

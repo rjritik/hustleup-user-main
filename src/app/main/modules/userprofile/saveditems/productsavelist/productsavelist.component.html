@@ -1,0 +1,37 @@
+<div *ngIf="userroles == true" id="pills-product-saved">
+    <div *ngIf="getWishlistProduct?.length === 0" class="order-history-defalut product-sub-small">
+        <div class="order-history-defalut-img">
+            <img src="assets/images/icons/new-icons/products.svg" alt="order-history-defalut">
+        </div>
+        <p>You have not saved any products in your wishlist.</p>
+        <p>Any products you like across, can be saved for buying later.</p>
+    </div>
+    <div class="row half-row">
+    <div *ngFor="let item of getWishlistProduct" class="col-md-6 col-lg-4 col-xl-3">
+        <div class="product-items-wrapper hashtag-post-border-line">
+            <div class="product-items-image">
+                <owl-carousel [options]="SlideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']" >  
+                    <div class="item" *ngFor="let itemimg of item.productPhotos">
+                        <div style="align-content:center">
+                            <img src={{itemimg.image}} alt="images"/>  
+                        </div>  
+                    </div> 
+                </owl-carousel>
+            </div>
+            <div class="post-detail-wrap">
+                <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                <label class="post-uploader-name">{{item.brand_details?.brandName}}</label>
+                    <div *ngIf="item.isWishlist == false" class="hashtag-save-icon"><img id="postSave" (click)="Wishlist(item)" src="assets/images/icons/icons-post-save.svg"></div>
+                    <div *ngIf="item.isWishlist == true" class="hashtag-save-icon"><img id="postSave" (click)="Wishlistunsaved(item)" src="assets/images/icons/icons-post-saved.svg"></div>
+                </div>
+                <div (click)="productLink(item._id)" class="cursor-pointer">
+                    <p class="product-name" title="Black full sleave sweater">{{item.productName}}</p>
+                    <div class="price-block mt-0">
+                    <label>{{item.variations[0]?.MRP |currency:currencyUnit:'symbol'}} <del>{{item.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}</del></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+.promocode-title {
+    font-size: 16px;
+    font-weight: 500;
+}
+.promocode-context-img img {
+    height: 80px;
+    width: 60px;
+}
+.promocode-context-section {
+    display: flex;
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 1px solid #9F9F9F;
+}
+.promocode-context-img {
+    margin-right: 30px;
+}
+table.promocode-table tr td:first-child{
+    min-width: 250px;
+}
+table.promocode-table tr td:first-child span{
+    font-size:16px;
+    font-weight:500;
+    padding:5px 15px;
+    border:dashed 1px;
+    border-radius:5px;
+    margin-bottom:10px;
+    display: inline-block;
+}
+table.promocode-table tr td:nth-child(2){
+    font-size: 14px;
+    color: #222;
+    font-weight: 500;
+    column-width: 200px;
+}
+table.promocode-table tr td:last-child{
+    color: #0092FF;
+    cursor: pointer;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+table.promocode-table tr td:last-child span{
+    text-transform: capitalize;
+    margin-left: 20px;
+    font-weight: 400;
+}
+table.promocode-table tr td.applied{
+    color: #222;
+}
+table.promocode-table tr td.applied span{
+    color: #0092FF;
+}
+.custom-select {
+    height: auto;
+    padding: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 400;
+    color: #222222;
+    background-color: #FDFDFD;
+    border: 1px solid #312BC6;
+}
+  
+.custom-control-input:checked~.custom-control-label::before {
+    border-color: #222;
+    background-color: #222;
+}
+
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: none;
+}
+
+.custom-control-label {
+    cursor: pointer;
+}
+
+.error:focus,
+.error {
+    border-color: #222;
+    color: #222;
+}
+
+.invalid-feedback{
+    color: #222;
+}
+
+.custom-control-label::before,.custom-control-label::after{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.custom-control-label::after{
+    top: 0.24rem;
+    left: -1.45rem;
+}
+.custom-control-label{
+    padding-left: 10px;
+    line-height: 2.3;
+}
+.custom-control-label img{
+    height: 25px;
+}
+.how-pay{
+    font-weight: 500;
+    text-transform: initial;
+}

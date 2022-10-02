@@ -1,0 +1,45 @@
+<div class="user-social-life-wrapper" id="ProductsListings">
+    <ul class="user-pro-social-flex">
+       <li class="user-profile-title">
+          <p>Products Listings</p>
+       </li>
+    </ul>
+    <div class="ordershipment-searchbarid ordershipment-search-main mb-4 ml-auto">
+      <div class="dropdown">
+         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         {{SelectedDropdownItem}}
+         </button>
+         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div *ngFor="let item of DropdownItem">
+               <a class="dropdown-item" (click)="selected(item)">{{item}}</a>
+            </div>
+         </div>
+      </div>
+      <div class="ordershipment-search-inner">
+         <input type="text" name="searchbar" [(ngModel)]="typedText" placeholder="Search"/>
+         <img class="cursor-pointer" (click)="typetextfunc()" src="assets/images/icons/icon-search.svg" alt="search"/>
+      </div>
+    </div>
+    <div class="shipment-tabs-manu">
+      <div class="nav-tabs-shipment">
+         <div class="nav-tabs-shipment-innersection pro-Listings">
+            <ul class="nav nav-tabs" role="Listings">
+              <li class="nav-item">
+                 <a class="nav-link" data-toggle="tab" [routerLink]="['ActiveListing']" routerLinkActive="active" role="tab-Listings">Active Listings {{GetActivelistcount != undefined ? '(' + GetActivelistcount + ')' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</a>
+              </li>
+              <li class="nav-item">
+                 <a class="nav-link" data-toggle="tab" [routerLink]="['PendingListing']" routerLinkActive="active" role="tab-Listings">Pending Listings {{ GetPendinglistcount != undefined ? '(' + GetPendinglistcount + ')' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</a>
+              </li>
+              <li class="nav-item">
+                 <a class="nav-link" data-toggle="tab" [routerLink]="['FailedListing']" routerLinkActive="active" role="tab-Listings">Failed Listings {{GetFailedlistcount != undefined ? '(' + GetFailedlistcount + ')' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</a>
+              </li>
+              <li class="nav-item">
+                 <a class="nav-link" data-toggle="tab" [routerLink]="['DeactivateListing']" routerLinkActive="active" role="tab-Listings">Deactivated Listings {{GetDeactivatedlistcount != undefined ? '(' + GetDeactivatedlistcount + ')' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</a>
+              </li>
+            </ul>
+         </div>
+          <!-- Tab panes -->
+         <router-outlet></router-outlet>
+      </div>
+    </div>
+ </div>

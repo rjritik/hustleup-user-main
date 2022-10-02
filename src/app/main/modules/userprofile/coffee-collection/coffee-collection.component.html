@@ -1,0 +1,103 @@
+<div class="user-social-life-wrapper">
+   <ul class="user-pro-social-flex CoffeeCollection-title">
+     <li class="user-profile-title">
+       <p>Collection Coffee</p>
+       <div class="Coffee-Enbled-Collection">
+         <label class="switch">
+           <input id="foreign_checkbox" type="checkbox" class="primary" (change)="EnableDisableCoffee($event)" [checked]="IsCoffeeEnable == true"/>
+           <span class="slider round"></span>
+         </label>
+         <p *ngIf="IsCoffeeEnable == true">Enabled Collection</p>
+         <p *ngIf="IsCoffeeEnable == false">Disabled Collection</p>
+       </div>
+     </li>
+   </ul>
+</div>
+<div class="col-12 CoffeeCollection-Main">
+  <div class="row">
+    <div class="col-md-4 p-0">
+      <div class="coffee-size">
+        <div class="coffee-image-wrap small_coffee">
+          <img
+            src="assets/images/image-bigicons/coffee_small.svg"
+            alt="small_coffee"
+          />
+        </div>
+        <label class="mb-0 coffee-size-text">{{CoffeeList[0]?.coffeeName}}</label>
+        <label class="coffee-price">{{CoffeeList[0]?.price|currency:currencyUnit:'symbol'}}</label>
+      </div>
+      <ul>
+        <li *ngFor="let item of SmallPrivillage; index as i">
+          {{ item.privilege }}
+          <span (click)="CloseSmallPrivillage(item,i)"
+            ><img src="assets/images/icons/close.svg"
+          /></span>
+        </li>
+        <input
+          type="text"
+          placeholder="Write Privilege"
+          [(ngModel)]="SmallPrivillageValue" (keyup)="SmallKeyupPrivillage()" [ngClass]="{'border border-danger': SmallPrivillageBrdr}"
+        />
+        <a href="javascript:void(0)" (click)="AddSmallPrivillage()"
+          >Add Privilege</a
+        >
+      </ul>
+    </div>
+    <div class="col-md-4 p-0">
+      <div class="coffee-size">
+        <div class="coffee-image-wrap medium_coffee">
+          <img
+            src="assets/images/image-bigicons/coffee_medium.svg"
+            alt="medium_coffee"
+          />
+        </div>
+        <label class="mb-0 coffee-size-text">{{CoffeeList[1]?.coffeeName}}</label>
+        <label class="coffee-price">{{CoffeeList[1]?.price|currency:currencyUnit:'symbol'}}</label>
+      </div>
+      <ul>
+        <li *ngFor="let item of MediumPrivillage; index as i">
+          {{ item.privilege }}
+          <span (click)="CloseMediumPrivillage(item,i)"
+            ><img src="assets/images/icons/close.svg"
+          /></span>
+        </li>
+        <input
+          type="text"
+          placeholder="Write Privilege"
+          [(ngModel)]="MediumPrivillageValue" (keyup)="MediumKeyupPrivillage()" [ngClass]="{'border border-danger': MadiumPrivillageBrdr}"
+        />
+        <a href="javascript:void(0)" (click)="AddMediumPrivillage()"
+          >Add Privilege</a
+        >
+      </ul>
+    </div>
+    <div class="col-md-4 p-0">
+      <div class="coffee-size">
+        <div class="coffee-image-wrap large_coffee">
+          <img
+            src="assets/images/image-bigicons/coffee_large.svg"
+            alt="large_coffee"
+          />
+        </div>
+        <label class="mb-0 coffee-size-text">{{CoffeeList[2]?.coffeeName}}</label>
+        <label class="coffee-price">{{CoffeeList[2]?.price|currency:currencyUnit:'symbol'}}</label>
+      </div>
+      <ul>
+        <li *ngFor="let item of LargePrivillage; index as i">
+          {{ item.privilege }}
+          <span (click)="CloseLargePrivillage(item,i)"
+            ><img src="assets/images/icons/close.svg"
+          /></span>
+        </li>
+        <input
+          type="text"
+          placeholder="Write Privilege"
+          [(ngModel)]="LargePrivillageValue" (keyup)="LargeKeyupPrivillage()" [ngClass]="{'border border-danger': LargePrivillageBrdr}"
+        />
+        <a href="javascript:void(0)" (click)="AddLargePrivillage()"
+          >Add Privilege</a
+        >
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+    <!-- / _begin > Page Header / -->
+    <header class="user-action-header">
+        <div class="container">
+            <a class="brand-logo contain-image" [routerLink]="['/accounts/login']">
+                <img src="assets/images/logo.svg" alt="brand" />
+            </a>
+        </div>
+    </header>
+    <!-- / _end > Page Header / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <section class="forget-password-sec">
+        <div class="container">
+            <div class="center-screen-password password-card-padding">
+
+                <div class="forget-password-card">
+                    <div class="forget-card-pad-y">
+                        <form (ngSubmit)="resetpassword(f)" class="reset-form" id="passwordReset" [formGroup]="resetPassword">
+                            <div class="user-action-card-heading-wrap">
+                                <h1 class="heading-forget">Reset Password</h1>
+                            </div>
+                            <div class="formElement-bottomSpace">
+                                <input type="password" class="form-control input-field user-action-input" placeholder="New Password" formControlName="password">
+                                <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.password.invalid && f.controls.password.touched">Password is required.</label>
+                            </div>
+                            <div class="formElement-bottomSpace">
+                                <input type="password" class="form-control input-field user-action-input" placeholder="Repeat Password" formControlName="confirm_password">
+                                <div *ngIf="f.controls.confirm_password.touched && f.controls.confirm_password.invalid">
+                                    <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.confirm_password.errors.required">
+                                        Confirm Password is required.
+                                    </label>
+                                    <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.confirm_password.errors.mustMatch">Passwords must match</label>
+                                </div>
+                            </div>
+                            <div class="formElement-btnBottomSpace">
+                                <button type="submit" class="btn btn-action-forget">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Main Content < SHB / -->

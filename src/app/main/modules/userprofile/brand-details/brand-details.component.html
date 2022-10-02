@@ -1,0 +1,188 @@
+<div *ngIf="branddetailsmain">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Brand Details</p>
+            <button *ngIf="this.BrandDetailsBySeller == undefined" (click)="addbrandinfo()" type="button" class="btn btn-primary BrandDetails-btn">
+            <!-- <img src="assets/images/icons/plus.svg" width="20px"/> -->
+            Upload Brand Details
+            </button>
+         </li>
+      </ul>
+   </div>
+   <div *ngIf="this.BrandDetailsBySeller == undefined" class="order-history-defalut mb-5">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/brand_details.svg" alt="brand-detail"></div>
+      <p>No brand has been mapped yet</p>
+      <p>If you own a brand or a authorised seller of any brands, you can upload brands details or authorised letter to list your brand name.</p>
+      <p>Once you list your brands, you will gain more trusts and maximise your sales.</p>
+      <a href="javascript:void(0)" (click)="addbrandinfo()">Upload brand details</a>
+   </div>
+   <div *ngIf="this.BrandDetailsBySeller != undefined" class="col-12 col-md-11 mt-3">
+      <div class="row">
+         <div class="col-xl-10 col-md-12 p-0">
+            <div class="muted-user-main d-sm-flex">
+               <div class="col-sm-2 col-4">
+                  <div class="brand-profile-photo contain-image">
+                     <img src={{BrandDetailsBySeller.brandLogo}} class="w100">
+                  </div>
+               </div>
+               <div class="col-sm-10">
+                  <div class="logo-brand-titlelink">
+                     <label class="font-weight-bold brand-title-name">{{BrandDetailsBySeller.brandName}}</label>
+                     <a href="javascript:void(0)" class="break-word d-block brand-detail-link"> {{BrandDetailsBySeller.brandWebsiteLink}} </a>
+                  </div>
+                  <div class="brand-information">
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Are you the brand owner</label>
+                        <label class="brand-detail-text">{{BrandDetailsBySeller.isBrandOwner}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Brand authenticity documents</label>
+                        <label class="brand-detail-text">{{BrandDetailsBySeller.docName}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">{{BrandDetailsBySeller.brandAuthenticityDoc.docName}}</label>
+                        <label class="brand-detail-text">
+                           <a href={{BrandDetailsBySeller.brandAuthenticityDoc.docImage}} class="link-proof">
+                           <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch"/>
+                           View Attachment
+                           </a>
+                        </label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Trade Mark/Application number</label>
+                        <label class="brand-detail-text">{{BrandDetailsBySeller.trademarkAppNo}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Trade Mark class</label>
+                        <label class="brand-detail-text">{{BrandDetailsBySeller.trademarkClass}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Trade Mark application date</label>
+                        <label class="brand-detail-text">{{BrandDetailsBySeller.trademarkAppDate | date:'mediumDate'}}</label>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div *ngIf="branddetailscreate" id="BrandDetails-Create">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Apply for brand approval</p>
+         </li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <form class="mt-3" [formGroup]="brandDetails">
+            <div class="admin-form-table table">
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Brand name</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write brand name" formControlName="barndname">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Brand logo</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <label for="brandlogo" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                     <input type="file"
+                         class="d-none"
+                         id="brandlogo"
+                         #fileInput
+                         accept="image/png, application/pdf, image/jpeg"
+                         (change)="onFileSelect(fileInput)"
+                         formControlName="brandlogofile"
+                     />
+                     <span class="file-info">{{ fileInfo }}</span>
+                     <!-- <small *ngIf="fileInfo == null" [ngClass]="uploadaccountstatement?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Brand website link</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text"class="form-control form-control-big input-field" placeholder="https://www.india.com" formControlName="brandwebsitelink">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Are you the brand owner</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <div class="form-control-big select2-val">
+                        <ng-select2 width="100%" [data]="brandownwer" formControlName="brandowners" [placeholder]="'Select BrandOwner'" ></ng-select2>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Brand authenticity documents</label>
+                  </div>
+                  <div class="form-group col-sm-4 d-flex">
+                     <div class="form-control-big select2-val">
+                        <ng-select2 width="100%" [data]="authenticitydocuments" formControlName="brandauthenticity" [placeholder]="'Select brandauthenticity'"></ng-select2>
+                     </div>
+                     <div class="col-sm-4">
+                        <label for="Brandauthenticity" class="btn btn-outline-primary pl-4 pr-4 p-2 ml-2 uploadfilename">Upload</label>
+                        <input type="file"
+                            class="d-none"
+                            id="Brandauthenticity"
+                            #Brandauthenticity
+                            accept="image/png, application/pdf, image/jpeg"
+                            (change)="onFileSelectBrand(Brandauthenticity)"
+                            formControlName="BrandAuthenticityfile"
+                        />
+                        <span class="file-info">{{ fileInfoauthenticity }}</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Trade mark/application number</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <input type="text" name="" class="form-control form-control-big input-field" placeholder="012345678" formControlName="trademarkapplication">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Trade mark class</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <input type="text" name="" class="form-control form-control-big input-field" placeholder="01" formControlName="trademarkclass">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Trade mark application date</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <div class="calender-main-div">
+                        <mat-form-field>
+                           <input [max]="today" matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" formControlName="markapplicationdate">
+                           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                           <mat-datepicker #picker1></mat-datepicker>
+                         </mat-form-field>
+                     </div>
+                  </div>
+               </div>
+               <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                  <button (click)="brandcreatecancel()" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel BrandDetails-cancel">Cancel</button>
+                  <button type="submit" (click)="brandapply(f1)" class="btn btn-primary">Apply</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,454 @@
+<ul class="search-bar-right">
+  <!-- <li>More <i class="fa fa-angle-down"></i></li> -->
+  <li *ngIf="navbarsub" class="col-md-hidden" (click)="leftSliderBar()">
+    <span class="slidebar-toggle search-bar-slidebar-toggle">
+      <img src="assets/images/icons/three_lines.svg" width="22px"/>
+    </span>
+  </li>
+  <li>
+    <div class="dropdown">
+      <button type="button" class="btn btn-more" data-toggle="dropdown"> More <i class="fa fa-angle-down"></i>
+      </button>
+      <div class="dropdown-menu  dropdown-menu-right">
+        <a class="dropdown-item sidebar-nav-link" href="javascript:void(0)" *ngIf="IsUserNdInfluencer">
+          <div class="menuicon contain-image"><img src="assets/images/icons/seller.svg"/></div>
+          <div class="menulabel">Sell with us</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" [routerLink]="'/contact'">
+          <div class="menuicon contain-image"><img src="assets/images/icons/contact_us.svg"/></div>
+          <div class="menulabel">Contact us</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" href="javascript:void(0)">
+          <div class="menuicon contain-image"><img src="assets/images/icons/google_play.svg"/></div>
+          <div class="menulabel">Get it on Goole Play</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" href="javascript:void(0)">
+          <div class="menuicon contain-image"><img src="assets/images/icons/applestore.svg" /></div>
+          <div class="menulabel">Download on the App Store</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" href="javascript:void(0)">
+          <div class="menuicon contain-image"><img src="assets/images/icons/share.svg" /></div>
+          <div class="menulabel">
+            <div>Love us on Social Media</div>
+            <div class="more-socialmedia">
+              <img src="assets/images/icons/youtube.svg" height="22px" />
+              <img src="assets/images/icons/instagram.svg" height="22px" />
+              <img src="assets/images/icons/facebook.svg" height="22px" />
+              <img src="assets/images/icons/pinterest.svg" height="22px" />
+              <img src="assets/images/icons/twitter.svg" height="22px" />
+            </div>
+          </div>
+        </a>
+        <p class="dropdown-header"><span>FAQ</span><span>T&C</span><span>Terms Of Use</span><span>Shipping</span><br/><span>Cancellation</span><span>Return</span><span>Privacy Policies</span></p>
+      </div>
+    </div>
+  </li>
+  <li *ngIf="loginmenu" [routerLink]="'accounts/signup'">
+    <button type="button" class="btn btn-link">Register</button>
+  </li>
+  <li *ngIf="loginmenu" [routerLink]="'accounts/login'">
+    <button type="button" class="btn btn-primary h-50">Login</button>
+  </li>
+  <li *ngIf="navbarsub" class="notification">
+    <div class="dropdown" [ngClass]="showNotiPopup?'show':''" (clickOutside)="onClickedNotiPupupOutside($event)">
+      <button type="button" class="btn notification-bell"  (click)="openNotificationPopup()">
+        <img src="assets/images/icons/bell.svg"/>
+        <div *ngIf="unreadCounter" class="notification-unread">
+          {{unreadCounter <= 99 ? unreadCounter : "99+" }}
+        </div>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right"  [ngClass]="showNotiPopup?'show':''" >
+        <div class="notification-scroll follow-notification-main p-0">
+          <ng-container  *ngFor="let item of notificationList;let i = index">
+            <div class="channel-notification" *ngIf="item.notificationType == 'channelReq' ||item.notificationType == 'channelRole' || item.notificationType == 'channelRemove'" >
+              <a class="dropdown-item" href="javascript:void(0)" *ngIf="item.notificationType == 'channelReq'">
+                <div class="row" *ngIf="item.channelMemberReq">
+                  <div class="col-2 notification-profile">
+                    <img *ngIf="item.channelMemberReq.channelType == 'private'" src="assets/images/icons/inbox-icons/private-chat.svg" alt="private"/>
+                    <img *ngIf="item.channelMemberReq.channelType == 'public'" src="assets/images/icons/inbox-icons/public-channel.svg" alt="public"/>
+                  </div>
+                  <div class="col-10 notification-content">
+                    <b>{{item.channelMemberReq.name}}</b>
+                    <p>{{item.channelMemberReq.description}}</p>
+                    <div>
+                      <button class="btn btn-outline-primary not0-received-cancel px-2 py-1" (click)="rejectRequest(item,i)">Reject</button>
+                      <button class="btn btn-primary noti-accept-btn px-2 py-1 ml-2" (click)="acceptRequest(item,i)">Accept</button>
+                    </div>
+                  </div>
+                  
+                </div>
+              </a>
+              <a class="dropdown-item" href="javascript:void(0)" *ngIf="item.notificationType == 'channelRole'" >
+                <div class="row" *ngIf="item.channelMemberRole">
+                  <div class="col-2 notification-profile">
+                    <img *ngIf="item.channelMemberRole.channelType == 'private'" src="assets/images/icons/inbox-icons/private-chat.svg" alt="private"/>
+                    <img *ngIf="item.channelMemberRole.channelType == 'public'" src="assets/images/icons/inbox-icons/public-channel.svg" alt="public"/>
+                  </div>
+                  <div class="col-10 notification-content">
+                    <b>{{item.channelMemberRole.name}}</b>
+                    <!-- <div class="notification-username"><span>jemash bond</span>{{item.message}}</div> -->
+                    <div class="notification-username">{{item.message}}</div>
+                  </div>
+                </div>
+              </a>
+              <a class="dropdown-item" href="javascript:void(0)" *ngIf="item.notificationType == 'channelRemove'" >
+                <div class="row" *ngIf="item.channelMemberRemove">
+                  <div class="col-2 notification-profile">
+                    <img *ngIf="item.channelMemberRemove.channelType == 'private'" src="assets/images/icons/inbox-icons/private-chat.svg" alt="private"/>
+                    <img *ngIf="item.channelMemberRemove.channelType == 'public'" src="assets/images/icons/inbox-icons/public-channel.svg" alt="public"/>
+                  </div>
+                  <div class="col-10 notification-content">
+                    <b>{{item.channelMemberRemove.name}}</b>
+                    <!-- <div class="notification-username"><span>jemash bond</span>{{item.message}}</div> -->
+                    <div class="notification-username">{{item.message}}</div>
+                  </div>
+                </div>
+              </a>             
+            </div>
+            <div class="row align-items-center py-2 follow-notification-inner" *ngIf="item.notificationType == 'userFollow'">
+              <div class="col-9 px-0">
+                <div class="row">
+                  <div class="col-3 notification-profile">
+                    <img [src]="item.userFollowDetail.profilePic" onerror="src='assets/images/logo.svg'" alt="profile pic"/>
+                  </div>
+                  <div class="col-9 text-left px-0">
+                    <p class="mb-1"><b>{{item.userFollowDetail.username}}</b> started following you.</p>
+                    <div class="text-secondary text-left">{{item.createdAt | DateAgo}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
+                <button class="btn btn-primary w-100 follow-notification" (click)="followUnfollowUser(item.userFollowDetail)">{{item.userFollowDetail.isFollowing ? 'Following':'Follow' }}</button>
+              </div>
+            </div>
+            <div class="row align-items-center py-2 follow-notification-inner" *ngIf="item.notificationType == 'selfDropRequest'">
+              <div class="col-12 px-0">
+                <div class="row">
+                  <div class="col-2 notification-profile mt-0">
+                    <img src="assets/images/logo.svg" onerror="src='assets/images/logo.svg'" alt="profile pic"/>
+                  </div>
+                  <div class="col-10 text-left px-0 self-drop-notification">
+                    <p class="mb-1"><b>{{item.orderDetail.userDetail.username}}</b></p>
+                    <div class="text-secondary text-left text-dsc">{{item.message}}</div>
+                    <div class="self-drop-req col-12 row">
+                      <div class="col-4 image-self-drop">
+                        <img src="{{item.orderDetail.productDetail.productPhotos[0].image}}" onerror="this.src='assets/images/logo.svg'" alt="product-image"/>
+                        <div class="mt-1">{{item.orderDetail.totalPrice | currency:currencyUnit:'symbol'}}</div>
+                      </div>
+                      <div class="col-8 self-drop-message">
+                        <button type="button" class="btn btn-primary" (click)="openSelfDropRequest(item,i)">Yes Received, Confirm</button>
+                        <button type="button" class="btn btn-outline-secondary" (click)="rejectSelfDropRequest(item,i)">Not received, cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="product-tags">
+              <a class="dropdown-item" href="javascript:void(0)">
+                <div class="row">
+                  <div class="col-4 notification-profile">
+                    <img src="assets/images/profile.jpg" />
+                    <div class="type-img-alert">
+                      <img src="assets/images/hastags-Icons/blog_white.svg" alt="">
+                    </div>
+                    <div class="user0-selling-type">
+                      <img src="product_tag.svg" alt="">
+                    </div>
+                  </div>
+                  <div class="col-8 notification-content">
+                    <b>Women Kurti and Plazzo</b> 
+                    <p>If this is your product, Confirm the tag and increase the visibility of the product.</p>
+                    <div class="product-btn">
+                      <button class="btn btn-outline-secondary">No, thanks</button>
+                      <button class="btn btn-primary">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <a class="dropdown-item" href="javascript:void(0)">
+                <div class="row">
+                  <div class="col-4 notification-profile">
+                    <img src="assets/images/profile.jpg" />
+                    <div class="type-img-alert">
+                      <img src="assets/images/hastags-Icons/blog_white.svg" alt="">
+                    </div>
+                    <div class="user0-selling-type">
+                      <img src="user-mix.svg" alt="">
+                    </div>
+                  </div>
+                  <div class="col-8 notification-content">
+                    <b>Women Kurti and Plazzo</b> 
+                    <p>If this is your product, Confirm the tag and increase the visibility of the product.</p>
+                    <div class="product-btn">
+                      <button class="btn btn-outline-secondary">No, thanks</button>
+                      <button class="btn btn-primary">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+            <div class="delivary-notification">
+              <a class="dropdown-item" href="javascript:void(0)">
+                <div class="row">
+                  <div class="col-2 notification-profile">
+                    <img src="assets/images/profile.jpg"/>
+                  </div>
+                  <div class="col-10 notification-content">
+                    <b>Levis India</b>
+                    <p>Your orders are being shipped via Self Drop mode, please confirm that you received all.</p>
+                    <div class="drop-delivary-message">
+                      <button class="btn btn-outline-primary not0-received-cancel pl-3 pr-3">Not received, cancel</button>
+                      <button class="btn btn-primary drop-delivary-message-confirm ml-2">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </a>            
+            </div>   
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> 
+                  this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile2.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile3.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile5.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile4.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile3.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile5.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile4.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile2.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile5.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile3.jpg" /></div>
+              </div>
+            </a>
+            <a class="dropdown-item" href="javascript:void(0)">
+              <div class="row">
+                <div class="col-2 notification-profile">
+                  <img src="assets/images/profile5.jpg" />
+                </div>
+                <div class="col-8 notification-content">
+                  <b>Atman Kakadiya</b> this product is good, will you deliver in the United States also?
+                </div>
+                <div class="col-2 notification-post"><img src="assets/images/profile2.jpg" /></div>
+              </div>
+            </a> -->
+            <a href="javascript:void(0)" class="show-more-message">Show more in Message</a>
+          </ng-container>
+        </div>
+        <div class="text-center" *ngIf="notificationList.length === 0">
+         <h4>No Notifications</h4>
+        </div>
+      </div>
+    </div>
+  </li>
+  <li *ngIf="navbarsub" class="notification">
+    <div class="dropdown message">
+      <button type="button" class="btn" data-toggle="dropdown" (click)="getAllChatMembers()">
+        <img src="assets/images/icons/message.svg"/>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        <div class="notification-scroll" *ngFor="let item of ChatMemberList ">
+          <a class="dropdown-item" href="javascript:void(0)" (click)="userchatdetails(item)">
+            <div class="align-items-center msg-row no-gutters">
+              <div class="pending-message" *ngIf="item.user_details?.messageCount > 0 ||item.user_details?.replayMessagesCount > 0 ">{{(item.user_details.messageCount || 0)+(item.user_details.replayMessagesCount || 0)}}</div>
+              <div class="messaged-profile-thumb mr-2">
+                  <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="user-profile" />
+              </div>
+              <div class="w-100 msg-subdsc">
+                  <div class="dsc-inner">
+                      <p class="mb-0 unread-name">{{item.user_details.username}}</p>
+                      <label class="mb-0 date">{{item.messages?.created_date | Srtdate }}</label>
+                  </div>
+                  <p class="mb-0 unread-msg">{{item.messages?.message}}</p>
+              </div>
+          </div>
+          </a>
+          <a title="" class="show-more-message" (click)="allMessageList()">Show more in Message</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  <li *ngIf="navbarsub && IsUserNdInfluencer == true && shopCartIcon" class="shopping-cart-open" (click)="shoppincartopen()">
+    <img src="assets/images/icons/cart.svg"/>
+    {{cartProductCount}}
+  </li>
+  <li *ngIf="navbarsub" class="profile-menu">
+    <div class="dropdown">
+      <span data-toggle="dropdown">
+          <img src="{{profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="profileimagenotfound" class="profile-pic"/>
+      </span>
+      <div class="dropdown-menu dropdown-menu-right">
+        <!-- <a class="dropdown-item sidebar-nav-link" href="javascript:void(0)">
+          <div class="menuicon contain-image"><img src="assets/images/profile.jpg" class="rounded-circle" /></div>
+          <div class="menulabel">Settings Infotech</div>
+        </a> -->
+        <a class="dropdown-item sidebar-nav-link" [routerLink]="'/user-profile'">
+          <div class="menuicon contain-image"><img src="assets/images/icons/profile.svg" /></div>
+          <div class="menulabel">Profile</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" [routerLink]="'/user-profile/Saveditems'">
+          <div class="menuicon contain-image"><img src="assets/images/icons/save.svg" /></div>
+          <div class="menulabel">Saved Items</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" [routerLink]="'/user-profile/OrderHistory'">
+          <div class="menuicon contain-image"><img src="assets/images/icons/order_history.svg" /></div>
+          <div class="menulabel">Orders History</div>
+        </a>
+        <a class="dropdown-item sidebar-nav-link" [routerLink]="'/user-profile/EditProfile'">
+          <div class="menuicon contain-image"><img src="assets/images/icons/settings.svg" /></div>
+          <div class="menulabel">Settings</div>
+        </a>
+        <a (click)="logout()" class="dropdown-item sidebar-nav-link">
+          <div class="menuicon contain-image"><img src="assets/images/icons/logout.svg" /></div>
+          <div class="menulabel">Log Out</div>
+        </a>
+      </div>
+    </div>
+  </li>
+</ul>
+<div *ngIf="navbarsub && menuShowingResponsive" class="ml-auto nav-mob slidebar">
+  <button type="button" class="btn" (click)="rightSliderBar()">
+      <span><img src="assets/images/icons/three_lines.svg" width="22px" /></span>
+  </button>
+</div>
+
+<!-- SelfDrop Confirm Popup -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="selfDropConfirmModal" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure want to received this order?</p>
+        <div class="d-flex align-items-center justify-content-end mt-1">
+          <button type="reset" class="btn-popup-cancel-text-link" aria-label="Close" (click)="cancelSelfDropRequest()">Cancel</button>
+          <button type="submit" class="btn-popup-delete-text-link" (click)="confirmSelfDropRequest()">confirm yes,Received</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="rejectSelfDropRequest" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="user-social-life-wrapper">
+          <ul class="user-pro-social-flex">
+             <li class="user-profile-title">
+                <p>Not received, cancel</p>
+             </li>
+          </ul>
+       </div>
+       <div class="row">
+          <div class="col-12">
+             <form class="mt-3" [formGroup]="ReturnForm">
+                <div class="admin-form-table table">
+                   <div class="form-row return-order">
+                      <div class="form-group col-12 mb-0">
+                         <label>Reason for Not, Received</label>
+                      </div>
+                      <div class="form-group col-12">
+                        <div class="select2-val">
+                          <ng-select2 width="100%" [data]="Reasons" formControlName="reasontype"  [placeholder]="'Select Reasons'"></ng-select2>
+                       </div>
+                      </div>
+                   </div>
+                   <div class="form-row return-order">
+                      <div class="form-group col-12 mb-0">
+                         <label>Comments</label>
+                      </div>
+                      <div class="form-group col-12 mb-0">
+                         <textarea rows="6" class="select form-control return-order-comment w-100" placeholder="Write..." formControlName="comment" ></textarea>
+                         <div class="d-flex flex-row align-items-center justify-content-end flex-wrap mt-4 w-100">
+                            <button type="button" class="cancel-no-effect btn btn-outline-secondary mr-3 pr-4 pl-4 return-order-btn-cancel" (click)="cancelNotReceived()">Cancel</button>
+                            <button type="button" class="btn btn-outline-primary pr-4 pl-4 #req-return" (click)="requestForNotReceived(f)" >Confirm Not, Received</button>
+                         </div>
+                         <div class="alert alert-bg-white d-none" role="alert" id="req-return">
+                            Request for Not, Received has been sent.
+                            <button type="button" class="close">
+                            <span class="contain-image"><img src="assets/images/icons/close_white.svg" alt="close" /></span>
+                            </button>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </form>
+          </div>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>

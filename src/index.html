@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HustleUp</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <meta name="robots" content="noindex, nofollow"/>
+  <meta name="title" content="HustleUp">
+  <meta name="description" content="HustleUp is ecommerce and social media platform. that brings the people together at one place by providing the best products with the best deals and top brands, social media and many more."/>
+  <meta name="keywords" content="HustleUp, HustleUp.me, ecommerce, social media, Online shopping, buy online, computers, laptop, toys, trimmers, watches, fashion jewellery, home, kitchen, beauty, Sports, chat"/>
+  <meta name="image" content="https://hustleup-bucket.fra1.digitaloceanspaces.com/logo/logo.svg">
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="HustleUp" />
+  <meta property="twitter:description" content="HustleUp is ecommerce and social media platform. that brings the people together at one place by providing the best products with the best deals and top brands, social media and many more." />
+  <meta property="twitter:url" content="https://hustleup.me" />
+  <meta property="twitter:image" content="https://hustleup-bucket.fra1.digitaloceanspaces.com/logo/logo.svg" />
+
+  <meta property="og:url" content="https://hustleup.me" />
+  <meta property="og:title" content="HustleUp" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="HustleUp is ecommerce and social media platform. that brings the people together at one place by providing the best products with the best deals and top brands, social media and many more." />
+  <meta property="og:image" content="https://hustleup-bucket.fra1.digitaloceanspaces.com/logo/logo.svg" />
+
+  <meta name="apple-mobile-web-app-title" content="HustleUp"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <!-- / _begin > Required Icons Links < SHB / -->
+  <link href="assets/images/favicon.svg" rel="icon" type="image/x-icon">
+  <link href="assets/images/favicon.svg" rel="apple-touch-icon">
+  <link href="assets/images/favicon.svg" rel="shortcut icon">
+  <!-- / _end > Required Icons Links < SHB / -->
+
+  <!-- / _begin > Required Stylesheet Links < SHB / -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Bootstrap Version 4.5.2 -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="stylesheet" href="assets/css/animate.min.css" />
+  <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="assets/css/owl.theme.default.min.css" />
+  <link rel="stylesheet" href="assets/css/select.css" />
+  <link rel="stylesheet" href="assets/css/plyr.css" />
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- / _end > Required Stylesheet Links < SHB / -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Material+Icons" rel="stylesheet" />
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="mat-typography">
+<app-root></app-root>
+<!-- / _begin > Required JavaScripts Links < SHB / -->
+<script src="assets/js/popper-1.16.0.min.js"></script>
+<!-- Bootstrap Version 4.5.2 -->
+<script src="assets/js/select.js"></script>
+<!-- Horizontal Tab Scrolling JavaScript < SHB -->
+<script src="assets/js/horizontal-scroll.js"></script>
+<!-- Masonry Images Load JavaScript -->
+<script src="assets/js/imagesloaded.pkgd.min.js"></script>
+<script src="assets/js/masonry.pkgd.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<!-- <script src="assets/js/plyr.js"></script> -->
+<script src="assets/js/script.js"></script>
+<!-- / _end > Required JavaScripts Links < SHB / -->
+<script>
+  $(".alert-copied").click(function() {
+    $("#alertCopied").removeClass('d-none');
+    setTimeout(function() {
+      $("#alertCopied").addClass('d-none');
+    }, 3000);
+  });
+
+  $(".alert-mute").click(function() {
+    $("#alertMute").removeClass('d-none');
+    setTimeout(function() {
+      $("#alertMute").addClass('d-none');
+    }, 3000);
+  });
+
+  $(".alert .close").click(function(){
+    $(".alert .close").parent().addClass('d-none');
+  });
+
+  $(".report-alert-list-link").click(function(){
+    $("#alertReport").modal('hide');
+  });
+
+  var textarea = document.querySelector('textarea');
+
+  textarea.addEventListener('keydown', autosize);
+
+  function autosize() {
+    var el = this;
+    setTimeout(function() {
+      el.style.cssText = 'height:auto; padding:0';
+      // for box-sizing other than "content-box" use:
+      el.style.cssText = '-moz-box-sizing:content-box';
+      el.style.cssText = 'height:' + el.scrollHeight + 'px';
+    }, 0);
+  }
+</script>
+</body>
+</html>

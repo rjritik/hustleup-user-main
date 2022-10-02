@@ -1,0 +1,53 @@
+<div class="search-content">
+    
+    <div class="result-board">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-7 col-xl-8">
+                <p class="search-result mb-0">Showing search result for "{{searchresultfor}}"</p>
+            </div>
+            <div class="col-md-4 col-lg-5 col-xl-4" *ngIf="SearchedPostsList?.length !== 0">
+                <ng-select2 [data]="Recommand"  [placeholder]="'Sort by: Recommanded'" width="100%"  [(ngModel)]="SelectRecommandation" (valueChanged)="RecommandValue($event)">
+                </ng-select2>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="result-items">
+        <div *ngIf="SearchedPostsList?.length === 0" class="order-history-defalut product-sub-small">
+            <div class="order-history-defalut-img">
+                <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut">
+            </div>
+            <p>No Posts Found</p>
+            <!-- <p>Any posts you like across, can be saved for future reference.</p> -->
+        </div>
+        <div class="row half-row">
+            <div  class="col-md-6 col-lg-4 col-xl-3" *ngFor="let item of SearchedPostsList">
+                <div class="product-items-wrapper hashtag-post-border-line pb-0">
+                    <div class="product-items-image cursor-pointer" (click)="imgpostopen(item)">
+                        <img src={{item.images[0]?.image}} alt="product-items">
+                        <span class="abs-hash-post-indicator contain-image">
+                            <img *ngIf="item.images.length > 1" src="assets/images/icons/multipost.svg" alt="images"/>
+                        </span>
+                    </div>
+                    <div class="post-detail-wrap">
+                        <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                        <label class="post-uploader-name">{{item.postTitle}}</label>
+                        </div>
+                        <p class="product-name single-line-clamp" title={{item.advanceCategory}}>{{item.advanceCategory}}</p>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+
+</div>
+
+
+    <!-- |< Feed Post Details Slider _begin >| -->
+    <div name="shb-page-sliders">
+        <app-imgeas-show-sidebar [SinglePostData]="SinglePostData" [iconClickType]="iconClickType" [postdetailsopen]="postdetailsopen" (closebar)="closesidebar()"></app-imgeas-show-sidebar>
+    </div>
+    <!-- |< Feed Post Details Slider _end >| -->

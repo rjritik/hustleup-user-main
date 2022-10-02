@@ -1,0 +1,36 @@
+<div  id="pills-blogs">
+    <div class="order-history-defalut product-sub-small" *ngIf="getBlogPost?.length === 0">
+        <div class="order-history-defalut-img">
+            <img src="assets/images/icons/new-icons/blog.svg" alt="order-history-defalut"/>
+        </div>
+        <p>No blogs have been written yet.</p>
+        <p>Write a blog for products, services, beauty, cosmetics, makeups, fashions, styles, educational contents, news, updates, articles, know how articles, sciences & technology, literally anything...</p>
+        <button class="btn btn-primary" type="submit" [routerLink]="['/blog-upload']">Write Blogs</button>
+    </div>
+    <div class="row half-row">
+        <div class="col-md-6 col-lg-4" *ngFor="let item of getBlogPost">
+            <div class="product-items-wrapper hashtag-post-border-line">
+                <div class="blog-items-post cover-image cursor-pointer" (click)="blogpostopen(item)">
+                    <img src={{item.coverImg}} alt="blog-cover" class="object-position-top">
+                </div>
+                <div class="post-detail-wrap">
+                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                    <label class="post-uploader-name">{{item.advanceCategory}}</label>
+                    <div class="hashtag-save-icon">
+                        <img *ngIf="item.isBookmarked == false" src="assets/images/icons/icons-post-save.svg" alt="" (click)="SaveUnsaveBlog(item)"/>
+                        <img *ngIf="item.isBookmarked == true" src="assets/images/icons/icons-post-saved.svg" alt="" (click)="SaveUnsaveBlog(item)"/>
+                    </div>
+                    </div>
+                    <p class="post-blog-title two-line-clamp text-black">{{item.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+</div>
+
+<!-- |< blogcontentdetail Slider _begin >| -->
+<div name="shb-page-sliders">
+    <app-blogs-show-sidebar [SinglePostData]="SingleBlogData" [iconClickType]="iconClickType" [blogdetailsopen]="blogdetailsopen" (closebar)="closesidebar()"></app-blogs-show-sidebar>
+</div>
+<!-- |< blogcontentdetail Slider _end >| -->

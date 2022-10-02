@@ -1,0 +1,156 @@
+<app-header></app-header>
+<!-- / _begin > Main Content Container < SHB / -->
+<div class="container-xl content">
+
+    <!-- PAGE MAIN CONETNT STARTS Here -->
+    <section class="header-space first-sec">
+        <div class="flexible-content">
+            <div class="filter-sidebar">
+
+                <div class="filters-head px-0">
+                    <div class="menu-filter">
+                        <ul>
+                            <li (click)="productClick()"><a [routerLink]="['product',this.searchresultfor]" routerLinkActive="active">Products</a></li>  <!--  [queryParams]="{ title: this.SearchedText}" -->
+                            <li (click)="postsClick()"><a [routerLink]="['posts',this.searchresultfor]" routerLinkActive="active">Posts</a></li>
+                            <li (click)="sizzlesClick()"><a [routerLink]="['sizzles',this.searchresultfor]" routerLinkActive="active">Sizzles</a></li>
+                            <li (click)="blogsClick()"><a [routerLink]="['blogs',this.searchresultfor]" routerLinkActive="active">Blogs</a></li>
+                            <li (click)="hashtagsClick()"><a [routerLink]="['hashtags',this.searchresultfor]" routerLinkActive="active">Hashtags</a></li>
+                            <li (click)="usersClick()"><a [routerLink]="['users',this.searchresultfor]" routerLinkActive="active">Users</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- ---------------------------------for product start------------------------------------------------------------- -->
+                <div *ngIf="isProductDataAvailable && activeRoute == 'product'" >
+                    <div class="mt-2 mr-2 d-flex justify-content-end">
+                        <a class="clear-link" href="javascript:void(0)" (click)="ProductClearAll()">Clear All</a>
+                    </div>
+                    <div class="filter-brand filter-wrapper">
+                        <div class="filter-flex filter-flex-btm position-relative">
+                            <label class="filters-head-title">Brands</label>
+                            <span class="search-brand contain-image" (click)="filtersearchabs = !filtersearchabs">
+                                <img src="assets/images/icons/icon-search.svg" alt="search" />
+                            </span>
+                            <span *ngIf="filtersearchabs" class="filter-search-abs">
+                                <input type="text" class="form-contorl" placeholder="Search brands"  [(ngModel)]="SearchedBrandtext">
+                                <span class="close-searh-input contain-image" (click)="CloseBrandSearch()">
+                                    <img src="assets/images/icons/close.svg" alt="search" />
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="checkbox-wrapper">
+                            <ng-container *ngFor="let item of BrandList |brandsearch:SearchedBrandtext;let i = index">
+                                <div class="check-items custom-input-check" *ngIf="brandmore?i < 4:i==i">
+                                    <input type="checkbox" id="{{item.name}}"  class="form-control" name="AccessPoint01" (change)="BrandChange($event, item)" [checked]="BrandChecked(item)">
+                                    <span class="check-checked"></span>
+                                    <label for="{{item.name}}" class="terms-label">{{item.name}} ({{item.count}})</label>
+                                </div>
+                            </ng-container>
+
+                            <div class="check-items custom-input-check" *ngIf="BrandList.length >=5">
+                                <a class="plus-more-list" href="javascript:void(0)" (click)="BrandMoreClick()">{{brandmore?'+'+(BrandList.length-4):''}} {{brandmore?"More":"Less"}}</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="filter-price filter-wrapper">
+                        <div class="filter-flex filter-flex-btm">
+                            <label class="filters-head-title">Price</label>
+                            <a class="clear-link" href="javascript:void(0)" (click)="PriceClear()">Clear</a>
+                        </div>
+
+                        <div class="checkbox-wrapper">
+
+                            <div class="check-items custom-input-check" *ngFor="let item of PricesList;let i = index">
+                                <input type="checkbox" id="price{{i}}" class="form-control" name="AccessPoint01" (change)="PriceChange($event, item)" [checked]="PriceChecked(item)">
+                                <span class="check-checked"></span>
+                                <label for="price{{i}}" class="terms-label">INR {{item.minValue}} to {{item.maxValue}} ({{item.count}})</label>
+                            </div>
+
+                            <div class="price-between">
+                                <form class="price-set-flex CommisionRate" [formGroup]="PriceForm">
+                                    <input type="number" class="input-price" placeholder="Min" formControlName="minprice" (change)="minmaxvalid()">
+                                    <span class="mx-1">-</span>
+                                    <input type="number" class="input-price" placeholder="Max" formControlName="maxprice" (change)="minmaxvalid()">
+                                    <button type="submit" class="submit-price contain-image" (click)="SearchedPrice(f)">
+                                        <img src="assets/images/icons/dropdown_filled.svg" alt="price">
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="filter-color filter-wrapper">
+                        <div class="filter-flex filter-flex-btm">
+                            <label class="filters-head-title">Color</label>
+                            <a class="clear-link" href="javascript:void(0)" (click)="ColorClear()">Clear</a>
+                        </div>
+
+                        <div class="checkbox-wrapper">
+                            <ng-container *ngFor="let item of ColorList;let i = index">
+                                <div class="check-items custom-input-check" *ngIf="colormore?i < 4:i==i">
+                                    <input type="checkbox" id="{{item.name}}" class="form-control" name="AccessPoint01" (change)="ColorChange($event, item)" [checked]="ColorChecked(item)">
+                                    <span class="check-checked"></span>
+                                    <label for="{{item.name}}" class="terms-label"><span class="color-circle" [style.background-color]="item.colorCode"></span> {{item.name}} ({{item.count}})</label>
+                                </div>
+                            </ng-container>
+                            
+
+                            <div class="check-items custom-input-check" *ngIf="ColorList.length >=5">
+                                <a class="plus-more-list" href="javascript:void(0)" (click)="ColorMoreClick()">{{colormore?'+'+(ColorList.length-4):''}} {{colormore?"More":"Less"}}</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="filter-ratings filter-wrapper">
+                        <div class="filter-flex filter-flex-btm">
+                            <label class="filters-head-title">Ratings</label>
+                            <a class="clear-link" href="javascript:void(0)" (click)="RatingClear()">Clear</a>
+                        </div>
+
+                        <div class="checkbox-wrapper">
+                            <ng-container *ngFor="let item of RatingsList;let i = index">
+                                <div class="check-items custom-input-check">
+                                    <input type="checkbox" id="rating{{i}}" class="form-control" name="AccessPoint01" [disabled]="item.minValue == 0" (change)="RatingChange($event, item)" [checked]="RatingChecked(item)">
+                                    <span class="check-checked"></span>
+                                    <label for="rating{{i}}" class="terms-label" *ngIf="item.minValue !== 0">{{item.minValue}} ★ & above ({{item.count}})</label>
+                                    <label for="rating{{i}}" class="terms-label" *ngIf="item.minValue == 0">Below {{item.maxValue}} ★ we don't sell</label>
+                                    
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+
+                    <div class="filter-discount filter-wrapper">
+                        <div class="filter-flex filter-flex-btm">
+                            <label class="filters-head-title">Discount</label>
+                            <a class="clear-link" href="javascript:void(0)" (click)="DiscountClear()">Clear</a>
+                        </div>
+
+                        <div class="checkbox-wrapper" *ngFor="let item of DiscountList;let i = index">
+
+                            <div class="check-items custom-input-check">
+                                <input type="checkbox" id="discount{{i}}" class="form-control" name="AccessPoint01"(change)="DiscountChange($event, item)" [checked]="DiscountChecked(item)">
+                                <span class="check-checked"></span>
+                                <label for="discount{{i}}" class="terms-label">Upto {{item.maxValue}}% off</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- ---------------------------------for product End------------------------------------------------------------- -->
+                
+            </div>
+            <div class="w-100">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </section>
+    <!-- PAGE MAIN CONETNT ENDS Here -->
+</div>
+<!-- / _end > Main Content Container < SHB / -->

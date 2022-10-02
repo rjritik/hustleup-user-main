@@ -1,0 +1,30 @@
+<div class="embed-product-preview" *ngIf="product?.isReported == false">
+    <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element" contenteditable="true" spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="1" medium-editor-index="e19dd1a2-149c-31a8-125a-238f0269800c" data-placeholder="Type your text">{{product.productName}}</p>
+    <div class="mb-2">
+        <div class="product-items-image">
+                    <owl-carousel [options]="SlideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                        <div class="item" *ngFor="let itemimg of product.productPhotos">
+                            <div style="align-content:center">
+                                <img src={{itemimg.image}} alt="images"/>
+                            </div>
+                        </div>
+                    </owl-carousel>
+            <div class="abs-hover-items"></div>
+        </div>
+
+        <div class="post-detail-wrap">
+            <div class="price-block mt-0">
+                <label>{{product.variations[0].sellingPrice |currency:currencyUnit:'symbol'}} <del>{{product.variations[0].MRP |currency:currencyUnit:'symbol'}}</del><span>({{product.variations[0].discount}} Off)</span></label>
+                <div class="msg-slider-btn">
+                    <button *ngIf="product.isWishlist == false" type="button" class="btn btn-outline-secondary" (click)="Wishlist(product)">
+                        <img id="postSave" src="assets/images/icons/icons-post-save.svg" />Wishlist
+                    </button>
+                    <button *ngIf="product.isWishlist == true" type="button" class="btn btn-outline-secondary" (click)="Wishlistunsaved(product)">
+                        <img  src="assets/images/icons/icons-post-saved.svg" alt="" />Wishlist
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="BuyNow(product)">Buy Now</button>
+                </div>
+            </div>                                                        
+        </div>
+    </div>         
+</div>

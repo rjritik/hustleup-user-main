@@ -1,0 +1,590 @@
+<div id="StoreDetails" *ngIf="storeStatus !== 0">
+    <div class="flex-hashtag-profile">
+        <div class="order-history-defalut m-0">
+            <div class="order-history-defalut-img m-0 mr-5 mt-3">
+                <img src="assets/images/icons/store_details.svg" alt="order-history-defalut">
+            </div>
+        </div>
+        <div class="hashtag-peofile-info-wrapper">
+            <h2 class="hashtag-main-title-name mb-0">Store Details</h2>
+        </div>
+    </div>
+    <div class="hashtag-tabs">
+        <div class="tabs-items-flex">
+            <ul class="nav nav-pills mb-3" id="storedetails" role="storedetails">
+                <li class="nav-item" >
+                    <a class="nav-link active" data-toggle="tab" href="#pills-BusinessDetails-store">Business Details</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" data-toggle="tab" href="#pills-GSTNDetails-store">GSTN Details</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" data-toggle="tab" href="#pills-BankDetails-store">Bank Details</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" data-toggle="tab" href="#pills-BusinessAddress-store">Business Address</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link" data-toggle="tab" href="#pills-Signature-store">Signature</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-BusinessDetails-store">
+                <div class="row">
+                    <div class="col-12">
+                        <form *ngIf="brandinfo == false || this.businessDetailsUpdate" class="mt-3" [formGroup]="business_details">
+                            <div class="admin-form-table table">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                        <label>Legal Name of Business</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" class="form-control form-control-big input-field" placeholder="Write legal name of business" formControlName="businessName"/>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                    <label>Business Type</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <div class="form-control-big select2-val">
+                                            <ng-select2 width="100%" [data]="businessType" formControlName="businessType" [placeholder]="'Select BusinessType'" required></ng-select2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                    <label>Personal PAN</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                    <input type="text" class="form-control form-control-big input-field" placeholder="Write your personal PAN" formControlName="personalpan">
+                                    <div class="mt-3">
+                                        <label for="personalpanupload" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                        <input type="file"
+                                            class="d-none"
+                                            id="personalpanupload"
+                                            #fileInput
+                                            accept="image/png, application/pdf, image/jpeg"
+                                            (change)="onFileSelectpan(fileInput)"
+                                            formControlName="personalpanfileupload"
+                                        />
+                                        <span class="file-info">{{ fileInfo }}</span>
+                                        <small *ngIf="fileInfo == null" [ngClass]="uploadaccountstatement?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="form-row" *ngIf="this.business_details.controls.businessType.value !== 'Proprietor'">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                        <label>Business PAN</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" class="form-control form-control-big input-field" placeholder="Write your business PAN" formControlName="businesspan">
+                                        <div class="mt-3">
+                                            <label for="businesspan" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                            <input type="file"
+                                                class="d-none"
+                                                id="businesspan"
+                                                #fileInputbusiness
+                                                accept="image/png, application/pdf, image/jpeg"
+                                                (change)="onFileSelectBusiness($event)"
+                                            />
+                                            <span class="file-info">{{ fileInfobusiness }}</span>
+                                            <small *ngIf="!fileInfobusiness" [ngClass]="uploadBusinessPanStatement?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                                    <button *ngIf="!this.businessDetailsUpdate" type="button" class="btn btn-primary store-next-btn" (click)="storenext1()">Next</button>
+                                    <button *ngIf="this.businessDetailsUpdate" type="button" class="btn btn-cancel store-next-btn" (click)="businessDetailsUpdate = false">Cancel</button>
+                                    <button *ngIf="this.businessDetailsUpdate" type="button" class="btn btn-primary store-next-btn" (click)="businessDetailsSave()">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div *ngIf="brandinfo && storeStatus == 1 && !this.businessDetailsUpdate" class="brand-information">
+                            <img (click)="businessDetailsEdit(storedetailsdata)" title="Edit signature" class="edit-store-details" src="assets/images/icons/edit.svg" alt="edit" />
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Legal Name of Business</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.businessName}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Business Type</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.businessType}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Personal PAN</label>
+                                <div>
+                                    <label class="brand-detail-text mr-2">{{storedetailsdata?.personalPAN}}</label>
+                                    <a href={{storedetailsdata?.personalPANFile}} class="link-proof">
+                                    <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                    View Personal PAN
+                                    </a>
+                                </div>
+                            </div>
+                            <div *ngIf="storedetailsdata?.businessPANFile" class="brand-details-row">
+                                <label class="brand-detail-title">Business PAN</label>
+                                <div>
+                                    <label class="brand-detail-text mr-2">{{storedetailsdata?.businessPAN}}</label>
+                                    <a href={{storedetailsdata?.businessPANFile}} class="link-proof">
+                                    <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                    View Business PAN
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-GSTNDetails-store">
+                <div class="row">
+                    <div class="col-12">
+                        <form *ngIf="brandinfo == false || this.gstDetailsUpdate" class="mt-3" [formGroup]="gstn_details">
+                            <div class="admin-form-table table">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                    <label>GST Number</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                    <input type="text" class="form-control form-control-big input-field" placeholder="Write 15 character GST number" formControlName="gstnumber">
+                                    <div class="mt-3">
+                                        <label for="gstnumber" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                        <input type="file"
+                                            class="d-none"
+                                            id="gstnumber"
+                                            #fileInputgst
+                                            accept="image/png, application/pdf, image/jpeg"
+                                            (change)="onFileSelectgst(fileInputgst)"
+                                            formControlName="gstfileupload"
+                                        />
+                                        <span class="file-info">{{ fileInfoGST }}</span>
+                                        <small *ngIf="fileInfoGST == null" [ngClass]="uploadaccountstatement2?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="form-row" *ngIf="this.gstn_details.controls.donthavetan.value == false">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                    <label>TAN Number</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                    <input type="text" class="form-control form-control-big input-field" placeholder="Write TAN Number" formControlName="tannumber">
+                                    <div class="mt-3">
+                                        <label for="tannumber" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                        <input type="file" class="d-none" id="tannumber" #fileInputtan accept="image/png, application/pdf, image/jpeg" (change)="onFileSelecttan($event)"/>
+                                        <span class="file-info">{{ fileInfoTan }}</span>
+                                        <small *ngIf="!fileInfoTan" [ngClass]="uploadtanstatement?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                    </div>
+                                    </div>
+                                </div>
+    
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                    <div class="custom-input-check">
+                                        <input type="checkbox" class="form-control" id="I-have-TAN" name="conditions" value="agree" formControlName="donthavetan">
+                                        <span class="check-checked"></span>
+                                        <label for="I-have-TAN" class="terms-label">I don't have TAN
+                                        </label>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                                    <button *ngIf="!this.gstDetailsUpdate" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel" (click)="storeback()">Back</button>
+                                    <button *ngIf="!this.gstDetailsUpdate" type="button" class="btn btn-primary" (click)="storenext2()">Next</button>
+                                    <button *ngIf="this.gstDetailsUpdate" type="button" class="btn btn-cancel store-next-btn" (click)="gstDetailsUpdate = false">Cancel</button>
+                                    <button *ngIf="this.gstDetailsUpdate" type="button" class="btn btn-primary store-next-btn" (click)="gstDetailsSave()">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div *ngIf="brandinfo && storeStatus == 1 && !this.gstDetailsUpdate" class="brand-information">
+                            <img (click)="gstDetailsEdit(storedetailsdata)" title="Edit signature" class="edit-store-details" src="assets/images/icons/edit.svg" alt="edit" />
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">GST Number</label>
+                                <div>
+                                    <label class="brand-detail-text mr-2">{{storedetailsdata?.gstNumber}}</label>
+                                    <a href={{storedetailsdata?.gstFile}} class="link-proof">
+                                    <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                    View GST Certificate
+                                    </a>
+                                </div>
+                            </div>
+                            <div *ngIf="storedetailsdata?.TANNumber != 'null'" class="brand-details-row">
+                                <label class="brand-detail-title">TAN Number</label>
+                                <div>
+                                    <label class="brand-detail-text mr-2">{{storedetailsdata?.TANNumber}}</label>
+                                    <a href={{storedetailsdata?.TANFile}} class="link-proof">
+                                    <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                    View TAN Certificate
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- <div *ngIf="storedetailsdata?.TANNumber == 'null'" class="brand-details-row">
+                                <label class="brand-detail-title">TAN Number</label>
+                                <label class="brand-detail-text">Not Available</label>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-BankDetails-store">
+                <div class="row">
+                    <div class="col-12">
+                        <form *ngIf="brandinfo == false || this.bankDetailsUpdate" class="mt-3" [formGroup]="bank_details">
+                            <div class="admin-form-table table">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                        <label>Account Holder Name</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" class="form-control form-control-big input-field" placeholder="Write the account name" formControlName="accountholdername">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                        <label>Account Number</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" class="form-control form-control-big input-field" placeholder="Write bank account number" formControlName="accountnumber">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                        <label>IFSC Code</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" name="" class="form-control form-control-big input-field text-uppercase" placeholder="Write bank IFSC code"
+                                            (keyup)="verifyIfscCode(f3.value.IFSCCode)" formControlName="IFSCCode">
+                                    </div>
+                                </div>
+                                <div *ngIf="ifscVerifiedDetail">
+                                    <div class="form-row">
+                                       <div class="form-group col-sm-3">
+                                          <label>BRANCH</label>
+                                       </div>
+                                       <div class="form-group col-sm-6">
+                                       <input type="text" class="form-control form-control-big input-field" placeholder="Write bank IFSC code" formControlName="branch" readonly>
+                                       </div>
+                                    </div>
+                                    <div class="form-row">
+                                       <div class="form-group col-sm-3">
+                                          <label>ADDRESS</label>
+                                       </div>
+                                       <div class="form-group col-sm-6">
+                                          <textarea class="form-control form-control-big input-field" cols="2" rows="2"  formControlName="address" [attr.disabled] = true></textarea>
+                                       </div>
+                                    </div>
+                                    <div class="form-row">
+                                       <div class="form-group col-sm-3">
+                                          <label>Bank Name</label>
+                                       </div>
+                                       <div class="form-group col-sm-6">
+                                          <input type="text" class="form-control form-control-big input-field" placeholder="Write bank name" formControlName="bankName" readonly>
+                                       </div>
+                                    </div>
+                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3 form-inner-title">
+                                    <label>Upload Cheque/Passbook copy</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <label for="UploadChequePassbook" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                        <input type="file"
+                                            class="d-none"
+                                            id="UploadChequePassbook"
+                                            #uploadchequepassbook
+                                            accept="image/png, application/pdf, image/jpeg"
+                                            (change)="onFileSelectChequePassbook(uploadchequepassbook)"
+                                            formControlName="uploadchequepassbookcopy"
+                                        />
+                                        <span class="file-info">{{ ChequePassbook }}</span>
+                                        <small *ngIf="ChequePassbook == null" [ngClass]="uploadaccountstatement3?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                    </div>
+                                </div>
+                                <ul class="user-pro-social-flex mt-5 mb-2">
+                                    <li class="user-profile-title">
+                                    <p>Other Payments Details (For out of India user's only)</p>
+                                    </li>
+                                </ul>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                    <label>Payoneer ID</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                    <input type="text" class="form-control form-control-big input-field" placeholder="Write your Payoneer ID (if you have)" formControlName="payoneerid">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>PayPal ID</label>
+                                    </div>
+                                    <div class="form-group col-sm-7">
+                                        <input type="text" class="form-control form-control-big input-field" placeholder="Write your PayPal ID (if you have)" formControlName="paypalid">
+                                    </div>
+                                </div>
+                                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                                    <button *ngIf="!this.bankDetailsUpdate" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel" (click)="storeback()">Back</button>
+                                    <button *ngIf="!this.bankDetailsUpdate" type="button" class="btn btn-primary" (click)="storenext3()">Next</button>
+                                    <button *ngIf="this.bankDetailsUpdate" type="button" class="btn btn-cancel store-next-btn" (click)="bankDetailsUpdate = false">Cancel</button>
+                                    <button *ngIf="this.bankDetailsUpdate" type="button" class="btn btn-primary store-next-btn" (click)="bankDetailsSave()">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div *ngIf="brandinfo && storeStatus == 1 && !this.bankDetailsUpdate" class="brand-information">
+                            <img (click)="bankDetailsEdit(storedetailsdata)" title="Edit signature" class="edit-store-details" src="assets/images/icons/edit.svg" alt="edit" />
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Account Holder Name</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.accountHolderName}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Account Number</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.accountNumber}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">IFSC Code</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.IFSCCode}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Bank Name</label>
+                                <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.bankName}}</label>
+                            </div>
+                            <div class="brand-details-row">
+                                <label class="brand-detail-title">Cheque/ Passbook Copy</label>
+                                <div>
+                                    <a href={{storedetailsdata?.bankDetail?.chequePassbookFile}} class="link-proof">
+                                    <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                    View TAN Certificate
+                                    </a>
+                                </div>
+                            </div>
+                            <div *ngIf="storedetailsdata?.bankDetail?.payoneerId != 'null' || storedetailsdata?.bankDetail?.paypalId != 'null'">
+                                <p class="mt-5">
+                                    <b>Other Payments Details (For out of India user's only)</b>
+                                </p>
+                                <div class="brand-details-row">
+                                    <label class="brand-detail-title">Payoneer ID</label>
+                                    <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.payoneerId}}</label>
+                                </div>
+                                <div class="brand-details-row">
+                                    <label class="brand-detail-title">PayPal ID</label>
+                                    <label class="brand-detail-text">{{storedetailsdata?.bankDetail?.paypalId}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-BusinessAddress-store">
+                <div *ngIf="brandinfo == false || this.business_addressupdate == true || this.pickup_addressupdate == true" class="row">
+                    <div class="col-sm-9">
+                        <form class="address-form mt-3" [formGroup]="business_address">
+                            <div *ngIf="this.pickup_addressupdate == false || brandinfo == false">
+                                <ul class="user-pro-social-flex mt-5 mb-2">
+                                    <li class="user-profile-title">
+                                        <p>Registered business address</p>
+                                    </li>
+                                </ul>
+                                <input type="text" class="form-control address-input" placeholder="Address" formControlName="addressname">
+                                <input type="text" class="form-control address-input" placeholder="Street/Apartment/Suite" formControlName="streetapartment">
+                                <div class="form-row address-input">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" placeholder="State/Province" formControlName="address_state" >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" placeholder="City" formControlName="addresscity">
+                                    </div>
+                                </div>
+                                <div class="form-row address-input">
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" placeholder="Pin/Zip Code" formControlName="address_pinzip">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" placeholder="Select Country" formControlName="address_country" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul *ngIf="this.business_addressupdate == false && this.pickup_addressupdate == false || brandinfo == false" class="user-pro-social-flex mt-5 mb-2">
+                                <li class="user-profile-title">
+                                    <p>Address Proof</p>
+                                </li>
+                            </ul>
+                            <div *ngIf="this.business_addressupdate == true" class="d-flex flex-row align-items-center justify-content-end flex-wrap mt-2">
+                                <button type="button" class="btn btn-primary" (click)="addressupdatesave()">Save</button>
+                            </div>
+                            <div *ngIf="this.business_addressupdate == false && this.pickup_addressupdate == false || brandinfo == false" class="form-row address-input">
+                                <div class="col-md-7 form-group mb-0 select2-val">
+                                    <ng-select2 width="100%" [data]="addressProofList" formControlName="address_proof" [placeholder]="'select Address Proof'"></ng-select2>
+                                    <div class="mt-3">
+                                        <label for="accountstatement" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2 uploadfilename">Upload</label>
+                                        <input type="file"
+                                            class="d-none"
+                                            id="accountstatement"
+                                            #bankaccountstatement
+                                            accept="image/png, application/pdf, image/jpeg"
+                                            (change)="onFileSelectaccountstatement(bankaccountstatement)"
+                                            formControlName="uploadaccountstatement" />
+                                        <span class="file-info">{{ AccountStatement }}</span>
+                                        <small *ngIf="AccountStatement == null" [ngClass]="uploadaccountstatement4?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <ul *ngIf="this.pickup_addressupdate == true || brandinfo == false" class="user-pro-social-flex mt-5 mb-2">
+                            <li class="user-profile-title">
+                                <p>Pickup address</p>
+                            </li>
+                        </ul>
+                        <form class="address-form" [formGroup]="pickup_address">
+                            <div *ngIf="this.pickup_addressupdate == true || brandinfo == false">
+                                <input type="text" class="form-control address-input" placeholder="Address" formControlName="pickupAddress">
+                                <input type="text" class="form-control address-input"
+                                    placeholder="Street/Apartment/Suite" formControlName="pickupAddressarea">
+                                    <div class="form-row address-input">
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" placeholder="Pin/Zip Code" (keyup)="pinCodeCheck()" formControlName="pickupAddresspinzip">
+                                            <div class="true-false-smallicon">
+                                                <a href="javascript:void(0)" *ngIf="pinCodeCheckValid">
+                                                    <img src="assets/images/icons/inbox-icons/approve.svg" alt="true"/>
+                                                </a>
+                                                <a href="javascript:void(0)" *ngIf="!pinCodeCheckValid && pickup_address.value.pickupAddresspinzip?.length === 6">
+                                                    <img src="assets/images/icons/inbox-icons/not_available.svg" alt="false">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" placeholder="Select Country" formControlName="pickupAddresscountry" readonly>
+                                        </div>
+                                    </div>
+                                <div class="form-row address-input">
+                                    <div class="col-md-6 form-group mb-0 select2-val">
+                                        <!-- <ng-select2  width="100%" [data]="stateList" [disabled] = true formControlName="pickupAddressprovince" [placeholder]="'select State/Province'"
+                                         (valueChanged)="changeStateValue($event)">
+                                        </ng-select2> -->
+                                        <input type="text" class="form-control" placeholder="select State/Province" formControlName="pickupAddressprovince" readonly>
+                                    </div>
+
+                                    <div class="col-md-6 form-group mb-0 select2-val">
+                                        <ng-select2  width="100%" [data]="cityList" formControlName="pickupAddresscity" [placeholder]="'select city'">
+                                        </ng-select2>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div *ngIf="this.pickup_addressupdate != true || brandinfo == false" class="d-flex flex-row align-items-center justify-content-end flex-wrap mt-2">
+                                    <button type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel" (click)="storeback()">Back</button>
+                                    <button type="button" class="btn btn-primary" (click)="storenext4()">Next</button>
+                                </div>
+                            </div>
+                            <div *ngIf="this.pickup_addressupdate == true" class="d-flex flex-row align-items-center justify-content-end flex-wrap mt-2">
+                                <button type="button" class="btn btn-primary" (click)="pickupaddressupdatesave(f5)">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div *ngIf="brandinfo && storeStatus == 1 && this.business_addressupdate == false && this.pickup_addressupdate == false" class="brand-information">
+                    <p>
+                        <b>Registered business address</b>
+                        <a href="javascript:void(0)" class="ml-3" (click)="registerbusiness(storedetailsdata)">Edit</a>
+                    </p>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.businessAddress.address}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.businessAddress.street}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.businessAddress.city}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.businessAddress.state}} - {{storedetailsdata?.businessAddress.pincode}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.businessAddress.countryCode}}</label>
+                    </div>
+                    <p class="mt-5">
+                        <b>Address Proof</b>
+                        <a href={{storedetailsdata?.addressProof.addressProofFile}} class="link-proof ml-3">
+                            <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                                View Electricity bill
+                        </a>
+                    </p>
+                    <p class="mt-5">
+                        <b>Pickup address</b>
+                        <a href="javascript:void(0)" class="ml-3" (click)="pickupregisterbusiness(storedetailsdata)">Edit</a>
+                    </p>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.pickupAddress.address}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.pickupAddress.street}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.pickupAddress.city}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.pickupAddress.state}} - {{storedetailsdata?.pickupAddress.pincode}}</label>
+                    </div>
+                    <div class="brand-details-row">
+                        <label class="brand-detail-title">{{storedetailsdata?.pickupAddress.countryCode}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-Signature-store">
+                <div class="row">
+                    <div *ngIf="brandinfo == false || signatureUpdate" class="col-12">
+                        <form class="mt-3">
+                            <div class="admin-form-table table">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <p class="signature-main">
+                                            <img *ngIf="signaturePadboolean == true" src={{signaturePadImg}} alt="signature">
+                                            <img *ngIf="signaturePadboolean == true" (click)="updateSignature()" title="Edit signature" class="signature-main-edit" src="assets/images/icons/edit.svg" alt="edit" />
+                                            <img *ngIf="signaturePadboolean == false" (click)="saveSignature()" title="save signature" class="signature-main-edit" src="https://img.icons8.com/ios-filled/50/000000/save.png" alt="edit"/>
+                                            <signature-pad class="cursor-pointer" *ngIf="signaturePadboolean == false" [options]="signaturePadOptions" (onEndEvent)="drawComplete()"></signature-pad>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <span class="file-info">{{ Signaturedetails }}</span>
+                                        <p class="mt-4 mb-0"><b>Note :</b> Please make sure that the image of the signature is of an authorised signatory (as endorsed by the Tax Authorities). Sign on a white paper, scan the signature and upload it.</p>
+                                    </div>
+                                </div>
+                                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                                    <button *ngIf="!this.signatureUpdate" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel" (click)="storeback()">Back</button>
+                                    <button *ngIf="!this.signatureUpdate" type="button" class="btn btn-primary store-detail-submit store-submit-btn" (click)="finalsubmit()">Submit</button>
+                                    <button *ngIf="this.signatureUpdate" type="button" class="btn btn-cancel store-next-btn" (click)="signatureUpdate = false">Cancel</button>
+                                    <button *ngIf="this.signatureUpdate" type="button" class="btn btn-primary store-next-btn" (click)="signatureSave()">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div *ngIf="brandinfo && storeStatus == 1 && !signatureUpdate" class="brand-information w-100">
+                        <div class="col-12">
+                            <div class="admin-form-table table">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <p class="signature-main">
+                                            <img (click)="updateSignatureAfterApprove()" title="Update Signature" class="signature-main-edit" src="assets/images/icons/edit.svg" alt="edit" />
+                                            <img src={{storedetailsdata?.signature}} alt="signature">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center" *ngIf="storeStatus == 0">
+    <h3 class="text-danger">Store details have been submitted, subject to verification.</h3>
+</div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Store Create Processing...</p>
+</ngx-spinner>

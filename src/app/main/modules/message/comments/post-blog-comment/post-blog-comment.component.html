@@ -1,0 +1,135 @@
+<div class="comment-section inbox-cmt-section" infiniteScroll [infiniteScrollDistance]="0.5" [scrollWindow]="false"  
+    [ngStyle]="{ 'max-height': 'calc(100vh - ' + 250 + 'px' + ')','min-height': 'calc(100vh - ' + 205 + 'px' + ')' }">
+    <div *ngIf="mainCommentList?.length === 0"> No comment Available</div>
+    <div class="commented-area" *ngIf="mainCommentList.length > 0">
+        <div class="comment-singular comment-border" *ngFor="let maincomment of mainCommentList, let i = index">
+            <div class="commenter-profile cover-image">
+                <img src="{{maincomment.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="commenter" />
+            </div>
+            <div class="commenter-info">
+                <div class="commenter-name-wrapper">
+                    <div class="commenter-name">
+                        {{maincomment.userDetails[0].username}}
+                        <label class="mb-0 commenting-time">{{maincomment.created_date |Srtdate}}</label>
+                        <label *ngIf="maincomment.edited == true" class="reposted-status">Edited</label>
+                    </div>
+                    <div class="side-post-comment-option-wrapper">
+                        <div class="right-side-menu">
+                            <div class="d-flex align-items-center comment-action-space">
+                                <div class="comment-action-icon contain-image changeImage">
+                                    <img *ngIf="maincomment.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="LikeUnlikeComment(maincomment)" />
+                                    <img *ngIf="maincomment.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="LikeUnlikeComment(maincomment)"/>
+                                </div>
+                                <label class="counter-comment-action" *ngIf="maincomment.totalLikes > 0">{{maincomment.totalLikes}}</label>
+                            </div>
+                            <div class="share-comment-compare" title="replies" (click)="GetAllrepliesList(maincomment)">
+                                <img src="./assets/images/icons/forward-outline.svg" alt="forward-outline-icon">
+                            </div>
+                            <div class="dropdown">
+                                <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                    <div class="menuicon comment-option-icon contain-image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" name="icon-option">
+                                            <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li *ngIf="maincomment.selfComment == true" (click)="editComment(maincomment)" class="dropdown-item d-flex align-items-center edit-comment-item">
+                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1" /></div>
+                                            <div class="menulabel dropText">Edit</div>
+                                        </li>
+                                        <li *ngIf="maincomment.selfComment == true" class="dropdown-item d-flex align-items-center delete-comment-item" data-toggle="modal" data-target="#deleteCommentConfirmModal" (click)="deleteComment(maincomment,i)">
+                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2" /></div>
+                                            <div class="menulabel dropText">Delete</div>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center copy-comment-item" (click)="commentCopy(maincomment.comment)">
+                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3" /></div>
+                                            <div class="menulabel dropText">Copy</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="comment-text">{{maincomment.comment}}</p>
+                <div *ngIf="selectedEditItem && selectedEditItem?._id == maincomment._id">
+                    <div class="comment-singular comment-border mr-2">
+                        <textarea class="edit-message-area" [(ngModel)]="editedTypedText" rows="1"></textarea>
+                        <span class="d-flex pr-0 align-self-end justify-content-end" (click)="editEmojiOpen()">
+                            <img src="./assets/images/icons/emoji1.svg" height="24" width="24" alt="">
+                        </span>
+                        <emoji-mart class="emoji-box inbox-emoji-box" *ngIf="editEmojiCommentBox"
+                            (emojiSelect)="editedAddEmoji($event)" title="Pick your emoji…">
+                        </emoji-mart>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mt-1">
+                        <button type="reset" class="btn-popup-cancel-text-link"
+                            (click)="cancelEditComment()">Cancel
+                        </button>
+                        <button type="submit" class="btn-popup-save-text-link"
+                            (click)="saveEditComment(maincomment)">Save
+                        </button>
+                    </div>
+                </div>
+                <div class="comment-option">
+                    <a class="post-fixed-replies msg-replies post-comment" (click)="GetAllrepliesList(maincomment)" *ngIf="maincomment.totalComments > 0">
+                        <span >{{maincomment.totalComments}}&nbsp;</span>Replies
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="write-comment-section">
+    <emoji-mart class="emoji-box inbox-emoji-box"  title="Pick your emoji…" *ngIf="emojiCommentBox" (emojiSelect)="addEmoji($event)"></emoji-mart>
+    <div class="input-group msg-box" >
+        <div class="d-flex w-100">
+            <textarea class="form-control comment email-comment py-2 msg-input-type" placeholder="Type a message" rows="1"
+            (keypress)="$event.keyCode == 13 ? sendComment() :''" [(ngModel)]="TypedComment"></textarea>
+            <div class="input-group-append">
+                <span class="input-group-text comment-icon email-comment-emoji message-emoji msg-input-type"
+                    id="basic-addon2" (click)="emojiOpen()">
+                    <img class="main-textmsg-emoji" src="./assets/images/icons/emoji1.svg" alt=""/>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-end">
+        <div class="spinner-border msg-spinner-color" role="status" *ngIf="spinnerShow">
+            <span class="visually-hidden"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-message-send position-relative" [disabled]="spinnerShow" (click)="sendComment()">
+            <img src="assets/images/icons/msg-send.svg" alt="images" *ngIf="!spinnerShow">
+        </button>
+    </div>
+</div>
+<section [ngClass]="sideoverhide?'':'d-none'" id="sideOverHide" (click)="closesidebar()"></section>
+
+<app-post-blog-comment-reply [selectedComment]="selectedCommentItem" (closeSidebarEvent)="closesidebar()" (updateCommentEvent)="updateComment($event)"></app-post-blog-comment-reply>
+
+<!-- / _begin > MODAL - Delete Confirmation < SHB / -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteCommentConfirmModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Are you sure you want to delete this comment?</p>
+                <div class="d-flex align-items-center justify-content-end mt-1">
+                    <button  class="btn-popup-cancel-text-link" aria-label="Close"
+                        (click)="cancelDeleteComment()" *ngIf="!spinnerShow">
+                         cancel
+                    </button>
+                    <button class="btn-popup-delete-text-link" aria-label="Close"
+                        (click)="confirmDeleteComment()" [disabled]="spinnerShow" >
+                        <span class="spinner-border spinner-border-sm" *ngIf="spinnerShow"></span>
+                        <span [ngClass]="{'btn-not-allowed': spinnerShow}">delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / _end > MODAL - Delete Confirmation < SHB / -->

@@ -1,0 +1,396 @@
+<div class="write-comment-section">
+    <!-- {{ActiveUserChatDetail | json}} -->
+    
+    <p *ngIf="showIsTyping == true" class="position-relative">typing<span class="dots-cont"> <span
+                class="dot dot-1"></span><span class="dot dot-2"></span><span class="dot dot-3"></span></span></p>
+    <emoji-mart class="emoji-box inbox-emoji-box" *ngIf="emojimessagebox" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"></emoji-mart>
+    <div class="input-group msg-box" >
+        <div class="commented-area mb-2 w-100" *ngIf="selectedQuoteItem">
+            <div class="comment-singular comment-border">
+                <div class="commenter-profile cover-image">
+                    <img src="{{selectedQuoteItem?.user_details?.profilePic}}"
+                        onerror="this.src='assets/images/logo.svg'" alt="user-profile" />
+                </div>
+                <div class="commenter-info">
+                    <div class="commenter-name-wrapper">
+                        <div class="commenter-name">
+                            {{selectedQuoteItem?.user_details?.username}}
+                            <label class="mb-0 commenting-time">{{selectedQuoteItem?.created_date | date}}</label>
+                        </div>
+                        <div class="side-post-comment-option-wrapper">
+                            <div class="right-side-menu mr-2" (click)="quoteClose()">
+                                <img class="product-icon demoIng" src="assets/images/icons/close-01.svg" alt="close"style="height:10px;min-height:0px" />
+                            </div>
+                        </div>
+                    </div>
+                    <p class="comment-text">{{selectedQuoteItem?.message}}</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="previewSelectedImage != 0 || selectedDocFile != 0" class="msg-upload-images">
+            <div class="msg-img-sub w-100">
+                <ng-container  *ngIf="previewSelectedImage">
+                    <div *ngFor="let item of previewSelectedImage;let i = index" class="position-relative sub-msg-img">
+                        <img src={{item?.image}} alt="img" class="rounded"/>
+                        <img (click)="onImageRemove(i)" class="msg-arrow-close" src="assets/images/icons/closearrow.svg" alt="closearrow" />
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="selectedDocFile">
+                  <div class="col-12">
+                    <div class="images-send row alltype-file-upload">
+                        <div class="col-12 col-sm-6 col-xl-6"
+                            *ngFor="let docItem of selectedDocFile;let i = index">
+                            <div class="card">
+                                <div class="trash"(click)="removeSelectedDocFile(i)">
+                                    <img class="product-icon demoIng" src="assets/images/icons/close-01.svg" alt="close" style="height:10px;min-height:0px"  />
+                                </div>
+                                <div class="alltype-inner">
+                                    <img src="assets/images/icons/file.svg"><span>{{docItem?.type}}</span>
+                                </div>
+                                <div class="filetype-dsc">
+                                    <p>{{docItem?.fileName}}</p><span>{{docItem?.size |fileSize}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div> 
+                </ng-container>
+            </div>
+        </div>
+        
+        <div [ngClass]="previewSelectedImage != 0 || selectedDocFile != 0 ?(previewSelectedImage != 0 || selectedDocFile != 0?'msg-type-main':'d-flex w-100'):(selectedQuoteItem?'msg-type-main mx-0 w-100':'d-flex w-100')">
+            <textarea [ngStyle]="previewSelectedImage != 0 || selectedDocFile != 0 || selectedQuoteItem?{'text-indent':'10px'}:{}" type="text" class="form-control comment email-comment py-2 msg-input-type"
+            placeholder="Type a message" aria-describedby="basic-addon2" rows="1" (keydown)="messageTypeKeyDown()" (keypress)="$event.keyCode == 13 ? EnterSendMessage() :''"
+            [(ngModel)]="TypedMessage" [maxlength]="this.ActiveUserChatDetail.channelType == 'public' && this.ActiveUserChatDetail.tabType == 'updates' ?'500':''" #textArea></textarea>
+            <div class="input-group-append">
+                <span class="input-group-text comment-icon email-comment-emoji message-emoji msg-input-type"
+                    id="basic-addon2" (click)="emojiopen()">
+                    <img class="main-textmsg-emoji" src="./assets/images/icons/emoji1.svg" alt=""/>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row align-items-center justify-content-end">
+        <ul class="d-flex flex-row align-items-center message-bottom-bar-list">
+            <li class="message-bottom-bar-list-item">
+                <a class="message-icon-link contain-image">
+                    <img src="assets/images/icons/message-attachments.svg" alt="attachments">
+                </a>
+                <input type="file" class="attachment-file" accept="application/pdf,application/msword,
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple
+                    (change)="onDocFileSelected($event)" (keypress)="$event.keyCode == 13 ? $event.preventDefault() :null">
+            </li>
+            <li class="message-bottom-bar-list-item">
+                <a class="message-icon-link contain-image">
+                    <img src="assets/images/icons/inbox-icons/image.svg" alt="image-attachments">
+                </a>
+                <input type="file" class="choose-image" accept=".jpg,.jpeg,.png" multiple
+                    (change)="onImageFileSelected($event)" (keypress)="$event.keyCode == 13 ? $event.preventDefault() :null">
+            </li>
+            <li class="message-bottom-bar-list-item" *ngIf="!ActiveUserChatDetail?.replyBox">
+                <a class="message-icon-link inbox-product-list contain-image">
+                    <img (click)="productlist()" src="assets/images/icons/products.svg" alt="folder">
+                </a>
+            </li>
+            <li class="message-bottom-bar-list-item">
+                <a class="message-icon-link save-replies contain-image">
+                    <img (click)="savedtemplate()" src="assets/images/icons/inbox-icons/saved_templates.svg"
+                        alt="saved-replies-list">
+                </a>
+            </li>
+        </ul>
+        <div class="spinner-border msg-spinner-color" role="status" *ngIf="spinnerShow">
+            <span class="visually-hidden"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-message-send position-relative" [disabled]="spinnerShow" *ngIf="ActiveUserChatDetail?.messageBox == true" (click)="sendNewMessage()">
+            <img src="assets/images/icons/msg-send.svg" alt="images" *ngIf="!spinnerShow">
+        </button>
+        <button type="submit" class="btn btn-primary btn-message-send position-relative" [disabled]="spinnerShow" *ngIf="ActiveUserChatDetail?.replyBox == true" (click)="sendReplyMessage()">
+            <img src="assets/images/icons/msg-send.svg" alt="images" *ngIf="!spinnerShow">
+        </button>
+        <!-- send updates & discussion for  public and private channel start -->
+        <button type="submit" class="btn btn-primary btn-message-send position-relative" [disabled]="spinnerShow" *ngIf="ActiveUserChatDetail?.channelBox == true" (click)="sendNewChannelMessage()">
+            <img src="assets/images/icons/msg-send.svg" alt="images" *ngIf="!spinnerShow">
+        </button>
+        <!-- send updates & discussion for public and private channel end -->
+
+         <!-- send updates & discussion for  public and private channelReplyMessage start -->
+         <button type="submit" class="btn btn-primary btn-message-send position-relative" [disabled]="spinnerShow" *ngIf="ActiveUserChatDetail?.channelReplyBox == true" (click)="sendNewChannelReplyMessage()">
+            <img src="assets/images/icons/msg-send.svg" alt="images" *ngIf="!spinnerShow">
+        </button>
+        <!-- send updates & discussion for public and private channelReplyMessage end -->
+        
+
+        <!-- <div class="emoji-box inbox-emoji-box" *ngIf="emojimessagebox">
+          <div class="emoji-row">
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/1 rofl.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/2 joy.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/3 smiling_broadly.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/4 innocent.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/5 slight_smile.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/6 heart_eyes.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/7 inlove.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/8 kissing_heart.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/9 blush.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/10 winking_tongue_out.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/11 cool.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/12 wink.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/13 hushed.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/14 smirk.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/15 thinking.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/16 grimacing.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/17 frowning_face.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/18 confused.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/19 pensive.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/20 sad.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/21 pleading.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/22 weary.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/23 crying.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/24 crying_loudly.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/25 see_no_monkey.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/26 fire.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/27 handshake.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/28 namaste_(pray).svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/29 thumbsup.svg" alt="emoji" />
+                  </div>
+              </div>
+              <div class="emoji-col">
+                  <div class="emoji-wrapper contain-image">
+                    <img src="assets/images/icons/emoji/30 heart_(like).svg" alt="emoji" />
+                  </div>
+              </div>
+          </div>
+      </div> -->
+        <div class="product-box bottom-product-box" *ngIf="productboxmsg">
+            <ul class="list-group">
+                <li class="list-group-item py-1 pl-2 pr-2">
+                    <div class="input-group border-0">
+                        <input type="text" class="form-control search-user-box border-0"
+                            placeholder="Search products or paste URL" (keyup)="SearchProduct()"
+                            [(ngModel)]="SearchedProductName">
+                        <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                            <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                        </button>
+                    </div>
+                </li>
+                <ul>
+                    <li class="list-group-item  py-1 pr-3" *ngFor="let item of productsearchdata" [ngClass]="{'activeuserclass': item._id == selectedProductId}">
+                        <div class="media" (click)="Selectproduct(item)">
+                            <div class="media-body align-self-center">
+                                <p class="mb-0">{{item.productName}}</p>
+                                <small>{{item.productId}}</small>
+                                <!-- <small>{{item.brand_details?.brandName}}</small> -->
+                            </div>
+                            <img class="ml-3" src="{{item.productPhotos[0]?.image}}"
+                                onerror="this.src='assets/images/logo.svg'" alt="Generic placeholder image">
+                        </div>
+                    </li>
+                    <p *ngIf="productsearchdata.length === 0 && isSearchedProductAvail == true"> No products Found</p>
+                </ul>
+                <li class="list-group-item">
+                    <button type="button" class="inbox-product-list btn cancel-button product-cancel-button btn-outline-secondary mr-3" (click)="productcancel()">Cancel</button>
+                    <button type="button" class="btn save-button btn-outline-primary" (click)="productsend()">Send</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="main-msg-multiple mr-5">
+    <!-- Saved Replies -->
+    <section class="new-message-box saved-replies-box" [ngClass]="savedRepliesPopup?'popup-show':''">
+        <div class="px-3 pt-0 pb-3">
+            <div class="w-100 text-right">
+                <a class="times-close my-2"><img (click)="savedtemplate()"
+                        src="assets/images/icons/inbox-icons/inbox-close.svg" alt="close"></a>
+            </div>
+            <div class="d-flex align-items-center justify-content-between save-reply-list-header">
+                <h6 class="m-0 p-0 box-title-message">Saved Replies</h6>
+                <a class="text-right create-new-reply" (click)="savedRepliesNewCreate()">Create New</a>
+
+            </div>
+        </div>
+        <div class="save-reply-list-wrapper">
+            <ul class="save-reply-list">
+                <div *ngIf="SavedRepliesList?.length === 0">
+                    <b>No Avail Saved RepliesList</b>
+                </div>
+                <li class="save-reply-list-items" *ngFor="let item of SavedRepliesList">
+                    <div class="save-reply-list-texts" (click)="selectSavedReplyMessage(item)">
+                        <p class="save-reply-heading">{{item.replyTitle}}</p>
+                        <p class="save-reply-message">{{item.replyMessage}}</p>
+                    </div>
+                    <div class="save-reply-list-items-action">
+                        <div class="save-reply-list-items-action-icon" (click)="EditSavedReply(item)"><img
+                                src="assets/images/icons/edit.svg" alt="edit-reply"></div>
+                        <div class="save-reply-list-items-action-icon" (click)="DeleteSavedReply(item)"><img
+                                data-toggle="modal" data-target="#savedlist-delete"
+                                src="assets/images/icons/icon-delete-b.svg" alt="delete-reply"></div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+</div>
+<section class="new-message-box create-reply" [ngClass]="createdsavedRepliesItem?'popup-show':''">
+    <div class="create-saved-reply new-message-box-head justify-content-start">
+        <a class="get-back-from-saved-reply" (click)="savedtemplate()"><img
+                src="assets/images/icons/back_bold_arrow.svg" alt="back"></a>
+        <label class="m-0 box-title-message" *ngIf="editSavedReplies == true">Create Saved Reply</label>
+        <label class="m-0 box-title-message" *ngIf="editSavedReplies == false">Update Saved Reply</label>
+    </div>
+    <form [formGroup]="savedReplayForm">
+        <div class="form-group m-0">
+            <input type="text" class="form-control reply-title" placeholder="Reply Title" formControlName="replytitle">
+            <textarea rows="10" class="form-control reply-message" placeholder="Write Message..."
+                formControlName="replymsg"></textarea>
+        </div>
+        <div class="bottom-action-button-save-reply">
+            <button type="button" class="btn btn-outline-secondary w-auto btn-reply-action"
+                (click)="savedtemplate()">Cancel</button>
+            <button class="btn btn-primary w-auto btn-reply-action" *ngIf="editSavedReplies == true"
+                (click)="createReplySubmit(f)">Submit</button>
+            <button class="btn btn-primary w-auto btn-reply-action" *ngIf="editSavedReplies == false"
+                (click)="UpdateReplySubmit(f)">Update</button>
+            <!-- <input class="btn btn-primary w-auto btn-reply-action" type="submit" value="Submit"> -->
+        </div>
+    </form>
+
+</section>
+
+<!-- / _begin > MODAL - Delete Confirmation < SHB / -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="savedlist-delete">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body pb-0">
+                <div class="images-search-close prod-closemain mb-3">
+                    <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0"
+                        src="assets/images/icons/close.svg" alt="close" />
+                </div>
+                <b>Are you sure you want to delete SavedReplies messages ? </b>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-modal-cancel pl-5 pr-5" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-deactivate-action pl-5 pr-5 ml-2"
+                    (click)="ConfirmSavedRepliesDelete()">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / _end > MODAL - Delete Confirmation < SHB / -->

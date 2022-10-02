@@ -1,0 +1,174 @@
+<div class="mt-3 explorewindow">
+    <!-- / _begin > Top Nav Horizontal Scroll < SHB -->
+    <ngx-horizontal-scroll-menu [items]="MenuCategoryList"  [distance]="100" (click)="horizontalscroll($event)" [text]="itemclass"></ngx-horizontal-scroll-menu>
+  
+    <!-- Trending post grid -->
+    <!-- [alwaysCallback]="false" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="onScroll(ExploreList.length)" [scrollWindow]="false" -->
+    <div class="example-viewport">
+        <div class="row trending-post-explore">
+            <div *ngFor="let item of ExploreList" class="col-lg-4 col-sm-6 col-xl-3">
+                <div *ngIf="item.productPhotos" class="explore-post-wrapper">
+                    <!-- Post Image Wrapper -->
+                    <!-- (click)="exploreimagesidebaropen(item)" -->
+                    <div class="explore-posts cover-image">
+                        <img src={{item?.productPhotos[0]?.image}} alt="images"/>
+                        <div *ngIf="item.productPhotos.length > 0" class="abs-indicator-icon contain-image"><img src="assets/images/icons/multipost.svg" alt="indicator"></div>
+                        <div (click)="viewProduct(item._id)" class="abs-tag-icon abs-icon-vis-hidden">
+                            <span class="tag-icon-holder tag-icon-user"></span>
+                            <a class="abs-product-details-link">View Product</a>
+                        </div>
+                    </div>
+        
+                    <!-- Post Information Wrapper -->
+                    <div class="post-info p-2">
+                        <div class="d-flex align-items-center">
+                            <div class="post-uploader-info">
+                                <label class="post-uploader-name">{{item?.brandName}}</label>
+                                <!-- <div class="profile-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="profile-image-holder cover-image">
+                                            <img src={{item?.userDetails?.profilePic}} onerror="this.src='assets/images/logo.svg'" alt="post-profile">
+                                        </div>
+                                        <a *ngIf="!item.isCurrent" (click)="item?.isFollowing ? unfollow(item) : follow(item)" [ngClass]="item?.isFollowing?'follow-btn following-btn':'follow-btn follow-btn-blue'">{{item?.isFollowing ? 'Following' : 'Follow'}}</a>
+                                    </div>
+        
+                                    <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                                        <h3 class="profile-username mb-0">{{item?.userDetails?.username}}</h3>
+                                        <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account" /></span>
+                                    </div>
+        
+                                    <h3 class="profile-displayname">{{item?.postTitle}}</h3>
+        
+                                    <ul class="profile-stats">
+                                        <li>{{item?.userDetails?.totalFollowing}} Follwing</li>
+                                        <li>{{item?.userDetails?.totalFollowers}} Followers</li>
+                                        <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="" /></span></li>
+                                    </ul>
+                                </div> -->
+                            </div>    
+                        </div>
+        
+                        <div class="d-flex flex-row align-items-center justify-content-between">
+                            <div class="home-feed-post-caption">
+                                <p class="product-name" title="Realistic UI Design Painting">{{item?.productName}}</p>
+                            </div>
+                            <!-- <div class="home-feed-post-caption">
+                                <p class="white-nowrap">INR 1250.00</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="item.images" class="explore-post-wrapper">
+                    <!-- Post Image Wrapper -->
+                    <div (click)="exploreimagesidebaropen(item)" class="explore-posts cover-image">
+                        <div *ngIf="item.images.length > 0" class="abs-indicator-icon contain-image"><img src="assets/images/icons/multipost.svg" alt="indicator"></div>
+                        <img src={{item?.images[0]?.image}} alt="images">
+                    </div>
+        
+                    <!-- Post Information Wrapper -->
+                    <div class="post-info p-2">
+                        <div class="d-flex align-items-center">
+                            <div class="post-uploader-info">
+                                <label class="post-uploader-name">{{item?.advanceCategory}}</label>
+                                <div class="profile-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="profile-image-holder cover-image">
+                                            <img src={{item?.userDetails?.profilePic}} onerror="this.src='assets/images/logo.svg'" alt="post-profile">
+                                        </div>
+                                        <a *ngIf="!item.isCurrent" (click)="item?.isFollowing ? unfollow(item) : follow(item)" [ngClass]="item?.isFollowing?'follow-btn following-btn':'follow-btn follow-btn-blue'">{{item?.isFollowing ? 'Following' : 'Follow'}}</a>
+                                    </div>
+        
+                                    <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                                        <h3 class="profile-username mb-0">{{item?.userDetails?.username}}</h3>
+                                        <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account" /></span>
+                                    </div>
+        
+                                    <h3 class="profile-displayname">{{item?.postTitle}}</h3>
+                                    <!-- <p class="profile-desc">Fashion and quality at the best price in sustainable way. For customer service please message to given details in page.</p> -->
+        
+                                    <ul class="profile-stats">
+                                        <li>{{item?.userDetails?.totalFollowing}} Follwing</li>
+                                        <li>{{item?.userDetails?.totalFollowers}} Followers</li>
+                                        <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="" /></span></li>
+                                        <!-- <li>4.5 </li> -->
+                                    </ul>
+                                </div>
+                            </div>    
+                        </div>
+        
+                        <div class="d-flex flex-row align-items-center justify-content-between">
+                            <div class="home-feed-post-caption">
+                                <p class="product-name" title="Realistic UI Design Painting">{{item?.postTitle}}</p>
+                            </div>
+                            <!-- <div class="home-feed-post-caption">
+                                <p class="white-nowrap">INR 1250.00</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="item.video" class="product-items-wrapper hashtag-post-border-line pb-0">
+                    <div (click)="explorevideosidebaropen(item)" class="post-items-video cover-image cursor-pointer">
+                        <img src={{item.coverImg}} alt="product-items">
+                        <div class="abs-video-views">
+                        <div class="video-view-icons contain-image">
+                            <img src="assets/images/icons/video-w.svg">
+                        </div>
+                        <label>{{item.totalViews | thousandSuff}}</label>
+                        </div>
+                    </div>
+                    <!-- Post Information Wrapper -->
+                    <div class="post-info p-2">
+                        <div class="d-flex align-items-center">
+                            <div class="post-uploader-info">
+                                <label class="post-uploader-name">{{item?.advanceCategory}}</label>
+                                <div class="profile-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="profile-image-holder cover-image">
+                                            <img src={{item?.userDetails?.profilePic}} onerror="this.src='assets/images/logo.svg'" alt="post-profile">
+                                        </div>
+                                        <a *ngIf="!item.isCurrent" (click)="item?.isFollowing ? unfollow(item) : follow(item)" [ngClass]="item?.isFollowing?'follow-btn following-btn':'follow-btn follow-btn-blue'">{{item?.isFollowing ? 'Following' : 'Follow'}}</a>
+                                    </div>
+        
+                                    <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                                        <h3 class="profile-username mb-0">{{item?.userDetails?.username}}</h3>
+                                        <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account" /></span>
+                                    </div>
+        
+                                    <h3 class="profile-displayname">{{item?.postTitle}}</h3>
+                                    <!-- <p class="profile-desc">Fashion and quality at the best price in sustainable way. For customer service please message to given details in page.</p> -->
+        
+                                    <ul class="profile-stats">
+                                        <li>{{item?.userDetails?.totalFollowing}} Follwing</li>
+                                        <li>{{item?.userDetails?.totalFollowers}} Followers</li>
+                                        <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="" /></span></li>
+                                        <!-- <li>4.5 </li> -->
+                                    </ul>
+                                </div>
+                            </div>
+        
+        
+                        </div>
+        
+                        <div class="d-flex flex-row align-items-center justify-content-between">
+                            <div class="home-feed-post-caption">
+                                <p class="product-name" title="Realistic UI Design Painting">{{item?.postTitle}}</p>
+                            </div>
+                            <!-- <div class="home-feed-post-caption">
+                                <p class="white-nowrap">INR 1250.00</p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="w-100 px-5 text-center" *ngIf="ExploreList?.length === 0"><hr/>No records found</h3>
+        </div>
+    </div>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+</div>
+
+<div name="shb-page-sliders">
+    <app-imgeas-show-sidebar [SinglePostData]="postdetailsimagesData" [postdetailsopen]="postdetailsimages" (closebar)="closesidebar()"></app-imgeas-show-sidebar>
+    <app-videos-show-sidebar [SingleVideoData]="postdetailsvideosData" [videodetailsopen]="postdetailsvideo" (closebar)="closesidebar()"></app-videos-show-sidebar>
+</div>
+<!-- <app-blogs-show-sidebar></app-blogs-show-sidebar> -->
+<!-- <app-products-show-sidebar></app-products-show-sidebar> -->

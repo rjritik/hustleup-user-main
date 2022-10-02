@@ -1,0 +1,404 @@
+<div class="your-channel" #content infiniteScroll [infiniteScrollDistance]="0.5" [scrollWindow]="false"
+    (scrolledUp)="onScrollUp()" (scrolled)="onScroll($event)"
+    [ngStyle]="{ 'max-height': 'calc(100vh - ' + primeTableHeight + 'px' + ')','min-height': 'calc(100vh - ' + primeTableHeight + 'px' + ')' }">
+    <div *ngIf="updatesMessageList?.length === 0 && unReadUpdatesMessageList?.length === 0"> No Conversation Available
+    </div>
+    <div class="commented-area" #readUpdatesMsg *ngFor="let item of updatesMessageList;let i = index">
+        <div class="comment-singular comment-border" [ngStyle]="item.productDetails?{'display':'inline-flex'}:{}">
+            <div class="commenter-profile cover-image">
+                <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'"
+                    alt="user-profile" />
+            </div>
+            <div class="commenter-info">
+                <div class="commenter-name-wrapper">
+                    <div class="commenter-name">
+                        {{item.user_details.username}}
+                        <img class="verify-user-approve" src="assets/images/icons/inbox-icons/approve.svg"
+                            *ngIf="item.user_details.isProfileVerified == true">
+                        <label class="mb-0 commenting-time">{{item.created_date | Srtdate}}</label>
+                        <div class="reposted-status" *ngIf="item.isEdited == true">Edited</div>
+                        <div class="reposted-status" *ngIf="item.repostedMessageId">[Reposted]</div>
+                    </div>
+                    <div class="side-post-comment-option-wrapper">
+                        <div class="right-side-menu">
+                            <div class="d-flex align-items-center comment-action-space">
+                                <div class="comment-action-icon contain-image changeImage">
+                                    <img *ngIf="item.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg"
+                                        alt="heart-icon" (click)="likeUnlikeMessage(item)" />
+                                    <img *ngIf="item.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg"
+                                        alt="heart-icon" (click)="likeUnlikeMessage(item)" />
+                                </div>
+                                <label class="counter-comment-action" *ngIf="item.totalLikes > 0">{{item.totalLikes}}</label>
+                            </div>
+                            <div class="share-comment-compare"  *ngIf="this.parentData.isAdmin == true" (click)="createQuote(item)">
+                                <img src="./assets/images/icons/quotes.svg" alt="comment-action-icon">
+                            </div>
+                            <div class="share-comment-compare" (click)="GetAllrepliesList(item)">
+                                <img src="./assets/images/icons/forward-outline.svg" alt="comment-action-icon">
+                            </div>
+                            <div class="share-comment-compare"
+                                attr.tooltip="{{item.repostedMessageId ? 'Undo Repost':'Repost'}}" flow="down"
+                                *ngIf="this.parentData.isAdmin == true && (!item.repostedMessageId ||item.isReposted)"
+                                (click)="createOrRemoveRepost(item,i)">
+                                <img class="repost-public-channel" src="./assets/images/icons/repost.svg"
+                                    alt="comment-action-icon">
+                            </div>
+                            <div class="dropdown">
+                                <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                    <div class="menuicon comment-option-icon contain-image">
+                                        <img src="./assets/images/icons/three_dots.svg" alt="comment-action-icon" />
+                                    </div>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li class="dropdown-item d-flex align-items-center edit-comment-item"
+                                            *ngIf="item.self_message == true && (item.created_date | timeDiff) < 3" (click)="EditMessage(item)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1">
+                                            </div>
+                                            <div class="menulabel dropText">Edit</div>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center"
+                                            *ngIf="item.self_message == true || this.parentData.isAdmin == true"
+                                            data-toggle="modal" data-target="#deleteCommentConfirmModal"
+                                            (click)="DeleteMessage(item,i)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2">
+                                            </div>
+                                            <div class="menulabel dropText">Delete</div>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center" (click)="CopyMessage(item)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3"></div>
+                                            <div class="menulabel dropText">Copy</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="comment-text text-break w-95">{{item.message}}</p>
+                <div *ngIf="selectedEditItem && selectedEditItem._id == item._id">
+                    <div class="comment-singular comment-border mr-2">
+                        <textarea class="edit-message-area" [(ngModel)]="editedTypedText" rows="1"></textarea>
+                        <span class="d-flex pr-0 align-self-end justify-content-end" (click)="editEmojiOpen()">
+                            <img src="./assets/images/icons/emoji1.svg" height="24" width="24" alt="">
+                        </span>
+                        <emoji-mart class="emoji-box inbox-emoji-box" *ngIf="editEmojimessagebox"
+                            (emojiSelect)="editedAddEmoji($event)" title="Pick your emoji…">
+                        </emoji-mart>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mt-1">
+                        <button type="reset" class="btn-popup-cancel-text-link"
+                            (click)="cancelEditMessage()">Cancel
+                        </button>
+                        <button type="submit" class="btn-popup-save-text-link"
+                            (click)="saveEditMessage()">Save
+                        </button>
+                    </div>
+                </div>
+                <div class="comments-child-comments" *ngIf="item.quotesMessageId">
+                    <div class="comment-singular comment-border"
+                        (click)="quotedmessageClick(item.quotesMessage_details)" *ngIf="item.quotesMessage_details">
+                        <div class="commenter-profile cover-image">
+                            <img src="{{item.quotesMessage_details.quotesUserDetail?.profilePic}}"
+                                onerror="this.src='assets/images/logo.svg'" alt="profilepic not found">
+                        </div>
+                        <div class="commenter-info">
+                            <div class="commenter-name">{{item.quotesMessage_details.quotesUserDetail?.username}}
+                                <label class="mb-0 commenting-time">{{item.quotesMessage_details?.created_date |
+                                    date:'shortTime'}}</label>
+                            </div>
+                            <p class="comment-text">{{item.quotesMessage_details?.message}}</p>
+                        </div>
+                    </div>
+                    <div class="comment-singular comment-border" *ngIf="!item.quotesMessage_details"> this message was
+                        deleted</div>
+                </div>
+                <div *ngIf="item.documents" class="public-upload-section col-12">
+                    <div class="images-send row alltype-file-upload">
+                        <div class="col-12 col-sm-6 col-xl-4" *ngFor="let docItem of item.documents">
+                            <div class="card">
+                                <div class="alltype-inner">
+                                    <img src="assets/images/icons/file.svg"><span>{{docItem?.type}}</span>
+                                </div>
+                                <div class="filetype-dsc">
+                                    <p>{{docItem?.fileName}}</p><span>{{docItem?.size|fileSize}}</span>
+                                </div>
+                            </div>
+                            <div class="msg-img-downarrow">
+                                <a href={{docItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg"
+                                        alt="downarrow"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="item.images" class="public-upload-section col-12">
+                    <div class="images-send row">
+                        <div class="col-6 col-md-4 col-xl-3" *ngFor="let imageItem of item.images">
+                            <a href="javascript:void(0)"><img src="{{imageItem?.url}}"></a>
+                            <div class="msg-img-downarrow">
+                                <a href={{imageItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg"
+                                        alt="downarrow"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="embed-product-preview mt-2 ml-auto mr-auto" *ngIf="item.productDetails">
+                    <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element">
+                        {{item.productDetails?.productName}}</p>
+                    <div class="mb-2">
+                        <div class="product-items-image">
+                            <owl-carousel [options]="slideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                                <div class="item" *ngFor="let items of item.productDetails.productPhotos">
+                                    <img class="rounded" [src]="items.image" />
+                                </div>
+                            </owl-carousel>
+                        </div>
+
+                        <div class="post-detail-wrap pl-0 pr-0">
+                            <div class="price-block mt-0">
+                                <label>{{item.productDetails?.variations[0]?.sellingPrice |currency:'INR&nbsp;':'code'}}
+                                    <del>{{item.productDetails?.variations[0]?.MRP |currency:'INR&nbsp;':'code'}}</del>
+                                    <span>({{item.productDetails?.variations[0]?.discount}}%Off)</span>
+                                </label>
+                                <div class="msg-slider-btn">
+                                    <button type="button" class="btn btn-outline-secondary">
+                                        <img src="assets/images/icons/icons-post-save.svg">
+                                        Wishlist
+                                    </button>
+                                    <button type="button" class="btn btn-primary mt-0 mb-0">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-option mt-2">
+                    <div [ngClass]="{'now-chat-red':item.unreadReplyMessagesCount > 0}"></div>
+                    <a class="post-fixed-replies msg-replies post-comment" *ngIf="item.replyCount > 0"
+                        (click)="GetAllrepliesList(item)">{{item.replyCount}} Replies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="new-message-public" *ngIf="unReadUpdatesMessageList.length !== 0"><a href="javascript:void(0)">New Message</a></div>
+    <div class="commented-area" #unreadUpdatesMsg *ngFor="let item of unReadUpdatesMessageList;let i = index">
+        <div class="comment-singular comment-border" [ngStyle]="item.productDetails?{'display':'inline-flex'}:{}">
+            <div class="commenter-profile cover-image">
+                <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'"
+                    alt="user-profile" />
+            </div>
+            <div class="commenter-info">
+                <div class="commenter-name-wrapper">
+                    <div class="commenter-name">
+                        {{item.user_details.username}}
+                        <img class="verify-user-approve" src="assets/images/icons/inbox-icons/approve.svg"
+                            *ngIf="item.user_details.isProfileVerified == true">
+                        <label class="mb-0 commenting-time">{{item.created_date | Srtdate}}</label>
+                        <div class="reposted-status" *ngIf="item.isEdited == true">Edited</div>
+                        <div class="reposted-status" *ngIf="item.repostedMessageId">[Reposted]</div>
+                    </div>
+                    <div class="side-post-comment-option-wrapper">
+                        <div class="right-side-menu">
+                            <div class="d-flex align-items-center comment-action-space">
+                                <div class="comment-action-icon contain-image changeImage">
+                                    <img *ngIf="item.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg"
+                                        alt="heart-icon" (click)="likeUnlikeMessage(item)" />
+                                    <img *ngIf="item.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg"
+                                        alt="heart-icon" (click)="likeUnlikeMessage(item)" />
+                                </div>
+                                <label class="counter-comment-action" *ngIf="item.totalLikes > 0">{{item.totalLikes}}</label>
+                            </div>
+                            <div class="share-comment-compare"  *ngIf="this.parentData.isAdmin == true" (click)="createQuote(item)">
+                                <img src="./assets/images/icons/quotes.svg" alt="comment-action-icon">
+                            </div>
+                            <div class="share-comment-compare" (click)="GetAllrepliesList(item)">
+                                <img src="./assets/images/icons/forward-outline.svg" alt="comment-action-icon">
+                            </div>
+                            <div class="share-comment-compare"
+                                attr.tooltip="{{item.repostedMessageId ? 'Undo Repost':'Repost'}}" flow="down"
+                                *ngIf="this.parentData.isAdmin == true && (!item.repostedMessageId ||item.isReposted)"
+                                (click)="createOrRemoveRepost(item,i)">
+                                <img class="repost-public-channel" src="./assets/images/icons/repost.svg"
+                                    alt="comment-action-icon">
+                            </div>
+                            <div class="dropdown">
+                                <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                    <div class="menuicon comment-option-icon contain-image">
+                                        <img src="./assets/images/icons/three_dots.svg" alt="comment-action-icon" />
+                                    </div>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <ul>
+                                        <li class="dropdown-item d-flex align-items-center edit-comment-item"
+                                            *ngIf="item.self_message == true && (item.created_date | timeDiff) < 3" (click)="EditMessage(item)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1">
+                                            </div>
+                                            <div class="menulabel dropText">Edit</div>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center"
+                                            *ngIf="item.self_message == true || this.parentData.isAdmin == true"
+                                            data-toggle="modal" data-target="#deleteCommentConfirmModal"
+                                            (click)="DeleteMessage(item,i)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2">
+                                            </div>
+                                            <div class="menulabel dropText">Delete</div>
+                                        </li>
+                                        <li class="dropdown-item d-flex align-items-center" (click)="CopyMessage(item)">
+                                            <div class="dropIcons contain-image"><img
+                                                    src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3"></div>
+                                            <div class="menulabel dropText">Copy</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="comment-text text-break w-95">{{item.message}}</p>
+                <div *ngIf="selectedEditItem && selectedEditItem._id == item._id">
+                    <div class="comment-singular comment-border mr-2">
+                        <textarea class="edit-message-area" [(ngModel)]="editedTypedText" rows="1"></textarea>
+                        <span class="d-flex pr-0 align-self-end justify-content-end" (click)="editEmojiOpen()">
+                            <img src="./assets/images/icons/emoji1.svg" height="24" width="24" alt="">
+                        </span>
+                        <emoji-mart class="emoji-box inbox-emoji-box" *ngIf="editEmojimessagebox"
+                            (emojiSelect)="editedAddEmoji($event)" title="Pick your emoji…">
+                        </emoji-mart>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mt-1">
+                        <button type="reset" class="btn-popup-cancel-text-link"
+                            (click)="cancelEditMessage()">Cancel
+                        </button>
+                        <button type="submit" class="btn-popup-save-text-link"
+                            (click)="saveEditMessage()">Save
+                        </button>
+                    </div>
+                </div>
+                <div class="comments-child-comments" *ngIf="item.quotesMessageId">
+                    <div class="comment-singular comment-border"
+                        (click)="quotedmessageClick(item.quotesMessage_details)" *ngIf="item.quotesMessage_details">
+                        <div class="commenter-profile cover-image">
+                            <img src="{{item.quotesMessage_details.quotesUserDetail?.profilePic}}"
+                                onerror="this.src='assets/images/logo.svg'" alt="profilepic not found">
+                        </div>
+                        <div class="commenter-info">
+                            <div class="commenter-name">{{item.quotesMessage_details.quotesUserDetail?.username}}
+                                <label class="mb-0 commenting-time">{{item.quotesMessage_details?.created_date |
+                                    date:'shortTime'}}</label>
+                            </div>
+                            <p class="comment-text">{{item.quotesMessage_details?.message}}</p>
+                        </div>
+                    </div>
+                    <div class="comment-singular comment-border" *ngIf="!item.quotesMessage_details"> this message was
+                        deleted</div>
+                </div>
+                <div *ngIf="item.documents" class="public-upload-section col-12">
+                    <div class="images-send row alltype-file-upload">
+                        <div class="col-12 col-sm-6 col-xl-4" *ngFor="let docItem of item.documents">
+                            <div class="card">
+                                <div class="alltype-inner">
+                                    <img src="assets/images/icons/file.svg"><span>{{docItem?.type}}</span>
+                                </div>
+                                <div class="filetype-dsc">
+                                    <p>{{docItem?.fileName}}</p><span>{{docItem?.size|fileSize}}</span>
+                                </div>
+                            </div>
+                            <div class="msg-img-downarrow">
+                                <a href={{docItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg"
+                                        alt="downarrow"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="item.images" class="public-upload-section col-12">
+                    <div class="images-send row">
+                        <div class="col-6 col-md-4 col-xl-3" *ngFor="let imageItem of item.images">
+                            <a href="javascript:void(0)"><img src="{{imageItem?.url}}"></a>
+                            <div class="msg-img-downarrow">
+                                <a href={{imageItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg"
+                                        alt="downarrow"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="embed-product-preview mt-2 ml-auto mr-auto" *ngIf="item.productDetails">
+                    <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element">
+                        {{item.productDetails?.productName}}</p>
+                    <div class="mb-2">
+                        <div class="product-items-image">
+                            <owl-carousel [options]="slideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                                <div class="item" *ngFor="let items of item.productDetails.productPhotos">
+                                    <img class="rounded" [src]="items.image" />
+                                </div>
+                            </owl-carousel>
+                        </div>
+
+                        <div class="post-detail-wrap pl-0 pr-0">
+                            <div class="price-block mt-0">
+                                <label>{{item.productDetails?.variations[0]?.sellingPrice |currency:'INR&nbsp;':'code'}}
+                                    <del>{{item.productDetails?.variations[0]?.MRP |currency:'INR&nbsp;':'code'}}</del>
+                                    <span>({{item.productDetails?.variations[0]?.discount}}%Off)</span>
+                                </label>
+                                <div class="msg-slider-btn">
+                                    <button type="button" class="btn btn-outline-secondary">
+                                        <img src="assets/images/icons/icons-post-save.svg">
+                                        Wishlist
+                                    </button>
+                                    <button type="button" class="btn btn-primary mt-0 mb-0">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-option mt-2">
+                    <div [ngClass]="{'now-chat-red':item.unreadReplyMessagesCount > 0}"></div>
+                    <a class="post-fixed-replies msg-replies post-comment" *ngIf="item.replyCount > 0"
+                        (click)="GetAllrepliesList(item)">{{item.replyCount}} Replies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="testclass" *ngIf="updatesMessageList?.length !== 0 && !scrollExitsAtBottom">
+        <div class="position-relative" *ngIf="pendingMessageCount!== 0">
+            <div class="pending-message pending-channel-count">{{pendingMessageCount}}</div>
+        </div>
+        <div class="subtest" (click)="scrollToBottom()">
+            <button>V</button>
+        </div>
+    </div> -->
+</div>
+
+
+<!-- / _begin > Static Backdrop For Sliding Sidebar < SHB / -->
+<section [ngClass]="sideoverhide?'':'d-none'" id="sideOverHide" (click)="closesidebar()"></section>
+<!-- / _end > Static Backdrop For Sliding Sidebar < SHB / -->
+<app-channel-message-reply [selectedMessage]="selectedMessageItem" (closeSidebarEvent)="closesidebar()">
+</app-channel-message-reply>
+
+
+<!-- / _begin > MODAL - Delete Confirmation < SHB / -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteCommentConfirmModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Are you sure you want to delete this message?</p>
+                <div class="d-flex align-items-center justify-content-end mt-1">
+                    <button  class="btn-popup-cancel-text-link" aria-label="Close"
+                        (click)="cancelDeleteMessage()" *ngIf="!spinnerShow">
+                         cancel
+                    </button>
+                    <button class="btn-popup-delete-text-link" aria-label="Close"
+                        (click)="confirmDeleteMessage()" [disabled]="spinnerShow" >
+                        <span class="spinner-border spinner-border-sm" *ngIf="spinnerShow"></span>
+                        <span [ngClass]="{'btn-not-allowed': spinnerShow}">delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / _end > MODAL - Delete Confirmation < SHB / -->

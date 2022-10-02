@@ -1,0 +1,28 @@
+<nav>
+    <ul class="menu">
+        <li *ngFor="let menu of navmenulist;let i = index">
+          <div class="d-flex justify-content-between align-items-center" (click)="menuMain(i)">
+                {{menu.title}}
+                <i *ngIf="i !== menuOpen" class="fa fa-plus" aria-hidden="true"></i>
+                <i *ngIf="i === menuOpen" class="fa fa-minus" aria-hidden="true"></i>
+          </div>
+          <ul class="submenu ml-3" [ngStyle]="{'display': menuOpen === i ? 'block' : 'none'}">
+            <li *ngFor="let menuSub of menu.menuSubCategories; let indexSub = index">
+                <div class="d-flex justify-content-between align-items-center" (click)="subMenu(indexSub)">
+                    {{menuSub.title}}
+                    <i *ngIf="indexSub !== subMenuOpen" class="fa fa-plus" aria-hidden="true"></i>
+                    <i *ngIf="indexSub === subMenuOpen" class="fa fa-minus" aria-hidden="true"></i>
+                </div>
+                <ul class="submenuinner ml-1"  [ngStyle]="{'display': subMenuOpen === indexSub ? 'block' : 'none'}">
+                    <li *ngFor="let productTypes of menuSub.productTypes">
+                        <div (click)="ProductTypeClick(productTypes)" class="d-flex align-items-center">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            {{productTypes.title}}
+                        </div>
+                    </li>
+                </ul>
+            </li>
+          </ul>
+        </li>
+    </ul>
+</nav>

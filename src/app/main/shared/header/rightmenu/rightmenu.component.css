@@ -1,0 +1,31 @@
+.self-drop-notification .text-dsc{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 3px;
+}
+.image-self-drop img{
+    min-height: 82px;
+    max-height: 82px;
+}
+.image-self-drop{
+    padding: 0px;
+}
+.self-drop-message{
+    padding-left: 0px;
+}
+.self-drop-message button{
+    display: block;
+    width: 90%;
+    height: 40px;
+}
+.self-drop-message button:first-child{
+    margin-bottom: 10px;
+}
+.self-drop-req{
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    border-top: 1px solid #ddd;
+}

@@ -1,0 +1,35 @@
+<div class="row half-row" *ngFor="let item of HashtagPostdetailList">
+    <div *ngIf="item.postImages?.length === 0" class="order-history-defalut product-sub-small">
+        <div class="order-history-defalut-img">
+            <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut"/>
+        </div>
+        <p>No posts have been made yet</p>
+        <!-- <p>Upload images of any kinds of posts like looks & styles, fashion & designs, beauty & makeup, your personal photos, products, offer, & coupons, jokes, memes, quotes, literally anything...</p> -->
+    </div>
+    <div class="col-md-6 col-lg-4 col-xl-3"  *ngFor="let subitem of item.postImages">
+        <div class="product-items-wrapper hashtag-post-border-line">
+            <div class="product-items-image" (click)="imgpostopen(subitem)">
+                <img src="{{subitem.images[0]?.image}}" alt="product-items">
+                <span class="abs-hash-post-indicator contain-image">
+                    <img src="assets/images//icons/multipost.svg" *ngIf="subitem.images.length > 1" alt="multipost-icon" />
+                </span>
+            </div>
+            <div class="post-detail-wrap">
+                <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                    <label class="post-uploader-name">{{subitem.postTitle}}</label>
+                    <div *ngIf="subitem.isBookmarked == false" class="hashtag-save-icon"><img id="postSave" (click)="WishlistPostImage(subitem)" src="assets/images/icons/icons-post-save.svg"></div>
+                    <div *ngIf="subitem.isBookmarked == true" class="hashtag-save-icon"><img id="postSave" (click)="UnsavedWishlistPostImage(subitem)" src="assets/images/icons/icons-post-saved.svg"></div>
+                </div>
+                <p class="product-name single-line-clamp" title="Black full sleave sweater">{{subitem.advanceCategory}}</p>
+            </div>
+        </div>
+    </div>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+
+</div>
+
+    <!-- |< Feed Post Details Slider _begin >| -->
+    <div name="shb-page-sliders">
+        <app-imgeas-show-sidebar [SinglePostData]="SinglePostData" [iconClickType]="iconClickType" [postdetailsopen]="postHashtagsdetailsopen" (closebar)="closesidebar()"></app-imgeas-show-sidebar>
+    </div>
+    <!-- |< Feed Post Details Slider _end >| -->

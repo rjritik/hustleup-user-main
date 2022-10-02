@@ -1,0 +1,420 @@
+
+
+
+
+
+
+
+
+<!-- |< Feed Post Share_begin >| -->
+<section class="post-fixed-side-popup p-0" [ngClass]="{'open':sharepost,'sidebarpro':withoutNavBar}" id="postShareSlider" [ngStyle]="{'right':sharepost? '0px' : '-700px' }">
+    <div class="w-100 d-flex flex-column align-items-center justify-content-between sticky-close-head">
+        <button class="close-popup-sidebar ml-auto contain-image mr-3"><img src="assets/images/icons/close.svg" (click)="closesidebar()"/></button>
+        <ul class="nav nav-tabs nav-fill message-tabs w-100" id="messageTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="shareDM-tab" data-toggle="tab" href="#shareDM" role="tab" aria-selected="false">Direct Message</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="shareDM-yourchannel" data-toggle="tab" href="#shareDM-YourChannels" role="tab" aria-selected="false">Your Channels</a>
+            </li>                    
+            <li class="nav-item">
+                <a class="nav-link active" id="sharePlatforms-tab" data-toggle="tab" href="#sharePlatforms" role="tab" aria-selected="true">Other social Media</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="messageTabContent">
+        <div class="tab-pane fade" id="shareDM" role="tabpanel" aria-labelledby="shareDM-tab">
+            <div class="shareMessage-content-data">
+                <div class="d-flex align-items-center position-relative">
+                    <input type="text" class="form-control search-friend-input" placeholder="Search">
+                    <span class="dm-search-icon containt-image">
+                        <img src="assets/images/icons/icon-search.svg" alt="search-icon">
+                    </span>
+                </div>
+            </div>
+            <ul class="friend-list-dm pb-2">
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile2.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile4.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile5.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile4.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/profile.jpg" alt="post-profile">
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-pane fade sharedm-yourchannel" id="shareDM-YourChannels" role="tabpanel" aria-labelledby="shareDM-yourchannel">
+            <div class="shareMessage-content-data">
+                <div class="d-flex align-items-center position-relative">
+                    <input type="text" class="form-control search-friend-input" placeholder="Search">
+                    <span class="dm-search-icon containt-image">
+                        <img src="assets/images/icons/icon-search.svg" alt="search-icon">
+                    </span>
+                </div>
+            </div>
+            <ul class="friend-list-dm pb-2">
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">rahul-gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">web-development-project</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">rahul-gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">web-development-project</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">rahul-gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">web-development-project</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">rahul-gupta</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="friend-list-dm-items">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                                <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                            </div>
+                            <div>
+                                <label class="user-fullname-display mb-0">web-development-project</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block">
+                            <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                        </div>
+                    </div>
+                </li>                                                                        
+
+            </ul>
+        </div>                
+        <div class="tab-pane fade active show" id="sharePlatforms" role="tabpanel" aria-labelledby="sharePlatforms-tab">
+            <ul class="social-share-list">
+                <li class="social-share-list-items">
+                    <div class="social-share-logo contain-image">
+                        <img src="assets/images/icons/post-share-icons-facebook.svg" alt="social-share-icons">
+                    </div>
+                    <a href="javascript:void()" class="post-share-link">Facebook</a>
+                </li>
+                <li class="social-share-list-items">
+                    <div class="social-share-logo contain-image">
+                        <img src="assets/images/icons/post-share-icons-messenger.svg" alt="social-share-icons">
+                    </div>
+                    <a href="javascript:void()" class="post-share-link">Facebook Messenger</a>
+                </li>
+                <li class="social-share-list-items">
+                    <div class="social-share-logo contain-image">
+                        <img src="assets/images/icons/post-share-icons-twitter.svg" alt="social-share-icons">
+                    </div>
+                    <a href="javascript:void()" class="post-share-link">Share to Twitter</a>
+                </li>
+                <li class="social-share-list-items">
+                    <div class="social-share-logo contain-image">
+                        <img src="assets/images/icons/post-share-icons-mail.svg" alt="social-share-icons">
+                    </div>
+                    <a href="javascript:void()" class="post-share-link">Share via Email</a>
+                </li>
+                <li class="social-share-list-items">
+                    <div class="social-share-logo contain-image">
+                        <img src="assets/images/icons/icon-link-b.svg" alt="social-share-icons">
+                    </div>
+                    <a href="javascript:void()" class="post-share-link">Copy Link</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- |< Feed Post Share _begin >| -->

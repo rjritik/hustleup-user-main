@@ -1,0 +1,208 @@
+<div class="row">
+   <div class="col-12">
+      <div class="admin-table admin-table-y">
+         <table>
+          <thead>
+             <tr>
+                <th>#</th>
+                <th>Product Details</th>
+                <th>Created</th>
+                <th>Selling Price</th>
+                <th>Stock</th>
+                <th>Product Type</th>
+                <th>Options</th>
+             </tr>
+          </thead>
+             <tbody>
+             <ng-container *ngFor="let item of ActiveListingList;let i=index">
+                <ng-container *ngFor="let variationitem of item.variations;let variindex=index">
+                   <tr>
+                      <td *ngIf="variindex === 0">{{i + 1}}</td>
+                      <td *ngIf="variindex !== 0"></td>
+                      <td>
+                         <div class="order-detail-product-main">
+                            <div class="product-items-image">
+                              <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag">
+                                <owl-carousel [options]="SlideOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+                                  <div class="item" *ngFor="let items of item.productPhotos">
+                                    <img [src]="items.image"/>
+                                  </div>
+                                </owl-carousel>
+                              </div>
+                            </div>
+                            <div class="order-detail-productinner-dscription">
+                               <p><b>{{item.productName}}</b></p>
+                               <p>SKU :<span>{{variationitem.sellerSku}}</span></p>
+                               <p>Product ID :<span>{{item.productId}}</span></p>
+                               <p>size :<span>{{variationitem.variationTitle}}</span></p>
+                            </div>
+                         </div>
+                      </td>
+                      <td>{{item.created_date | date}}</td>
+                      <td class="products-listing-edit-icon">
+                       {{variationitem.sellingPrice |currency:'INR':'code'}}
+                        <img title="Edit address" (click)="GetPrice(item._id,variationitem,variindex)" src="assets/images/icons/edit.svg" alt="edit" data-toggle="modal" data-target="#update-price-listing"/>
+                      </td>
+                      <td class="products-listing-edit-icon">
+                        {{variationitem.stockQuantity}}
+                        <img title="Edit address" (click)="GetStockValue(item._id,variationitem,variindex)"  src="assets/images/icons/edit.svg" alt="edit" data-toggle="modal" data-target="#update-stock-listing"/>
+                      </td>
+                      <td> {{item.productType[0]?.title}}</td>
+                      <td>
+                          <span >
+                             <div class="dropdown data-item-dropdown">
+                                <button class="btn dropdown-toggle more-icon-listings" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="assets/images/icons/inbox-icons/three_dots.svg" style="height:20px;">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                 <a class="dropdown-item" href="javascript:void(0)" (click)="editCell(item)">Edit
+                                 </a>
+                                   <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#Edit-Influencer-Commission-Rate" (click)="SelectedInfluencerCommisionRate(item)">
+                                   Edit Influencer Commission Rate
+                                   </a>
+                                   <a class="dropdown-item" href="javascript:void(0)" (click)="DuplicateListing(item)">
+                                   Duplicate Listing
+                                   </a>
+                                   <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#close-listing" (click)="SelectcloseListing(item)">
+                                   Close Listing
+                                   </a>
+                                </div>
+                             </div>
+                          </span>
+                      </td>
+                    </tr>
+                </ng-container>
+             </ng-container>
+             <tr *ngIf="ActiveListingList?.length == 0">
+                <td colspan="7" class="text-center" style="font-weight: 500;">No Records Found</td>
+             </tr>
+             </tbody>
+         </table>
+      </div>
+   </div>
+ </div>
+
+ <div *ngIf="docslength === 0" class="order-history-defalut product-sub-small">
+   <div class="order-history-defalut-img">
+      <img src="assets/images/icons/new-icons/products.svg" alt="order-history-defalut"/>
+   </div>
+   <p>No products have been listed yet</p>
+   <p>You have so many ways to make your products visible, like search result, through your profile, influencers profile & shares, posts & tags, sizzles (videos), blogs, maps, your public and private channels, other user's channels, message, shares, embedment etc.</p>
+   <p>And fee? No marketplace fee up to total sales of INR 50,000 and then 4% only.</p>
+</div>
+<div *ngIf="docslength !== 0" class="col-12 p-0">
+   <div class="page-pagination-Ordershipment">
+      <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+         <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+         </select>
+         <label class="mb-0">Items </label>
+         <label class="page-count mb-0">{{PageNo}} / {{totalPages}} pages</label>
+         <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></button></li>
+               <li class="page-item"><button class="page-link active" href="javascript:void(0)">{{PageNo}}</button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></button></li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
+ 
+ <div class="modal fade action-modal delete-item-modal" id="Edit-Influencer-Commission-Rate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-body quantity-sold-unit">
+           <form [formGroup]="CommisionRateForm">
+              <div class="quantity-sold-unit-title mb-2">
+                  <div class="quantity-sold-title">Quantity Sold</div>
+                  <div class="quantity-unit-title">Pay Per Unit</div>
+              </div>
+              <ul>
+                   <li class="CommisionRate" formArrayName="CommisionRate" *ngFor="let item of CommisionRateForm.get('CommisionRate')['controls']; let i = index;">
+                     <div  [formGroupName]="i" class="d-flex">
+                       <div class="quantity-sold-inner">
+                           <input type="number" formControlName="quantitysoldfrom" />
+                           <span>To</span>
+                           <input type="number" formControlName="quantitysoldto" />
+                       </div>
+                       <div class="quantity-unit-inner">
+                           <input type="number" formControlName="payperunit"/>
+                       </div>
+                     </div>
+                   </li>
+ 
+              </ul>
+              <div class="quantity-sold-unit-title mt-2">
+                  <a href="javascript:void(0)" class="quantity-sold-title" (click)="AddMoreCommisionRate()">Add More</a>
+                  <a href="javascript:void(0)" class="quantity-unit-title" (click)="RemoveLastCommisionRate()">Remove Last</a>
+              </div>
+              <div class="mt-4 d-flex quantity-soldunit-btn">
+                <button type="button" class="cancel-no-effect btn btn-outline-secondary mr-3" (click)="CommisionRateCancel()">Cancel</button>
+                <button class="btn btn-primary" type="button" (click)="CommisionRateApply()" >Apply</button>
+              </div>
+             </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <div class="modal fade action-modal delete-item-modal" id="close-listing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-body pb-0 pt-4">
+            <b>Are you sure for closing the listing ?</b>
+            <p class="mt-3">This will close your listing. However the product will still be visible but will be shown as unavailable for purchase.</p>
+         </div>
+         <div class="modal-footer border-0">
+            <button type="button" class="btn btn-modal-cancel" data-dismiss="modal" (click)="CancelListing()">Cancel</button>
+            <button type="button" class="btn btn-deactivate-action" data-dismiss="modal" (click)="closeListing()">Close Listing</button>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <div class="modal fade action-modal delete-item-modal" id="update-price-listing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-body update-price-stock">
+           <form [formGroup]="UpdatePriceForm">
+            <div class="d-block"><b>Update Price</b></div>
+            <div class="form-group">
+             <input class="mt-3 w-50 form-control" type="text" formControlName="pricevalue">
+            </div>
+            <div class="mt-4 d-flex">
+                <button type="button" class="cancel-no-effect btn btn-outline-secondary mr-3" (click)="UpdatePriceCancel()">Cancel</button>
+                <button class="btn btn-primary" type="button" (click)="UpdatePriceApply(priceform)">Apply</button>
+            </div>
+           </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 
+ <div class="modal fade action-modal delete-item-modal" id="update-stock-listing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-body update-price-stock">
+           <form [formGroup]="UpdateStockForm">
+             <div class="d-block"><b>Update Stock</b></div>
+             <div class="form-group">
+               <input type="text" class="mt-3 w-50 form-control"  formControlName="stockvalue">
+             </div>
+ 
+            <div class="mt-4 d-flex">
+                <button type="button" class="cancel-no-effect btn btn-outline-secondary mr-3" (click)="UpdateStockCancel()">Cancel</button>
+                <button class="btn btn-primary" type="button" (click)="UpdateStockApply(f)">Apply</button>
+            </div>
+           </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ 

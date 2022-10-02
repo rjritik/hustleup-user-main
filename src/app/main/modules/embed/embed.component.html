@@ -1,0 +1,37 @@
+<!-- <div class="embed-product-preview" id="message"> -->
+<div class="embed-main-section" [ngClass]="ShowWishBuyBtn?'ShowWishBuyBtn':''">
+    <div *ngIf="!notFoundProduct" class="h-100 w-100 embed-product-preview" style="max-width:100%; min-width:100%;" id="message">
+        <p *ngIf="!slider" class="mb-0">{{singleProductData?.brand_details?.brandName}}</p>
+        <p *ngIf="slider" class="mb-2 embed-preview-title">{{singleProductData?.productId}}</p>
+        <div *ngIf="singleProductData" class="product-items-image">
+            <img *ngIf="!slider" [src]="singleProductData.productPhotos[0]?.image" alt="">
+            <owl-carousel [options]="SlideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']" *ngIf="slider">
+                <div class="item" *ngFor="let itemimg of singleProductData.productPhotos">
+                    <div style="align-content:center">
+                        <img src={{itemimg?.image}} alt="images"/>
+                    </div>
+                </div>
+            </owl-carousel>
+            <div class="abs-hover-items"></div>
+        </div>
+        <div class="post-detail-wrap">
+            <div class="price-block mt-0">
+                <p *ngIf="slider">{{singleProductData?.brand_details?.brandName}}</p>
+                <p>{{singleProductData?.productName}}</p>
+                <p>{{singleProductData?.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}} <del>{{singleProductData?.variations[0]?.MRP |currency:currencyUnit:'symbol'}}</del><span>({{singleProductData?.variations[0]?.discount}}% Off)</span></p>
+                <div class="msg-slider-btn" *ngIf="ShowWishBuyBtn && slider">
+                    <button *ngIf="singleProductData?.isWishlist == false" type="button" class="btn btn-outline-secondary" (click)="Wishlist(singleProductData)">
+                        <img id="postSave" src="assets/images/icons/icons-post-save.svg" />Wishlist
+                    </button>
+                    <button *ngIf="singleProductData?.isWishlist == true" type="button" class="btn btn-outline-secondary" (click)="Wishlistunsaved(singleProductData)">
+                        <img src="assets/images/icons/icons-post-saved.svg" alt="" />Wishlist
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="BuyNow()">Buy Now</button>
+                </div>
+            </div>                                                        
+        </div>    
+    </div>
+    <div *ngIf="notFoundProduct" class="h-100 w-100 embed-product-preview" style="max-width:100%; min-width:100%;" id="message">
+        <h3>no record found</h3>
+    </div>
+</div>   

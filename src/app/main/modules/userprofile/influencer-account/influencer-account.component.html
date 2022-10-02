@@ -1,0 +1,124 @@
+<div class="user-social-life-wrapper">
+    <ul class="user-pro-social-flex">
+       <li class="user-profile-title">
+          <p>Convert into Influencer Account</p>
+       </li>
+    </ul>
+ </div>
+ <div class="col-12 col-sm-11" *ngIf="promo_option == true">
+    <div class="row">
+       <p class="mt-4">As an influencer, you will be eligible to earn money from the products get sold through your online store, links or shares and get financial supports from your fans/ followers as they buy you virtual coffee.</p>
+       <p>To be eligible, your account shall fulfill some minimum requirements as below:</p>
+       <div class="d-block w-100">
+          <p class="mb-0">1. Have more than 10 followers on this platform.</p>
+          <p class="mb-0">2. Have more than 1000 followers on any of the below social media accounts.</p>
+       </div>
+       <div class="col-12 p-0">
+             <div class="admin-form-table table">
+                <ul class="user-pro-social-flex mt-4 mb-2">
+                   <li class="user-profile-title">
+                      <p>Please link one of your social media account with the largest followers.</p>
+                   </li>
+                </ul>
+                <div class="connection-invite-list">
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">YouTube</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="YoutubeLink" [pattern]="URLRegx" #youtubename="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveyoutubeURL(youtubename)" *ngIf="!youtubebtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveYoutubeURL(youtubename)" *ngIf="youtubebtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="youtubename.errors?.pattern"> 
+                        Youtube not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Instagram</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="InstagramLink" [pattern]="URLRegx" #Instagramname="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveInstagramURL(Instagramname)" *ngIf="!Instagrambtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveInstagramURL(Instagramname)" *ngIf="Instagrambtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Instagramname.errors?.pattern"> 
+                        Instagram not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Twitter</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="TwitterLink" [pattern]="URLRegx" #Twittername="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveTwitterURL(Twittername)" *ngIf="!Twitterbtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveTwitterURL(Twittername)" *ngIf="Twitterbtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Twittername.errors?.pattern"> 
+                        Twitter not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Facebook</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="FacebookLink" [pattern]="URLRegx" #Facebookname="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveFacebookURL(Facebookname)" *ngIf="!Facebookbtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveFacebookURL(Facebookname)" *ngIf="Facebookbtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Facebookname.errors?.pattern"> 
+                        Facebook not valid.
+                    </div>
+                </div>
+                <div class="custom-input-check my-4">
+                    <input type="checkbox" class="form-control" id="conditions" name="conditions" (change)="changeEvent($event)">
+                    <span class="check-checked"></span>
+                    <label for="conditions" class="terms-label">I am eligible for this program and I agree with promote/resell policies</label>
+                </div>
+
+                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                    <button type="button" class="btn btn-primary w-auto" (click)="RequestForInfluencer()" [disabled]="!toogleBool">Request for Conversion</button>
+                 </div>
+               <!-- <div class="connection-invite-list col-md-5 p-0">
+                   <div class="promote-connection-flex">
+                       <label class="weight-medium mb-0">YouTube</label>
+                       <div class="social-media-connected">
+                           <button class="btn connect-button"> <img src="./assets/images/icons/youtube1.svg"
+                               alt="" class="mr-1 social-icon"> <span class="connect-text">Connect</span>
+                           </button>
+                           <p class="default-text mb-0 text-center disconnect-text" style="display: none;">(Disconnect)</p>
+                       </div>                            
+                   </div>
+
+                   <div class="promote-connection-flex">
+                       <label class="weight-medium mb-0">Instagram</label>
+                       <div class="social-media-connected">
+                           <button class="btn connect-button"> <img src="./assets/images/icons/Instagram1.svg"
+                               alt="" class="mr-1 social-icon"> <span class="connect-text">Connect</span></button>
+                           <p class="default-text mb-0 text-center disconnect-text" style="display: none;">(Disconnect)</p>
+                       </div>                            
+                   </div>
+
+                   <div class="promote-connection-flex">
+                       <label class="weight-medium mb-0">Twitter</label>
+                       <div class="social-media-connected">
+                           <button class="btn connect-button"> <img src="assets/images/icons/twitter.svg"
+                               alt="" class="mr-1 social-icon"> <span class="connect-text">Connect</span></button>
+                               <p class="default-text mb-0 text-center disconnect-text" style="display: none;">(Disconnect)</p>
+                       </div>                            
+                   </div>
+
+                   <div class="promote-connection-flex">
+                       <label class="weight-medium mb-0">Facebook</label>
+                       <div class="social-media-connected">
+                           <button class="btn connect-button"> 
+                               <img src="./assets/images/icons/Facebook Icon.svg" alt="" class="mr-1 social-icon"> 
+                               <span class="connect-text">Connect</span>
+                           </button>
+                           <p class="default-text mb-0 text-center disconnect-text" style="display: none;">(Disconnect)</p>
+                       </div>                            
+                   </div>
+               </div>
+                <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                   <button type="button" class="btn btn-primary w-auto">Request for Conversion</button>
+                </div> -->
+             </div>
+       </div>
+    </div>
+ </div>
+
+ <div *ngIf="promo_pending == true">  
+    <p class="text-center">Uh oh !</p>
+    <p class="text-center">You have requested to be an influencer but admin have not give you an approval yet. </p>
+</div>

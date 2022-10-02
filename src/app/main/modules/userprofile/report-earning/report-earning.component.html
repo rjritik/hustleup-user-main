@@ -1,0 +1,179 @@
+<div class="user-social-life-wrapper">
+    <ul class="user-pro-social-flex">
+       <li class="user-profile-title">
+          <p>Reports & Earnings</p>
+       </li>
+    </ul>
+    <div class="order-history-defalut" *ngIf="NotAvailReportsData">
+       <div class="order-history-defalut-img"><img src="assets/images/icons/earnings_reports.svg" alt="order-history-defalut"></div>
+       <p>No report to show, for your sales, earnings, fees etc yet.</p>
+       <p>Visit later when your product got sold, or when someone buys you a coffee (in case you are an influencer).</p>
+    </div>
+    <div class="report-earning-date" *ngIf="!NotAvailReportsData">
+      <div class="report-earning-date">
+         <mat-form-field>
+            <input matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" (dateChange)="onStartDate($event)" ngModel="StartDate" [max]="today">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker  #picker1></mat-datepicker>
+         </mat-form-field>
+          <!-- <div class="report-earning-date-inner">
+             <input type="text" value="May 16, 2021">
+          </div> -->
+         <div><span class="report-earning-date-inner-span">To</span><mat-form-field>
+         <input matInput [matDatepicker]="picker2" placeholder="MM-DD-YYYY" (dateChange)="onEndDate($event)" ngModel="EndDate" [max]="today">
+         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+         <mat-datepicker #picker2></mat-datepicker>
+         </mat-form-field></div>
+       </div>
+       <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+          </button>
+          <div class="dropdown-menu dropdown-menu-right main-report-earning" aria-labelledby="dropdownMenu2">
+             <button class="dropdown-item" type="button" (click)="print()">Print</button>
+             <button class="dropdown-item" type="button" (click)="captureScreen()">Download PDF</button>
+             <button class="dropdown-item" type="button" (click)="exportAsXLSX()">
+                Download Excel <!--  (Spreadsheet) -->
+             </button>
+          </div>
+       </div>
+    </div>
+ </div>
+ <div class="row" *ngIf="!NotAvailReportsData">
+    <div class="col-12" id="contentToConvert" >
+       <div class="admin-table admin-table-y" id="content" #content>
+          <table >
+             <thead>
+                <tr>
+                   <th>Date</th>
+                   <th>Particulars</th>
+                   <th>Increase (INR)</th>
+                   <th>Decrease (INR)</th>
+                </tr>
+             </thead>
+             <tbody>
+               <ng-container *ngIf="!nodatafound">
+                <tr *ngFor="let item of Reportsdata|reportEarningdatepipe:StartDate:EndDate">
+                  <td>{{item.Date | date}}</td>
+                  <th>{{item.Particulars}}</th>
+                  <td>{{item.Increase}}</td>
+                  <td>{{item.Decrease}}</td>
+               </tr>
+               <tr *ngIf="(Reportsdata |reportEarningdatepipe:StartDate:EndDate).length == 0">
+                <td colspan="4" class="text-center" style="font-weight: 500;">No Records Found</td>
+             </tr>
+               <!-- <tr>
+                  <td>May 15, 2021</td>
+                  <th>OSale of Handloom Therathume Dhaka -Reshami Saari</th>
+                  <td>4599.00</td>
+                  <td>-</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>OCourier Charges for Therathume Dhaka -Reshami Saari</th>
+                  <td>-</td>
+                  <td>125.00</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Payment Collection Fee (Gateways Charges)</th>
+                  <td>-</td>
+                  <td>90.00</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Platform fee for sale of Therathume Dhaka -Reshami Saari</th>
+                  <td>-</td>
+                  <td>135.00</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Payment received for a medium size coffee by @nakulbaksi</th>
+                  <td>350.00</td>
+                  <td>-</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Payment collection fee for coffee (Gateways Charges)</th>
+                  <td>-</td>
+                  <td>7.00</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Opening Balance</th>
+                  <td>9,999.00</td>
+                  <td>-</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Payment transferred</th>
+                  <td>-</td>
+                  <td>3,699.00</td>
+               </tr>
+               <tr>
+                  <td>May 15, 2021</td>
+                  <th>Commission received on sale of Real Me Phone</th>
+                  <td>750.00</td>
+                  <td>-</td>
+               </tr>
+               <tr>
+                  <td>-</td>
+                  <th>-</th>
+                  <td>10,598.00</td>
+                  <td>8,599.00</td>
+               </tr>
+               <tr>
+                  <td>Jun 15, 2021</td>
+                  <th><b>Balance Receivable</b></th>
+                  <td>-</td>
+                  <td><b>1,997.00</b></td>
+               </tr>
+               <tr>
+                  <td>-</td>
+                  <th>-</th>
+                  <td>10,598.00</td>
+                  <td>10,598.00</td>
+               </tr> -->
+               </ng-container>
+               <ng-container *ngIf="nodatafound">
+                 <p>No Records Found</p>
+               </ng-container>
+             </tbody>
+          </table>
+       </div>
+    </div>
+    <div class="col-12">
+      <div class="page-pagination">
+         <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+            <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+               <option value="10">10</option>
+               <option value="20">20</option>
+               <option value="30">30</option>
+               <option value="40">40</option>
+            </select>
+            <label class="mb-0">Items </label>
+            <label class="page-count mb-0">{{PageNo}} / {{totalpage}} pages</label>
+            <nav aria-label="Page navigation example">
+               <ul class="pagination">
+                  <li class="page-item"><a class="page-link" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></a></li>
+                  <li class="page-item"><a class="page-link" href="javascript:void(0)" [name]="PageNo" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></a></li>
+                  <li class="page-item"><a class="page-link active" href="javascript:void(0)" [TotalPages]="totalpage" appPagination (onChangeEventEmitter)="onPageChange($event)">{{PageNo}}</a></li>
+                  <li class="page-item"><a class="page-link" href="javascript:void(0)" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></a></li>
+                  <li class="page-item"><a class="page-link" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></a></li>
+               </ul>
+            </nav>
+         </div>
+      </div>
+   </div>
+ </div>
+
+ <!-- <div class="container">
+  <div class="row">
+    <div class="col-4" *ngFor="let i of picsum">
+      <div class="card">
+        <img [src]="i.download_url" alt="" class="image-cover">
+        <h5>{{i.author}}</h5>
+      </div>
+    </div>
+   </div>
+</div> -->

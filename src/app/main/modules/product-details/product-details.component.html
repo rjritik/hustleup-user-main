@@ -1,0 +1,2025 @@
+<div class="product-details">
+    <app-header></app-header>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section> 
+    <section class="shb-product-detail-sec">
+        <div class="container-xl">
+            <div class="row" *ngFor="let item of SelectedProductDetail;let i = index">
+                <div class="col-lg-6 col-xl-5 col-12">
+                    <div class="sticky-product-details-main">
+                        <div class="sticky-product-details">
+                            <div class="product-zoom-carousel-wrapper">
+                                <section class="module-gallery module-12345">
+                                    <div class="maxWidth900 padLR15">
+                                        <div class="padTB20">
+                                            <div class="slider-wrapper">
+                                                <ul slickContainer #slickController="slick" [slickConfig]="config" class="slider-thumb noPad noMar" [ngClass]="item.productPhotos.length > 6 ?'slider-thumb-padding':''">
+                                                    <li class="type-image" slickItem *ngFor="let items of item.productPhotos"><img src="{{items.image}}" alt="notfound"></li>
+                                                    <ng-container *ngIf="item.productVideos">
+                                                        <li class="type-image" slickItem *ngFor="let video of item.productVideos">
+                                                            <img src="{{video.coverImg}}" alt="notfound" />
+                                                            <span class="sub-prod-menu-video">
+                                                                <img src="http://dosell.settingsinfotech.com/images/icons/play_white_filled.svg" alt="" />
+                                                            </span>
+                                                        </li>
+                                                    </ng-container>
+                                                </ul>
+                                                <ul slickContainer #slickController="slick" [slickConfig]="configs" class="slider-preview noPad noMar">
+                                                    <li class="type-image data-zoomer" slickItem *ngFor="let items of item.productPhotos">
+                                                        <img (mouseover)="datazoomimg()" (mouseout)="datazoomimgout()" src="{{items.image}}" alt="second not found" [attr.data-zoom]="items.image">
+                                                    </li>
+                                                    <ng-container *ngIf="item.productVideos">
+                                                        <li class="type-image" slickItem>
+                                                            <video controls style="width: 100%;">
+                                                                <source src={{item.productVideos[0].link}} type="video/mp4">
+                                                            </video>
+                                                        </li>
+                                                    </ng-container>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>                            
+                            </div>
+                            <div class="product-page-cart-feature">
+                                <div class="product-action-btn-flex">
+                                    <button type="button" class="btn btn-add-cart" *ngIf="IsCartAvail == false" (click)="AddToCartProduct(item)">
+                                        Add to Cart
+                                    </button>
+                                    <button type="button" class="btn btn-add-cart" *ngIf="IsCartAvail == true" (click)="GoToCart()">
+                                        Go To Cart
+                                    </button>
+                                    <button type="button" class="btn btn-user-action" (click)="BuyProduct(item)">
+                                        Buy Now
+                                    </button>
+                                </div>
+                                <div class="product-action-flex px-sm-4 px-0">
+                                    <div class="product-det-action post-like">
+                                        <div class="post-icon changeImage"> 
+                                            <img *ngIf="item.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likepost(item)" />
+                                            <img *ngIf="item.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikepost(item)"/>
+                                        </div>
+                                        <label class="post-action-counter">{{item.totalLikes}}</label>
+                                    </div>
+                                    <div (click)="commentpost(item)" class="product-det-action msg-replies post-comment">
+                                        <div class="post-icon"><img src="assets/images/icons/icons-post-comment.svg"></div>
+                                        <label class="post-action-counter">{{item.totalComments}}</label>
+                                    </div>
+                                    <a href="javascript:void(0)" class="product-det-action rating-btn">
+                                        <div class="post-icon "><img src="assets/images/icons/star.svg"></div>
+                                        <label class="post-action-counter">{{SelectedProductDetail[0].averageRating}}/{{SelectedProductDetail[0].totalComments}}</label>
+                                    </a>
+                                    <div (click)="postpromote()" class="product-det-action post-promote">
+                                        <div class="post-icon"><img src="assets/images/icons/icon-promote.svg"></div>
+                                        <label class="post-action-counter">Promote</label>
+                                    </div>
+                                    <div class="product-det-action post-save">
+                                        <div *ngIf="item.isWishlist == false" class="post-icon"><img id="postSave" (click)="Wishlist(item)"
+                                                src="assets/images/icons/icons-post-save.svg"></div>
+                                        <label *ngIf="item.isWishlist == false" class="post-action-counter" (click)="Wishlist(item)">Save</label>
+                                        <div *ngIf="item.isWishlist == true" class="post-icon"><img id="postSave" (click)="Wishlistunsaved(item)"
+                                                src="assets/images/icons/icons-post-saved.svg"></div>                                            
+                                        <label *ngIf="item.isWishlist == true" class="post-action-counter" (click)="Wishlistunsaved(item)">Save</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12 z-1 ml-auto prodctDetailDsc">
+                      <div class="zoom-side fixed" [ngClass]="dataimgzoomer?'':'d-none'">
+                        <div class="drift-zoom">
+                        </div>     
+                      </div>               
+                    <div class="product-detail-div">
+                    <!-- / _begin > Product Uploader Details < SHB / -->
+                    <div class="post-uploader-profile-info-wrapper pb-1 mt-1">
+                        <div class="d-flex align-items-center" *ngIf="item.brand_details">
+                            <label class="post-uploader-name">{{item.brand_details?.brandName}}</label>
+                            <span class="dot-circle"></span>
+                            <a *ngIf="item.isFollowing == true" class="follow-post-uploader text-black" href="javascript:void(0)">Following</a>
+                            <div *ngIf="item.isFollowing == false">
+                                <a class="follow-post-uploader" href="javascript:void(0)" (click)="followuser(item)">Follow</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / _end > Product Uploader Details < SHB / -->                        
+                        <h1 class="product-detail-title mt-2">{{item.productName}} <span *ngIf="item.color_details != 'undefined'">({{item.color_details?.colorName}})</span> </h1>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-sm-6 col-12">
+                                        <a class="product-sub-title pro-sub-title" (click)="Product(item)">{{item.productId}}</a>
+                                    </div>
+                                    <div class="col-sm-6 col-12 text-right embed-text">
+                                        <span class="mr-3"  data-toggle="modal" data-target=".EmbedProductPopup" (click)="EmbededData(item)">
+                                            <img src="./assets/images/icons/embed.svg" alt="">
+                                            Embed
+                                        </span>
+                                        <span class="mr-3 post-send-icon" (click)="postshare()">
+                                            <img src="./assets/images/icons/icons-post-send.svg" alt="">
+                                            Share
+                                        </span>
+                                        <span class="postComment-Report" (click)="postreport(item)">
+                                            <img src="./assets/images/icons/report_product.svg" alt="">
+                                            Report
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="product-selection-table">
+                                    <tr>
+                                        <td class="f-td">Price</td>
+                                        <td>
+                                            <span class="original-price">{{ProductPrice | currency:currencyUnit:'symbol'}}</span>
+                                            <del style="color: #4D4D4D;">
+                                                {{ProductMRP | currency:currencyUnit:'symbol'}}
+                                            </del> 
+                                            <span class="off-percentage">({{ProductDiscount}}%&nbsp;off)</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Shipping
+                                        </td>
+                                        <td>
+                                            {{item.domesticShippingCharges !== 0 ? (item.domesticShippingCharges | currency:currencyUnit:'symbol') : 'Free'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Color
+                                        </td>
+                                        <td>
+                                            <ul class="product-color-img">
+                                                <li>
+                                                    <img src={{item.productPhotos[0]?.image}} alt="" class="product-img-border">
+                                                </li>
+                                                <li *ngFor="let itemes of item.linkProductDetails" (click)="colorvaration(itemes._id)">
+                                                    <img src={{itemes.productPhotos[0]?.image}} alt="" class="product-img-border">
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Size
+                                        </td>
+                                        <td class="size-product-details">
+                                            <ng-container *ngFor="let size of item.variations;let j = index">
+                                            <button class="btn px-4 size-button mr-2 SelectSizetrigger" (click) = "SelectSize(size,j,item)" [ngClass]="j === indexsize?'size-product-details-varation':''">{{size.variationTitle}}</button>
+                                                <!-- <button class="btn px-4 size-button mr-2">M</button>
+                                                <button class="btn px-4 size-button mr-2">Free</button>
+                                                <button class="btn px-4 size-button">One Size</button> -->
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Quantity
+                                        </td>
+                                        <td>
+                                           <div class="shopping-quantity-box-page">
+                                              <img class="shopping-quantity-decreaser-page" src="assets/images/icons/minus.svg" (click)="DecreaseQty()" alt="minus" [ngClass]="{'not-allowed' : quantity <=1}">
+                                              <input class="shopping-quantity-number-page" value="{{quantity}}" [readonly]="true">
+                                              <img class="shopping-quantity-increaser-page" src="assets/images/icons/plus_black.svg" (click)="IncreaseQty()" alt="plus" [ngClass]="{'not-allowed' : quantity >=3}">
+                                           </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Total Price
+                                        </td>
+                                        <td>
+                                            <span class="total-price">{{TotalPrice | currency:currencyUnit:'symbol'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-td">
+                                            Cash On Delivery
+                                        </td>
+                                        <td class="cash-on-deliverymain">
+                                            <div class="input-group pincode-input CommisionRate"  
+                                                [ngStyle]="{ 'border-bottom': DeliveryPincode.value.length > 6 ? '1.5px solid red' : '1.5px solid var(--major)' }">
+                                                <input type="number" class="form-control pincode-box p-0 bg-transpare" #DeliveryPincode [(ngModel)]="pincode"
+                                                    placeholder="Enter delivery PIN code"
+                                                    aria-describedby="basic-addon2" (keypress)="$event.keyCode == 13 ? checkAndChangePinCode() :''">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text check-text" id="basic-addon2">
+                                                        <a href="javascript:void(0)" class="cash-on-delivary-check"
+                                                        *ngIf="!spinnerShow && searchType == 'change'" (click)="checkAndChangePinCode()">Change</a>
+                                                        <a href="javascript:void(0)" class="cash-on-delivary-check"
+                                                        *ngIf="!this.isCODAvailable" (click)="checkAndChangePinCode()">
+                                                        <span *ngIf="!spinnerShow && searchType == 'check'">Check</span>
+                                                        <span class="spinner-border spinner-border-sm" *ngIf="spinnerShow"></span>
+                                                    </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="cash-on-delivery">
+                                                <span *ngIf="isCODAvailable ==true">Available</span>
+                                                <span *ngIf="isCODAvailable == false"> Not Available</span>
+                                            </div>                                       
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row py-3">
+                            <div class="col-12">
+                                <p class="key-feature">
+                                    Highlights
+                                </p>
+                                <div>
+                                    <ul class="key-feature-ul" *ngFor="let highlight of item.highlights">
+                                        <li>
+                                            <span class="mr-2"></span>{{highlight.highlightsarray}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <ng-container *ngFor="let spec of item.specifications">
+                            <div class="row py-2">
+                                <div class="col-12">
+                                    <p class="key-feature mb-2">
+                                        {{spec.specifictitle}}
+                                    </p>
+                                    <table class="information-table">
+                                        <tr *ngFor="let innerdata of spec.generalspecific">
+                                            <td class="title-td p-0">{{innerdata.specific}}</td>
+                                            <td>{{innerdata.corresponding}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr>
+                        </ng-container>
+
+                        <div class="row py-2">
+                            <div class="col-12">
+                                <p class="key-feature mb-2">
+                                    Description
+                                </p>
+                                <p class="description key-feature-dscription">{{item.description}}</p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div *ngFor="let item of SelectedProductDetail" class="col-12 description-img">
+                                <div *ngFor="let img of item.extraPhotos" >
+                                    <img src={{img.image}} alt="" class="w-100 mb-2">
+
+                                    <div class="abs-tag-icon home-prod-post-view-btn">
+                                        <span class="tag-icon-holder tag-icon-cart">
+                                        </span>
+                                        <a href="javascript:void()" class="abs-product-details-link">View Product</a>
+                                    </div>
+
+                                    <span class="white-dot"></span>
+
+                                    <span class="white-dot white-dot1"></span>
+
+                                    <span class="white-dot white-dot2"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="comment-rating-text">Review &amp; Rating</p>
+                            </div>
+                            <div class="col-3 pr-0">
+                                <p class="comment-head-main">
+                                    {{commentboxopenlength}} Reviews
+                                </p>
+                            </div>
+                            <div class="col-9 text-right">
+                                <div class="pro-detail-ratings">
+                                    <div class="pro-detail-ratings-inner">
+                                            <span>{{SelectedProductDetail[0].averageRating}}</span>
+                                            <img src="./assets/images/icons/star-filed.svg" alt=""/>
+                                            <span>/ {{SelectedProductDetail[0].totalComments}} Ratings</span>
+                                    </div>
+                                    <div class="star-review">
+                                        <ngx-star-rating (click)="givenstar(SelectedProductDetail[0])" [(ngModel)]="rating" [id]="'rating'" [disabled]="SelectedProductDetail[0].isCommented == true ?true:false || SelectedProductDetail[0].isRatingAllowed  == false ?true:false"></ngx-star-rating>
+                                    </div>
+                                </div>
+                            </div>
+                            <form *ngIf="SelectedProductDetail[0].isCommented == false" class="col-12">
+                                <div class="position-relative">
+                                    <textarea rows='2' placeholder='Add Commnet' class="add-comment" name="messagepostcommentprod" [(ngModel)]="messagepostcommentprod"></textarea>
+                                    <div class="d-flex flex-row align-items-center comment-input-action"> 
+                                        <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickercomment()"><img src="assets/images/icons/icon-emoji.svg" alt=""/></span>
+                                    </div>
+                                    <emoji-mart class="emoji-mart add-comment-main" *ngIf="showEmojiPickercomment" (emojiSelect)="addEmojicomment($event)" title="Pick your emoji…"></emoji-mart>
+                                </div>
+                                <div class="w-100 text-right d-flex align-items-center justify-content-end mb-4 mt-2">
+                                    <button class="comment-cancel cursor-pointer" (click)="commentboxcancel()">Cancel</button>
+                                    <button class="comment-submit cursor-pointer" (click)="postcommentprod(messagepostcommentprod,SelectedProductDetail[0])">Post</button>
+                                </div>
+                            </form>
+                            <div class="col-12">
+                            <div class="commented-area">
+                                <div class="comment-singular comment-border" *ngFor="let maincomment of sidebarcomment, let i = index">
+                                    <div class="commenter-profile cover-image">
+                                        <img src="{{maincomment.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="commenter" />
+                                    </div>
+                                    <div class="commenter-info">
+                                      <div class="commenter-info-inner">
+                                            <div class="commenter-name-wrapper">
+                                                <div class="commenter-name">
+                                                    {{maincomment.userDetails[0].username}}
+                                                    <label class="mb-0 commenting-time">{{maincomment.created_date | dateagoProd}}</label>
+                                                    <label *ngIf="maincomment.edited == true" class="mb-0 comment-edited-label">Edited</label>
+                                                    <!-- <span class="badge badge-pill badge-success">Success</span> -->
+                                                    <span *ngIf="maincomment.isVerified == true" class="badge badge-pill badge-success pt-1 ml-1">Verified</span>
+                                                </div>
+                                                <div class="side-post-comment-option-wrapper">
+                                                    <div class="dropdown">
+                                                        <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                            <div class="menuicon comment-option-icon contain-image">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" name="icon-option">
+                                                                    <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown-menu">
+                                                            <ul>
+                                                                <li *ngIf="maincomment.selfComment == true" (click)="editcomment(maincomment)" class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1" /></div>
+                                                                    <div class="menulabel dropText">Edit</div>
+                                                                </li>
+                                                                <li *ngIf="maincomment.selfComment == true" class="dropdown-item d-flex align-items-center delete-comment-item" data-toggle="modal" data-target="#deleteCommentConfirmModal" (click)="deleteComment(maincomment._id,i)">
+                                                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2" /></div>
+                                                                    <div class="menulabel dropText">Delete</div>
+                                                                </li>
+                                                                <li class="dropdown-item d-flex align-items-center copy-comment-item" (click)="commentcopy(maincomment.comment)">
+                                                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3" /></div>
+                                                                    <div class="menulabel dropText">Copy</div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p *ngIf="maincomment._id === editcommentmatch? false:true">{{maincomment.comment}}</p>
+                                            <form *ngIf="maincomment._id === editcommentmatch? true:false" class="mt-2">
+                                                <div class="position-relative">
+                                                    <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                                    <textarea rows='1' placeholder='Edit Commnet' class="add-comment" name="message" [(ngModel)]="messagepostcommentsub"></textarea>
+                                                    <div class="d-flex flex-row align-items-center comment-input-action">
+                                                        <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersub()"><img src="assets/images/icons/icon-emoji.svg" alt=""/></span>
+                                                    </div>
+                                                    <emoji-mart class="emoji-mart main-commentedit" *ngIf="showEmojiPickersub" (emojiSelect)="addEmojisub($event)" title="Pick your emoji…"></emoji-mart>
+                                                </div>
+                                                <div class="w-100 text-right d-flex align-items-center justify-content-end mb-4 mt-2">
+                                                    <button type="button" class="comment-cancel" (click)="editcommentcancel()">Cancel</button>
+                                                    <button type="submit" class="comment-submit" (click)="editpostcomment(maincomment)">Save</button>
+                                                </div>
+                                            </form>
+                                            <div class="comment-option">
+                                                <div class="d-flex align-items-center comment-action-space">
+                                                    <div class="post-icon changeImage">
+                                                        <img *ngIf="maincomment.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likecomment(maincomment)" />
+                                                        <img *ngIf="maincomment.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikecomment(maincomment)"/>
+                                                    </div>
+                                                    <label class="counter-comment-action">{{maincomment.totalLikes}}</label>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                                    <div (click)="commentboxs(maincomment._id)" class="comment-action-icon contain-image addCommentBox">
+                                                        <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon" />
+                                                    </div>
+                                                    <div *ngIf="maincomment.totalSubComments > 0">
+                                                    <a *ngIf="maincomment._id === showhidereplies else showall" class="post-fixed-replies" (click)="hideshowreplies(maincomment._id)">Hide all replies</a>
+                                                    <ng-template #showall><a class="post-fixed-replies" (click)="showallreplies(maincomment._id)">Show all replies</a></ng-template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="maincomment._id === this.editcommentbox? true:false" class="post-comment-editor-wrap">
+                                                <div class="position-relative">
+                                                    <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                                    <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply" [(ngModel)]="messagepostcommentsubinner"></textarea>
+                                                    <div class="d-flex flex-row align-items-center comment-input-action">
+                                                        <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersubinner()"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                                    </div>
+                                                    <emoji-mart class="emoji-mart" *ngIf="showEmojiPickersubinner" (emojiSelect)="addEmojisubinner($event)" title="Pick your emoji…"></emoji-mart>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                                    <button type="reset" class="post-fixed-comment-btn comment-btn-cancel" (click)="subcommentcancel()">Cancel</button>
+                                                    <button type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="replypostcomment(maincomment)">Reply</button>
+                                                </div>
+                                            </div>
+                                       </div>
+            
+                                        <div *ngIf="maincomment._id === showhidereplies" class="comments-child-comments">
+                                            <div *ngFor="let innercomment of sidebarcommentinside, let i = index" class="comment-singular comment-border">
+                                                <div class="commenter-profile cover-image">
+                                                    <img src="{{innercomment.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="commenter" />
+                                                </div>
+                                                <div class="commenter-info">
+                                                    <div class="commenter-name-wrapper">
+                                                        <div class="commenter-name">
+                                                            {{innercomment.userDetails[0].username}}
+                                                            <label class="mb-0 commenting-time">{{innercomment.created_date | dateagoProd}}</label>
+                                                            <label *ngIf="innercomment.edited == true" class="mb-0 comment-edited-label">Edited</label>
+                                                        </div>
+                                                        <div class="side-post-comment-option-wrapper">
+                                                            <div class="dropdown">
+                                                                <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                                    <div class="menuicon comment-option-icon contain-image">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" name="icon-option">
+                                                                            <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="dropdown-menu">
+                                                                    <ul>
+                                                                        <li *ngIf="innercomment.selfComment == true" (click)="editcommentinner(innercomment)" class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1" /></div>
+                                                                            <div class="menulabel dropText">Edit</div>
+                                                                        </li>
+                                                                        <li *ngIf="innercomment.selfComment == true" class="dropdown-item d-flex align-items-center delete-comment-item" data-toggle="modal" data-target="#deleteCommentsubConfirmModal" (click)="deleteComment(innercomment._id,i)">
+                                                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2" /></div>
+                                                                            <div class="menulabel dropText">Delete</div>
+                                                                        </li>
+                                                                        <li class="dropdown-item d-flex align-items-center copy-comment-item" (click)="commentcopy(innercomment.comment)">
+                                                                            <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3" /></div>
+                                                                            <div class="menulabel dropText">Copy</div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="comment-text" *ngIf="innercomment._id === editcommentmatch? false:true">{{innercomment.comment}}</p>
+                                                    <div class="comment-option">
+                                                        <div class="d-flex align-items-center comment-action-space">
+                                                            <div class="post-icon changeImage">
+                                                                <img *ngIf="innercomment.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likecommentinner(innercomment)" />
+                                                                <img *ngIf="innercomment.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikecommentinner(innercomment)"/>
+                                                            </div>
+                                                            <label class="counter-comment-action">{{innercomment.totalLikes}}</label>
+                                                        </div>
+                                                        <div (click)="innercommentbox(innercomment._id)" class="comment-action-icon contain-image comment-action-space">
+                                                            <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon" />
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="innercomment._id === this.editcommentboxinner? true:false" class="post-comment-editor-wrap">
+                                                        <div class="position-relative">
+                                                            <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                                            <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply" [(ngModel)]="messagesubcomment"></textarea>
+                                                            <div class="d-flex flex-row align-items-center comment-input-action">
+                                                                <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersubcomment()"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                                            </div>
+                                                            <emoji-mart class="emoji-mart" *ngIf="showEmojiPickersubcomment" (emojiSelect)="addEmojisubinnercomment($event)" title="Pick your emoji…"></emoji-mart>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                                            <button type="reset" class="post-fixed-comment-btn comment-btn-cancel" (click)="subcommentcancelinner()">Cancel</button>
+                                                            <button *ngIf="editsubcommenttogg != true" type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="replypostcommentsub(maincomment,innercomment)">Reply</button>
+                                                            <button *ngIf="editsubcommenttogg == true" type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="editcommentsub(innercomment)">Edit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="mt-1 d-block" href="javascript:void(0)" *ngIf="commentboxopenlength > 0">
+                                    <span title="View more comments" (click)="commentpost(SelectedProductDetail[0])">View more comments</span>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-5">
+            <div class="row product-similarproduct">
+                <div class="col-12">
+                    <p class="key-feature">
+                        Similar Products
+                    </p>          
+                        <div id="product-slider-main" class="product-details-slider-bottom" *ngIf="SimilarProductList">  
+                        <owl-carousel [options]="SlideOptionsproductsimilar" [carouselClasses]="['owl-theme', 'sliding']" >                        
+                            <div  *ngFor="let item of SimilarProductList.data">
+                                <div class="product-items-wrapper hashtag-post-border-line" (click)="colorvaration(item._id)">
+                                    <div class="product-items-image">
+                                        <div class="item">
+                                            <img src="{{item.productPhotos[0]?.image}}" alt="product-items">
+                                        </div>
+                                    </div>
+
+                                    <div class="post-detail-wrap">
+                                        <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                                            <label class="post-uploader-name">{{item.brand_details?.brandName}}</label>
+                                        </div>
+                                        <p class="product-name" title="Black full sleave sweater">{{item.productName}}</p>
+                                        <div class="price-block mt-0">
+                                            <!-- *ngFor="let vari of item.variations" -->
+                                            <!-- <span style="margin-right: 15px;">size:-{{vari.variationTitle}}</span> -->
+                                            <label>{{item.variations[0].sellingPrice | currency:currencyUnit:'symbol'}}<del>{{item.variations[0].MRP | currency:currencyUnit:'symbol'}}</del><span class="offers-similar">({{item.variations[0].discount}}% OFF)</span></label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                          </owl-carousel>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div> 
+    <!-- |< Feed Post Comments Slider _begin >| -->
+    <section class="sidebarpro post-fixed-side-popup pt-0 replies-msg report-product-item" [ngClass]="reportpost?'open':''" id="postComment-Report" [ngStyle]="{'right':reportpost? '0px' : '-749px' }">
+        <div class="report-product-item-title">
+            <span>Report this item</span>
+            <button (click)="closesidebar()" class="close-popup contain-image">
+                <img src="assets/images/icons/close.svg"/>
+            </button>                    
+        </div>            
+        <div class="order-detail-product-main">
+            <div class="product-items-image">
+                <img src="{{reportimage}}" alt="product-items">
+            </div>
+            <div class="order-detail-productinner-dscription">
+                    <p class="heading-product-dsc">{{ReportItem.productName}} ({{ReportItem.colors}}) for {{ProductSize}}</p>
+                    <p>Price : <span>{{ProductPrice| currency:currencyUnit:'symbol'}}</span></p>
+                    <p>Shipping : <span>{{ReportItem.domesticShippingCharges !== 0 ? ReportItem.domesticShippingCharges : "Free"}}</span></p>
+            </div>                                    
+        </div>
+        <form class="mt-3" [formGroup]="ReportForm">
+            <div class="admin-form-table table">
+                <div class="form-row">
+                    <div class="form-group col-sm-4 form-inner-title">
+                    <label>Type of error:</label>
+                    </div>
+                    <div class="form-group col-sm-8 select2-val">
+                        <ng-select2 width="100%" [data]="Typeoferror"  [placeholder]="'Select type error'" formControlName="typeoferror">
+                        </ng-select2>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4 form-inner-title">
+                    <label>Your username.</label>
+                    </div>
+                    <div class="form-group col-sm-8">
+                    <input type="text" class="form-control input-field" placeholder="Your username" formControlName="username">
+                    </div>
+                </div>         
+                <div class="form-row">
+                        <div class="form-group col-sm-4 form-inner-title">
+                        <label>Describe the error </label>
+                        </div>
+                        <div class="form-group col-sm-8">
+                        <textarea class="form-control input-field Report-comment" rows="5" placeholder="Write the error..." formControlName="writeerror"></textarea>
+                        </div>
+                </div>                             
+                <div class="form-row">
+                    <div class="form-group col-sm-4 form-inner-title">
+                    <label>Attach file (if any)</label>
+                    </div>
+                    <div class="form-group col-sm-8">
+                        <button type="button" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2" (click)="fileInput.click()"><span>Upload</span><input #fileInput type="file"  formControlName="reportfile"  (change)="onFileInput($event)" accept="image/png, application/pdf, image/jpeg" style="display:none;" /></button>
+                        <span class="file-info">{{ SelectedReportFileName }}</span>
+                        <small class="d-flex mt-1" *ngIf="SelectedReportFileName == null" [ngClass]="UploadReportStatement?'text-danger':''">(Jpeg or Png format only)</small>
+                    <!-- <button type="button" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2" (click)="SelectReportFile()">Choose file</button>
+                    <small>File format, jpeg, png & pdf only</small> -->
+                    </div>
+                </div>
+                <div class="form-row mt-4">
+                    <div class="form-group col-sm-4 form-inner-title">
+                    </div>
+                    <div class="form-group col-sm-8">
+                    <div class="admin-form-btn-group text-center">
+                    <button type="button" class="btn btn-primary pl-5 pr-5 w-auto" (click)="ReportSubmit(f)">
+                        Submit
+                    </button>
+                    </div>
+                    </div>
+                </div>                    
+            </div>
+        </form>             
+    </section>
+    </div>     
+    <!-- / _end > Product Details Section < SHB / -->
+    <div class="modal fade action-modal EmbedProductPopup" id="EmbedProductPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered EmbedProduct-inner" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                        <div class="user-social-life-wrapper">
+                            <ul class="user-pro-social-flex">
+                                <li class="user-profile-title m-0">
+                                    <p>Generate Embed Code</p>
+                                    <button class="close-popup-sidebar ml-auto contain-image" data-dismiss="modal" aria-label="Close"><img src="assets/images/icons/close.svg"></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row mt-3">
+                        <div class="col-12 embed-product-main">
+                            <iframe [src]="iFrameURL | safePipe" width="320" height="425" frameborder="0"></iframe>
+                            <div class="embed-product-code">
+                                <div class="embed-product-code-title">Embed Product</div>
+                                <textarea rows="5" class="embed-product-code-link w-100" [(ngModel)]="embedIframe"></textarea>
+                                <div class="embed-product-code-checkbox">
+                                    <div class="checkbox-user-member">
+                                        <div class="custom-input-check my-4">
+                                        <input type="checkbox" class="form-control" id="checkbox-user-main" name="checkbox-user-main" (change)="chkboxevent($event)">
+                                        <span class="check-checked"></span>
+                                            <label for="checkbox-user-main" class="terms-label">
+                                                Show Wishlist and Buy Now button
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>By embedding this product, you confirm that you agree to our Terms of use and acknowledge you have read and understood our Privacy Policy.</p>
+                                <button class="btn btn-primary embed-copy-code mt-3" type="button" (click)="embedCopyCode()">Copy code</button>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <!-- / _begin > Required JavaScripts Links < SHB / -->   
+    <section class="sidebarpro post-fixed-side-popup pt-0" [ngClass]="promotepost?'open':''" id="postPromote" [ngStyle]="{'right':promotepost? '0px' : '-749px' }">
+        <div class="w-100 d-flex align-items-center justify-content-between sticky-close-head">
+            <div class="post-uploader-profile-info-wrapper w-100 text-center">
+                <label class="sidebar-main-title">Promote / Resell the products</label>
+            </div>
+            <button (click)="closesidebar()" class="close-popup contain-image"><img src="assets/images/icons/close.svg" /></button>
+        </div>
+
+        <!-- <hr class="post-fixed-side-popup-line"> -->
+
+        <div *ngIf="promo_option == true" class="mt-3 eligibleWrapper">
+            <div class="p-3">
+                <p>As an influencer/prmoter, you will be eligible to earn mney from the products get sold through your online store, links or shares.</p>
+                <p>To be eligible for this program, your account shall fulfill some minimum requirements as below:</p>
+                <ol class="numOrderList">
+                    <li>Have verified account.</li>
+                    <li>Have more than 10 followers on this platform</li>
+                    <li>Have more than 1000 followers on any of the below social media account.</li>
+                </ol>
+            </div>
+            <hr class="m-0" />
+            <div class="p-3">
+                <p class="weight-medium">Please link one of your social media account with the largest followers to join this program.</p>
+                <div class="connection-invite-list">
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">YouTube</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="YoutubeLink" [pattern]="URLRegx" #youtubename="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveyoutubeURL(youtubename)" *ngIf="!youtubebtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveYoutubeURL(youtubename)" *ngIf="youtubebtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="youtubename.errors?.pattern"> 
+                        Youtube not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Instagram</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="InstagramLink" [pattern]="URLRegx" #Instagramname="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveInstagramURL(Instagramname)" *ngIf="!Instagrambtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveInstagramURL(Instagramname)" *ngIf="Instagrambtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Instagramname.errors?.pattern"> 
+                        Instagram not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Twitter</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="TwitterLink" [pattern]="URLRegx" #Twittername="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveTwitterURL(Twittername)" *ngIf="!Twitterbtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveTwitterURL(Twittername)" *ngIf="Twitterbtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Twittername.errors?.pattern"> 
+                        Twitter not valid.
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Facebook</label>
+                        <input type="url" class="form-control" placeholder="Enter a URL" [ngModel]="FacebookLink" [pattern]="URLRegx" #Facebookname="ngModel">
+                        <button class="btn btn-primary influ_save_cancel_btn" (click)="saveFacebookURL(Facebookname)" *ngIf="!Facebookbtnshow">Save</button>
+                        <button class="btn btn-danger influ_save_cancel_btn"(click)="RemoveFacebookURL(Facebookname)" *ngIf="Facebookbtnshow">Clear</button>
+                    </div>
+                    <div *ngIf="Facebookname.errors?.pattern"> 
+                        Facebook not valid.
+                    </div>
+                </div>
+
+                <div class="custom-input-check my-4">
+                    <input type="checkbox" class="form-control" id="conditions" name="conditions" (change)="changeEvent($event)">
+                    <span class="check-checked"></span>
+                    <label for="conditions" class="terms-label">I am eligible for this program and I agree with promote/resell policies</label>
+                </div>
+
+                <div class="start-promotion-wrapper text-center">
+                    <p class="m-0"><strong>Let's grow together !</strong></p>
+                    <button class="btn btn-primary goPromote" (click)="Letsgrow()" [disabled]="!toogleBool" >Start</button>
+                </div>
+
+            </div>
+            <!-- <div class="p-3">
+                <p class="weight-medium">Please link one of your social media account with the largest followers to join this program.</p>
+                <div class="connection-invite-list">
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">YouTube</label>
+                        <div class="social-media-connected">
+                            <button class="btn connect-button" (click)="youtube = !youtube"><img src="assets/images/icons/youtube1.svg"
+                                alt="" class="mr-1 social-icon"> <span class="connect-text">{{youtube?'connected':'connect'}}</span>
+                            </button>
+                            <p *ngIf="youtube" class="default-text mb-0 text-center disconnect-text">(Disconnect)</p>
+                        </div>                            
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Instagram</label>
+                        <div class="social-media-connected">
+                            <button class="btn connect-button" (click)="instagram = !instagram"><img src="assets/images/icons/Instagram1.svg"
+                                alt="" class="mr-1 social-icon"> <span class="connect-text">{{instagram?'connected':'connect'}}</span></button>
+                            <p *ngIf="instagram" class="default-text mb-0 text-center disconnect-text">(Disconnect)</p>
+                        </div>                            
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Twitter</label>
+                        <div class="social-media-connected">
+                            <button class="btn connect-button" (click)="twitter = !twitter"><img src="assets/images/icons/twitter.svg"
+                                alt="" class="mr-1 social-icon"> <span class="connect-text">{{twitter?'connected':'connect'}}</span></button>
+                                <p *ngIf="twitter" class="default-text mb-0 text-center disconnect-text">(Disconnect)</p>
+                        </div>                            
+                    </div>
+
+                    <div class="promote-connection-flex">
+                        <label class="weight-medium mb-0">Facebook</label>
+                        <div class="social-media-connected">
+                            <button class="btn connect-button" (click)="facebook = !facebook"> 
+                                <img src="assets/images/icons/Facebook Icon.svg" alt="" class="mr-1 social-icon"> 
+                                <span class="connect-text">{{facebook?'connected':'connect'}}</span>
+                            </button>
+                            <p *ngIf="facebook" class="default-text mb-0 text-center disconnect-text">(Disconnect)</p>
+                        </div>                            
+                    </div>
+                </div>
+
+                <div class="custom-input-check my-4">
+                    <input type="checkbox" class="form-control" id="conditions" name="conditions" value="agree">
+                    <span class="check-checked"></span>
+                    <label for="conditions" class="terms-label">I am eligible for this program and I agree with promote/resell policies</label>
+                </div>
+
+                <div class="start-promotion-wrapper text-center">
+                    <p class="m-0"><strong>Let's grow together !</strong></p>
+                    <button class="btn btn-primary goPromote" (click)="Letsgrow()">Start</button>
+                </div>
+
+            </div> -->
+        </div>
+
+        <div *ngIf="promo_Verify_Done == true" id="promote-option">
+            <ng-container *ngFor="let item of PromoteProducts">
+             <div class="similar-product-border-card" *ngIf="item.isPromoted == false">
+                 <div class="row">
+                     <div class="col-6">
+                         <h4 class="similar-product-title single-line-clamp">{{item.productName}}</h4>
+                     <div class="mb-2">
+                         <div class="product-items-image">
+                             <owl-carousel [options]="SlideOptionspromoteproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                                 <div class="item" *ngFor="let itemimg of item.productPhotos">
+                                     <div style="align-content:center">
+                                         <img src={{itemimg.image}} alt="images"/>
+                                     </div>  
+                                 </div> 
+                             </owl-carousel>
+                             <!-- <div class="hover-carousel owl-carousel owl-theme" id="hover-post-02">
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                 </div>
+                             </div> -->
+                             <div class="abs-hover-items"></div>
+                         </div>
+                     </div>    
+
+                         <div class="price-block" *ngFor="let vari of item.variations">
+                             
+                             <label><span style="margin-right: 15px;">size:-{{vari.variationTitle}}</span>{{vari.sellingPrice | currency:currencyUnit:'symbol'}} <del>{{vari.MRP | currency:currencyUnit:'symbol'}}</del></label>
+                         </div>
+
+                         <div class="d-flex align-items-center justify-content-center prom-btnwrap">
+                             <button class="btn-button blue-button px-2 w-100" (click)="PromoteProductByInfluencer(item)">Promote</button>
+                         </div>
+                     </div>
+
+                     <div class="col-6">
+                         <label class="prom-side-title d-block">Earings:</label>
+                         <div class="prom-sold-table">
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty"><span class="prom-heads">Quantity sold</span></div>
+                                 <div class="prom-sold-unit"><span class="prom-heads">Earings per unit</span></div>
+                             </div>
+                             <div class="prom-sold-row" *ngFor="let unit of item.influencerspromoters">
+                                 <div class="prom-sold-qty">{{unit.quantitysoldfrom}}-{{unit.quantitysoldto}} units</div>
+                                 <div class="prom-sold-unit">{{unit.payperunit | currency:currencyUnit:'symbol'}}</div>
+                             </div>
+                             <!-- <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">6-15 units</div>
+                                 <div class="prom-sold-unit">INR 200.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">16-20 units</div>
+                                 <div class="prom-sold-unit">INR 250.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">51 & above units</div>
+                                 <div class="prom-sold-unit">INR 300.00</div>
+                             </div> -->
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <!-- <div class="similar-product-border-card">
+                 <div class="row">
+                     <div class="col-6">
+                         <h4 class="similar-product-title single-line-clamp">Women Golden Khadi Sweater</h4>
+
+                     <div class="mb-2">
+                         <div class="product-items-image">
+                             <div class="hover-carousel owl-carousel owl-theme" id="hover-post-02">
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                 </div>
+                             </div>
+                             <div class="abs-hover-items"></div>
+                         </div>
+                     </div>    
+
+                         <div class="price-block">
+                             <label>INR 1,37,857.00 <del>INR 1,48,963.00</del></label>
+                         </div>
+
+                         <div class="d-flex align-items-center justify-content-center prom-btnwrap">
+                             <button class="btn-button blue-button px-2 w-100">Promote</button>
+                         </div>
+                     </div>
+
+                     <div class="col-6">
+                         <label class="prom-side-title d-block">Earings:</label>
+                         <div class="prom-sold-table">
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty"><span class="prom-heads">Quantity sold</span></div>
+                                 <div class="prom-sold-unit"><span class="prom-heads">Earings per unit</span></div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">2-5 units</div>
+                                 <div class="prom-sold-unit">INR 150.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">6-15 units</div>
+                                 <div class="prom-sold-unit">INR 200.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">16-20 units</div>
+                                 <div class="prom-sold-unit">INR 250.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">51 & above units</div>
+                                 <div class="prom-sold-unit">INR 300.00</div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <hr class="negative-marking" />
+                 <div class="row">
+                     <div class="col-6">
+                         <h4 class="similar-product-title single-line-clamp">Women Golden Khadi Sweater</h4>
+
+                     <div class="mb-2">
+                         <div class="product-items-image">
+                             <div class="hover-carousel owl-carousel owl-theme" id="hover-post-02">
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                 </div>
+                                 <div class="item">
+                                     <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                 </div>
+                             </div>
+                             <div class="abs-hover-items"></div>
+                         </div>
+                     </div>    
+
+                         <div class="price-block">
+                             <label>INR 1,37,857.00 <del>INR 1,48,963.00</del></label>
+                         </div>
+
+                         <div class="d-flex align-items-center justify-content-center prom-btnwrap">
+                             <button class="btn-button blue-button px-2 w-100">Promote</button>
+                         </div>
+                     </div>
+
+                     <div class="col-6">
+                         <label class="prom-side-title d-block">Earings:</label>
+                         <div class="prom-sold-table">
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty"><span class="prom-heads">Quantity sold</span></div>
+                                 <div class="prom-sold-unit"><span class="prom-heads">Earings per unit</span></div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">2-5 units</div>
+                                 <div class="prom-sold-unit">INR 150.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">6-15 units</div>
+                                 <div class="prom-sold-unit">INR 200.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">16-20 units</div>
+                                 <div class="prom-sold-unit">INR 250.00</div>
+                             </div>
+                             <div class="prom-sold-row">
+                                 <div class="prom-sold-qty">51 & above units</div>
+                                 <div class="prom-sold-unit">INR 300.00</div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div> -->
+            </ng-container>
+        </div>
+
+        <div class="d-flex align-items-center h-100" *ngIf="promo_pending == true">
+             <div>
+                 <p class="text-center">Uh oh !</p>
+                 <p class="text-center">You have requested to be an influencer but admin have not give you an approval yet. </p>
+             </div>
+        </div>
+    </section>
+
+     <div id="message" class="public-channel">
+        <section class="sidebarpro post-fixed-side-popup pt-0 replies-msg" [ngClass]="postComment?'open':''" id="postComment" [ngStyle]="{'right':postComment? '0px' : '-749px' }">
+
+            <div class="w-100 d-flex align-items-center justify-content-between sticky-close-head">
+                <div class="post-uploader-profile-info-wrapper">
+                   <div class="active sub-head-tabmenu col-6">
+                        <div class="sub-head-tabmenu-inner">
+                            <div class="tabmenu-inner-dsc">{{commentboxopenlength}}&nbsp;Comments</div>
+                        </div>
+                    </div>
+                </div>
+                <button (click)="closesidebar()" class="close-popup contain-image"><img src="assets/images/icons/close.svg"></button>
+            </div>
+            <div class="col-12">
+                <div class="commented-area">
+                    <div class="comment-singular comment-border" *ngFor="let maincomment of sidebarcomment, let i = index">
+                        <div class="commenter-profile cover-image">
+                            <img src="{{maincomment.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="commenter" />
+                        </div>
+                        <div class="commenter-info">
+                            <div class="commenter-info-inner">
+                                <div class="commenter-name-wrapper">
+                                    <div class="commenter-name">
+                                        {{maincomment.userDetails[0].username}}
+                                        <label class="mb-0 commenting-time">{{maincomment.created_date | dateagoProd}}</label>
+                                        <label *ngIf="maincomment.edited == true" class="mb-0 comment-edited-label">Edited</label>
+                                        <span *ngIf="maincomment.isVerified == true" class="tab-space badge badge-pill badge-success pt-1 ml-1">Verified</span>
+                                    </div>
+                                    <div class="side-post-comment-option-wrapper">
+                                        <div class="dropdown">
+                                            <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                <div class="menuicon comment-option-icon contain-image">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" name="icon-option">
+                                                        <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown-menu">
+                                                <ul>
+                                                    <li *ngIf="maincomment.selfComment == true" (click)="editcomment(maincomment)" class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1" /></div>
+                                                        <div class="menulabel dropText">Edit</div>
+                                                    </li>
+                                                    <li *ngIf="maincomment.selfComment == true" class="dropdown-item d-flex align-items-center delete-comment-item" data-toggle="modal" data-target="#deleteCommentConfirmModal" (click)="deleteComment(maincomment._id,i)">
+                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2" /></div>
+                                                        <div class="menulabel dropText">Delete</div>
+                                                    </li>
+                                                    <li class="dropdown-item d-flex align-items-center copy-comment-item" (click)="commentcopy(maincomment.comment)">
+                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3" /></div>
+                                                        <div class="menulabel dropText">Copy</div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p *ngIf="maincomment._id === editcommentmatch? false:true">{{maincomment.comment}}</p>
+                                <form *ngIf="maincomment._id === editcommentmatch? true:false" class="mt-2">
+                                    <div class="position-relative">
+                                        <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                        <textarea rows='1' placeholder='Edit Commnet' class="add-comment" name="message" [(ngModel)]="messagepostcommentsub"></textarea>
+                                        <div class="d-flex flex-row align-items-center comment-input-action">
+                                            <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersub()"><img src="assets/images/icons/icon-emoji.svg" alt=""/></span>
+                                        </div>
+                                        <emoji-mart class="emoji-mart main-commentedit" *ngIf="showEmojiPickersub" (emojiSelect)="addEmojisub($event)" title="Pick your emoji…"></emoji-mart>
+                                    </div>
+                                    <div class="w-100 text-right d-flex align-items-center justify-content-end mb-4 mt-2">
+                                        <button type="button" class="comment-cancel" (click)="editcommentcancel()">Cancel</button>
+                                        <button type="submit" class="comment-submit" (click)="editpostcomment(maincomment)">Save</button>
+                                    </div>
+                                </form>
+                                <div class="comment-option">
+                                    <div class="d-flex align-items-center comment-action-space">
+                                        <div class="post-icon changeImage">
+                                            <img *ngIf="maincomment.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likecomment(maincomment)" />
+                                            <img *ngIf="maincomment.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikecomment(maincomment)"/>
+                                        </div>
+                                        <label class="counter-comment-action">{{maincomment.totalLikes}}</label>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                        <div (click)="commentboxs(maincomment._id)" class="comment-action-icon contain-image addCommentBox">
+                                            <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon" />
+                                        </div>
+                                        <div *ngIf="maincomment.totalSubComments > 0">
+                                        <a *ngIf="maincomment._id === showhidereplies else showall" class="post-fixed-replies" (click)="hideshowreplies(maincomment._id)">Hide all replies</a>
+                                        <ng-template #showall><a class="post-fixed-replies" (click)="showallreplies(maincomment._id)">Show all replies</a></ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="maincomment._id === this.editcommentbox? true:false" class="post-comment-editor-wrap">
+                                    <div class="position-relative">
+                                        <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                        <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply" [(ngModel)]="messagepostcommentsubinner"></textarea>
+                                        <div class="d-flex flex-row align-items-center comment-input-action">
+                                            <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersubinner()"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                        </div>
+                                        <emoji-mart class="emoji-mart" *ngIf="showEmojiPickersubinner" (emojiSelect)="addEmojisubinner($event)" title="Pick your emoji…"></emoji-mart>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                        <button type="reset" class="post-fixed-comment-btn comment-btn-cancel" (click)="subcommentcancel()">Cancel</button>
+                                        <button type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="replypostcomment(maincomment)">Reply</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="maincomment._id === showhidereplies" class="comments-child-comments">
+                                <div *ngFor="let innercomment of sidebarcommentinside, let i = index" class="comment-singular comment-border">
+                                    <div class="commenter-profile cover-image">
+                                        <img src="{{innercomment.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="commenter" />
+                                    </div>
+                                    <div class="commenter-info">
+                                        <div class="commenter-name-wrapper">
+                                            <div class="commenter-name">
+                                                {{innercomment.userDetails[0].username}}
+                                                <label class="mb-0 commenting-time">{{innercomment.created_date | dateagoProd}}</label>
+                                                <label *ngIf="innercomment.edited == true" class="mb-0 comment-edited-label">Edited</label>
+                                            </div>
+                                            <div class="side-post-comment-option-wrapper">
+                                                <div class="dropdown">
+                                                    <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                        <div class="menuicon comment-option-icon contain-image">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" name="icon-option">
+                                                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropdown-menu">
+                                                        <ul>
+                                                            <li *ngIf="innercomment.selfComment == true" (click)="editcommentinner(innercomment)" class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1" /></div>
+                                                                <div class="menulabel dropText">Edit</div>
+                                                            </li>
+                                                            <li *ngIf="innercomment.selfComment == true" class="dropdown-item d-flex align-items-center delete-comment-item" data-toggle="modal" data-target="#deleteCommentsubConfirmModal" (click)="deleteComment(innercomment._id,i)">
+                                                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2" /></div>
+                                                                <div class="menulabel dropText">Delete</div>
+                                                            </li>
+                                                            <li class="dropdown-item d-flex align-items-center copy-comment-item" (click)="commentcopy(innercomment.comment)">
+                                                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3" /></div>
+                                                                <div class="menulabel dropText">Copy</div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="comment-text" *ngIf="innercomment._id === editcommentmatch? false:true">{{innercomment.comment}}</p>
+                                        <div class="comment-option">
+                                            <div class="d-flex align-items-center comment-action-space">
+                                                <div class="post-icon changeImage">
+                                                    <img *ngIf="innercomment.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likecommentinner(innercomment)" />
+                                                    <img *ngIf="innercomment.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikecommentinner(innercomment)"/>
+                                                </div>
+                                                <label class="counter-comment-action">{{innercomment.totalLikes}}</label>
+                                            </div>
+                                            <div (click)="innercommentbox(innercomment._id)" class="comment-action-icon contain-image comment-action-space">
+                                                <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="innercomment._id === this.editcommentboxinner? true:false" class="post-comment-editor-wrap">
+                                            <div class="position-relative">
+                                                <!-- <input type="text" class="form-control add-comment" placeholder="Add Comment">-->
+                                                <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply" [(ngModel)]="messagesubcomment"></textarea>
+                                                <div class="d-flex flex-row align-items-center comment-input-action">
+                                                    <span class="input-action-icon contain-image cursor-pointer" (click)="toggleEmojiPickersubcomment()"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                                </div>
+                                                <emoji-mart class="emoji-mart" *ngIf="showEmojiPickersubcomment" (emojiSelect)="addEmojisubinnercomment($event)" title="Pick your emoji…"></emoji-mart>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                                <button type="reset" class="post-fixed-comment-btn comment-btn-cancel" (click)="subcommentcancelinner()">Cancel</button>
+                                                <button *ngIf="editsubcommenttogg != true" type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="replypostcommentsub(maincomment,innercomment)">Reply</button>
+                                                <button *ngIf="editsubcommenttogg == true" type="submit" class="post-fixed-comment-btn comment-btn-submit" (click)="editcommentsub(innercomment)">Edit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center" *ngIf="commentboxopenlength === 0"> No comments Available</div>
+                </div>
+            </div>
+        </section>    
+     </div>
+    <!-- |< Feed Post Share_begin >| -->
+    <section class="sidebarpro post-fixed-side-popup p-0" [ngClass]="sharepost?'open':''" id="postShareSlider" [ngStyle]="{'right':sharepost? '0px' : '-749px' }">
+        <div class="w-100 d-flex flex-column align-items-center justify-content-between sticky-close-head">
+            <button (click)="closesidebar()" class="close-popup-sidebar ml-auto contain-image mr-3"><img src="assets/images/icons/close.svg" /></button>
+            <ul class="nav nav-tabs nav-fill message-tabs w-100" id="messageTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="shareDM-tab" data-toggle="tab" href="#shareDM" role="tab" aria-selected="false">Direct Message</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="shareDM-yourchannel" data-toggle="tab" href="#shareDM-YourChannels" role="tab" aria-selected="false">Your Channels</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="sharePlatforms-tab" data-toggle="tab" href="#sharePlatforms" role="tab" aria-selected="true">Other social Media</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="messageTabContent">
+            <div class="tab-pane fade" id="shareDM" role="tabpanel" aria-labelledby="shareDM-tab">
+                <div class="shareMessage-content-data">
+                    <div class="d-flex align-items-center position-relative">
+                        <input type="search" class="form-control search-friend-input" placeholder="Search">
+                        <span class="dm-search-icon containt-image">
+                            <img src="assets/images/icons/icon-search.svg" alt="search-icon">
+                        </span>
+                    </div>
+                </div>
+                <ul class="friend-list-dm pb-2">
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile2.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile4.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                    <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                    <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                    <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile5.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile4.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                    <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                    <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                    <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-pane fade sharedm-yourchannel" id="shareDM-YourChannels" role="tabpanel" aria-labelledby="shareDM-yourchannel">
+                <div class="shareMessage-content-data">
+                    <div class="d-flex align-items-center position-relative">
+                        <input type="search" class="form-control search-friend-input" placeholder="Search">
+                        <span class="dm-search-icon containt-image">
+                            <img src="assets/images/icons/icon-search.svg" alt="search-icon">
+                        </span>
+                    </div>
+                </div>
+                <ul class="friend-list-dm pb-2">
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">rahul-gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">web-development-project</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">rahul-gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">web-development-project</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">rahul-gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">web-development-project</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/public-channel.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">rahul-gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button">Send</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <label class="user-fullname-display mb-0">web-development-project</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post white-border-button">Sent</button>
+                            </div>
+                        </div>
+                    </li>                                                                        
+
+                </ul>
+            </div>                
+            <div class="tab-pane fade active show" id="sharePlatforms" role="tabpanel" aria-labelledby="sharePlatforms-tab">
+                <ul class="social-share-list">
+                    <li class="social-share-list-items">
+                        <div class="social-share-logo contain-image">
+                            <img src="assets/images/icons/post-share-icons-facebook.svg" alt="social-share-icons">
+                        </div>
+                        <a href="javascript:void()" class="post-share-link">Facebook</a>
+                    </li>
+                    <li class="social-share-list-items">
+                        <div class="social-share-logo contain-image">
+                            <img src="assets/images/icons/post-share-icons-messenger.svg" alt="social-share-icons">
+                        </div>
+                        <a href="javascript:void()" class="post-share-link">Facebook Messenger</a>
+                    </li>
+                    <li class="social-share-list-items">
+                        <div class="social-share-logo contain-image">
+                            <img src="assets/images/icons/post-share-icons-twitter.svg" alt="social-share-icons">
+                        </div>
+                        <a href="javascript:void()" class="post-share-link">Share to Twitter</a>
+                    </li>
+                    <li class="social-share-list-items">
+                        <div class="social-share-logo contain-image">
+                            <img src="assets/images/icons/post-share-icons-mail.svg" alt="social-share-icons">
+                        </div>
+                        <a href="javascript:void()" class="post-share-link">Share via Email</a>
+                    </li>
+                    <li class="social-share-list-items">
+                        <div class="social-share-logo contain-image">
+                            <img src="assets/images/icons/icon-link-b.svg" alt="social-share-icons">
+                        </div>
+                        <a href="javascript:void()" class="post-share-link">Copy Link</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+    <!-- |< Feed Post Share _begin >| -->
+    <section class="post-fixed-side-popup p-0" id="postSimilarProduct">
+        <div class="w-100 d-flex flex-column align-items-start justify-content-between sticky-close-head">
+            <button class="close-popup-sidebar ml-auto pr-3"><img src="assets/images/icons/close.svg" /></button>
+            <ul class="nav nav-tabs nav-fill message-tabs w-100" id="similarProductTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="simi-product-tab" data-toggle="tab" href="#simi-product" role="tab" aria-selected="true">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="taggedAccountProduct-tab" data-toggle="tab" href="#taggedAccountProduct" role="tab" aria-selected="false">Account</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content" id="simiProductTabContent">
+            <div class="tab-pane fade show active" id="simi-product" role="tabpanel" aria-labelledby="simi-product-tab">
+                <div class="container-fluid shop-side-menu" id="message">
+                    <div class="row no-gutters">
+                        <div class="col-6">
+                            <div class="embed-product-preview">
+                                <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element" contenteditable="true" spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="1" medium-editor-index="e19dd1a2-149c-31a8-125a-238f0269800c" data-placeholder="Type your text">Women Maroon Dungaree</p>
+                                <div class="mb-2">
+                                    <div class="product-items-image">
+                                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag" id="hover-post-02"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1883px;"><div class="owl-item active" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                            </div></div></div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button></div></div>
+                                        <div class="abs-hover-items"></div>
+                                    </div>
+
+                                    <div class="post-detail-wrap">
+                                        <div class="price-block mt-0">
+                                            <label>INR 599.00 <del>INR 1499.00</del><span>(30% Off)</span></label>
+                                            <div class="msg-slider-btn">
+                                                <button type="button" class="btn btn-outline-secondary">
+                                                        <img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg">
+                                                    Wishlist
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Buy Now</button>  
+                                            </div>
+                                        </div>                                                        
+                                    </div>
+                                </div>         
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="embed-product-preview">
+                                <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element" contenteditable="true" spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="1" medium-editor-index="e19dd1a2-149c-31a8-125a-238f0269800c" data-placeholder="Type your text">Women Maroon Dungaree</p>
+                                <div class="mb-2">
+                                    <div class="product-items-image">
+                                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag" id="hover-post-02"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1883px;"><div class="owl-item active" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                            </div></div></div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button></div></div>
+                                        <div class="abs-hover-items"></div>
+                                    </div>
+
+                                    <div class="post-detail-wrap">
+                                        <div class="price-block mt-0">
+                                            <label>INR 599.00 <del>INR 1499.00</del><span>(30% Off)</span></label>
+                                            <div class="msg-slider-btn">
+                                                <button type="button" class="btn btn-outline-secondary">
+                                                        <img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg">
+                                                    Wishlist
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Buy Now</button>  
+                                            </div>
+                                        </div>                                                        
+                                    </div>
+                                </div>         
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="embed-product-preview">
+                                <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element" contenteditable="true" spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="1" medium-editor-index="e19dd1a2-149c-31a8-125a-238f0269800c" data-placeholder="Type your text">Women Maroon Dungaree</p>
+                                <div class="mb-2">
+                                    <div class="product-items-image">
+                                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag" id="hover-post-02"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1883px;"><div class="owl-item active" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                            </div></div></div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button></div></div>
+                                        <div class="abs-hover-items"></div>
+                                    </div>
+
+                                    <div class="post-detail-wrap">
+                                        <div class="price-block mt-0">
+                                            <label>INR 599.00 <del>INR 1499.00</del><span>(30% Off)</span></label>
+                                            <div class="msg-slider-btn">
+                                                <button type="button" class="btn btn-outline-secondary">
+                                                        <img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg">
+                                                    Wishlist
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Buy Now</button>  
+                                            </div>
+                                        </div>                                                        
+                                    </div>
+                                </div>         
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="embed-product-preview">
+                                <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element" contenteditable="true" spellcheck="true" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="1" medium-editor-index="e19dd1a2-149c-31a8-125a-238f0269800c" data-placeholder="Type your text">Women Maroon Dungaree</p>
+                                <div class="mb-2">
+                                    <div class="product-items-image">
+                                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag" id="hover-post-02"><div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1883px;"><div class="owl-item active" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-05.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-07.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-01.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-02.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-03.jpg" alt="product-items">
+                                            </div></div><div class="owl-item" style="width: 268px; margin-right: 1px;"><div class="item">
+                                                <img src="assets/images/hashtags-solo/hashtag-post-04.jpg" alt="product-items">
+                                            </div></div></div></div><div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span aria-label="Previous">‹</span></button><button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button></div><div class="owl-dots"><button role="button" class="owl-dot active"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button><button role="button" class="owl-dot"><span></span></button></div></div>
+                                        <div class="abs-hover-items"></div>
+                                    </div>
+
+                                    <div class="post-detail-wrap">
+                                        <div class="price-block mt-0">
+                                            <label>INR 599.00 <del>INR 1499.00</del><span>(30% Off)</span></label>
+                                            <div class="msg-slider-btn">
+                                                <button type="button" class="btn btn-outline-secondary">
+                                                        <img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg">
+                                                    Wishlist
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Buy Now</button>  
+                                            </div>
+                                        </div>                                                        
+                                    </div>
+                                </div>         
+                            </div>
+                        </div>                            
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="taggedAccountProduct" role="tabpanel" aria-labelledby="taggedAccountProduct-tab">
+
+                <ul class="product-tagged-account-list">
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile2.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account white-border-button">Following</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile4.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                    <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                    <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                    <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account white-border-button">Following</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile5.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aditya_chopra</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Chopra</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account white-border-button">Following</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile4.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">shekhagupta007</h5>
+                                    <label class="user-fullname-display mb-0">Shekhar Gupta</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">aanand.com</h5>
+                                    <label class="user-fullname-display mb-0">Aanand Ashai Investment Co. Ltd</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">adityasehgal</h5>
+                                    <label class="user-fullname-display mb-0">Aditya Sehgal</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-   blue-button">Follow</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="friend-list-dm-items">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="assets/images/profile.jpg" alt="post-profile">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">rathore_r</h5>
+                                    <label class="user-fullname-display mb-0">Rajesh Rathore</label>
+                                </div>
+                            </div>
+
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-follow-tagged-account white-border-button">Following</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteCommentConfirmModal">
+        <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="">Are you sure you want to delete this message?</p>
+                    <div class="d-flex align-items-center justify-content-end mt-1">
+                        <button type="reset" class="btn-popup-cancel-text-link" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button type="submit" class="btn-popup-delete-text-link" data-dismiss="modal" aria-label="Close" (click)="confirmdelete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteCommentsubConfirmModal">
+        <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="">Are you sure you want to delete this message?</p>
+                    <div class="d-flex align-items-center justify-content-end mt-1">
+                        <button type="reset" class="btn-popup-cancel-text-link" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button type="submit" class="btn-popup-delete-text-link" data-dismiss="modal" aria-label="Close" (click)="confirmdeletesub()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-cart-sidebar (buttonclicked)="parrentEventHandlerFunction($event)"></app-cart-sidebar>

@@ -1,0 +1,6 @@
+.contain-video.card-vids {
+    height: 100%;
+}
+.card-vids video{
+    height: inherit;
+}

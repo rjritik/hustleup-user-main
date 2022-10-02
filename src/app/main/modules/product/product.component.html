@@ -1,0 +1,50 @@
+<!-- / _begin > Page Main Content < SHB / -->
+<div class="pr-2 mt-4">
+    <div class="media-content-wrap">
+        <div class="flex-hashtag-profile">
+            <div class="hashtag-profile-image profile-image-bg cover-image p-0">
+                <img src="{{productdata?.productPhotos[0]?.image}}" alt="hash" />
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120" style="width: 70%;" fill="#707070" class="d-none">
+                    <path d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z"></path>
+                </svg>
+            </div>
+            <div class="hashtag-peofile-info-wrapper">
+                <h2 class="hashtag-main-title-name mb-0">{{productdata?.productName}}</h2>
+                <h3 class="head-pageInfo-username">{{productdata?.productId}}</h3>
+                <button class="btn btn-primary btn-follow-hashtag mb-0" *ngIf="productdata?.isFollowing == true" (click)="UnfollowProduct()">Following</button>
+                <button class="btn btn-primary btn-follow-hashtag mb-0" *ngIf="productdata?.isFollowing == false" (click)="FollowProduct()">Follow</button>
+                <div class="d-flex flex-row align-items-center flex-wrap flex-sm-nowrap">
+                    <div class="product-statastics">{{productdata?.totalComments | thousandSuff}} Comments</div>
+                <div class="product-statastics">{{productdata?.totalFollower | thousandSuff}} Followers</div>
+                    <div class="product-statastics d-flex">{{productdata?.totalLikes |thousandSuff}}
+                        <span class="product-info-icon contain-image"><img src="assets/images//icons/icons-post-like-heart-filled.svg" alt="" /></span>
+                    </div>
+                    <div class="product-statastics d-flex">{{productdata?.averageRating}}
+                        <span class="product-info-icon contain-image"><img src="assets/images//icons/icons-rating-star.svg" alt="" /></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hashtag-tabs">
+            <div class="tabs-items-flex">
+                <ul class="nav nav-pills mb-3 hashtag-tab-prod">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['PostProduct']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/image.svg" alt="" /></span>Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['VideoProduct']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/new-icons/video.svg" alt="" /></span>Sizzles (Videos)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['BlogProduct']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/new-icons/blog.svg" alt="" /></span>Blogs</a>
+                    </li>
+                </ul>
+            </div>
+            <router-outlet></router-outlet>
+        </div>        
+    </div>
+</div>
+<!-- / _end > Page Main Content < SHB / -->

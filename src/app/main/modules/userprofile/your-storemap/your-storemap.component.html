@@ -1,0 +1,112 @@
+<mgl-map
+[style]="'mapbox://styles/hustleup/cko4k6n9e1b2518nm2rn2bo96'"
+[zoom]="[9]"
+[center]="[currLng,currLat]"
+>
+<mgl-geojson-source *ngIf="currentLocation">
+  <mgl-marker [lngLat]="[currLng, currLat]" [draggable]="updateDate || !isMapAvailable" (drag)="onDragEnd($event)"></mgl-marker>
+</mgl-geojson-source>
+<!-- <mgl-geojson-source *ngFor="let row of mapdata">
+  <mgl-marker [lngLat]="[row.lng, row.lat]">
+    <div class="marker-main-product">
+      <app-embed [products]="row?.productId" [slider]="false"></app-embed>
+    </div>
+  </mgl-marker>
+</mgl-geojson-source> -->
+<!-- <mgl-geojson-source *ngFor="let row of mapdata">
+  <mgl-marker [lngLat]="[row.longitude, row.latitude]" #myMarker>
+    <div class="marker-main">
+      <img class="marker" [src]="row.profilePic" onerror="src='assets/images/icons/map-pin-line.svg'"/>
+      <div class="marker-description">{{row.username}}</div>
+    </div>
+  </mgl-marker>
+  <mgl-popup [marker]="myMarker">
+      <app-embed [products]="row?.productId"></app-embed>
+  </mgl-popup>
+</mgl-geojson-source> -->
+</mgl-map>
+<!-- <div class="sidebar-map" [ngClass]="sidebaropenclose?'':'map-sidebar-close'">
+  <input type="search" placeholder="Search" class="map-search"/>
+  <div class="current-location-map" (click)="currentlocation()">
+    <img src="assets/images/icons/map-pin-line.svg" alt="images" />
+    <div class="title-location-map">Current Location</div>
+  </div>
+  <div class="categories-search">
+    <input type="text" placeholder="Search by Categories" [(ngModel)]="searchText"/>
+    <ul class="list-group product_category_height category" *ngIf="mainCategory">
+        <li *ngFor="let item of selectcatogorymenu | filter:searchText" (click)="menucategory(item)" class="list-group-item select-category d-flex">
+            <span>{{item.title}}</span>
+            <img src="assets/images/icons/inbox-icons/right.svg" width="22px"/>
+        </li>
+    </ul>
+    <ul class="list-group product_category_height category" *ngIf="subCategory">
+        <li (click)="backMain()" class="list-group-item select-category d-flex">
+          <div class="categories-back-arrow">
+            <img src="assets/images/icons/inbox-icons/right.svg" width="22px"/>
+            <span>Back</span>
+          </div>
+        </li>
+        <li *ngFor="let submenu of selectcatogorymenusub | filter:searchText" (click)="menucategorysub(submenu)" class="list-group-item select-category d-flex">
+          <span>
+              {{submenu.title}}
+          </span>
+          <img src="assets/images/icons/inbox-icons/right.svg" width="22px"/>
+        </li>
+        <li *ngIf="SubCategorynotfound == false" class="list-group-item select-category d-flex text-danger">
+            <span>Category Not Found</span>
+        </li>
+    </ul>
+    <ul class="list-group product_category_height category" *ngIf="innerCategory">
+      <li (click)="backSub()" class="list-group-item select-category d-flex">
+        <div class="categories-back-arrow">
+          <img src="assets/images/icons/inbox-icons/right.svg" width="22px"/>
+          <span>Back</span>
+        </div>
+      </li>
+      <li *ngFor="let productitem of selectcatogorytype | filter:searchText, let i = index" class="list-group-item select-category d-flex">
+        <div class="product-item-check">
+          <label for="producttype{{i}}" class="product-type-label">{{productitem.title}}</label>
+          <div class="checkbox-wrapper-area">
+              <input type="radio" name="producttype" class="form-control" (click)="productitemdata(productitem)" id="producttype{{i}}"/>
+              <span class="checkmark-overlay"></span>
+          </div>
+        </div>
+      </li>
+      <li *ngIf="producttypenotfound == false"
+        class="list-group-item select-category d-flex text-danger">
+        <span>Category Not Found</span>
+      </li>
+    </ul>
+  </div>
+  <div (click)="sidebaropenclose = !sidebaropenclose" class="map-sidebar-openclose"></div>
+</div> -->
+
+<div class="card create-map-setLocation">
+  <div class="card-body">
+    <h5 class="card-title">{{isMapAvailable ? updateDate ? 'Update' : '' : 'Set'}} Your Location</h5>
+    <table class="card-text">
+      <thead>
+        <tr>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{currLat ? currLat :'0'}}</td>
+          <td>{{currLng ? currLng :'0'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="create-location">
+      <div class="current-location" (click)="currentlocation()">
+        <img src="assets/images/icons/map-pin-line.svg" alt="images" />
+        <span>Current</span>
+      </div>
+      <!-- <button (click)="currentlocation()" class="btn btn-primary">Current Location</button> -->
+      <button *ngIf="!isMapAvailable" (click)="createLocation()" class="btn btn-primary">Create Location</button>
+      <button *ngIf="isMapAvailable && updateDate" (click)="updateLocation()" class="btn btn-primary">Update Location</button>
+    </div>
+    <p class="warnLocation">Once you pin your business location, you are not allowed to change at least for 6 months.</p>
+  </div>
+</div>

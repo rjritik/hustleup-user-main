@@ -1,0 +1,50 @@
+<section class="post-fixed-side-popup px-0 pb-0 pt-3" [ngClass]="{'open':buymecoffee,'sidebarpro':withoutNavBar}" id="buyMeCoffee" [ngStyle]="{'right':buymecoffee? '0px' : '-700px' }">
+    <div>
+        <div class="text-right">
+            <button class="close-popup-sidebar ml-auto contain-image mr-3"><img src="assets/images/icons/close.svg" (click)="closesidebar()"/></button>
+        </div>
+        <h4 class="text-center coffee-user-name" *ngIf="influencerDetail">
+            Buy <a href="javascript:void(0)" >@{{influencerDetail.username}}</a> a coffee !
+        </h4>
+        <hr />
+        <div class="d-flex flex-row align-items-start m-2">
+            <div class="coffee-wrapper" *ngFor="let item of coffeeList">
+                <div class="coffee-size">
+                    <div class="coffee-image-wrap small_coffee">
+                        <img src="assets/images/image-bigicons/coffee_small.svg" alt="small_coffee">
+                    </div>
+                    <label class="mb-0 coffee-size-text">{{item.coffeeType}}</label>
+                    <label class="coffee-price">{{item.price|currency:currencyUnit:'symbol'}}</label>
+                    <div class="d-inilne-block">
+                        <button [disabled]="spinnerShow" type="button" class="btn-button btn-send-post btn-send-post blue-button" (click)="payCoffee(item)">
+                            <div *ngIf="!spinnerShow || item._id !== selectedCoffeeId">Buy</div>
+                            <div *ngIf="spinnerShow && item._id == selectedCoffeeId" class="spinner-border coffee-spinner-color" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- <div class="coffee-checkbox">
+                        <div class="checkbox-user-member">
+                            <div class="custom-input-check">
+                            <input type="checkbox" class="form-control" id="Buy-every-month-1" name="conditions" value="agree">
+                            <span class="check-checked"></span>
+                                <label for="Buy-every-month-1" class="terms-label">
+                                    Buy every month (auto pay)
+                                </label>
+                            </div>                                
+                        </div>                                
+                    </div> -->
+                </div>
+                <hr class="m-0" />
+                <div class="coffee-support-wrap">
+                    <ul class="coffee-support-list" *ngFor="let subitem of item.items">
+                        <li>
+                            <span></span>
+                            <label>{{subitem.privilege}}</label>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </div>
+</section>

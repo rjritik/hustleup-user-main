@@ -1,0 +1,363 @@
+<div *ngIf="offerpromoman">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Offer & Promo Codes</p>
+            <button (click)="CreatePromoCode()" type="button" class="btn btn-primary create-new-promocode" ><!-- <img src="assets/images/icons/plus.svg" width="20px"> -->Add New Offer, Coupon & Code</button>
+         </li>
+      </ul>
+   </div>
+   <div class="order-history-defalut mb-2" *ngIf="!NotavailOfferList">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/coupon_promocodes.svg" alt="order-history-defalut"></div>
+      <p>No offers, Coupon & Codes have been issued yet.</p>
+      <p>Run some offers like festival offer, new year offers, discount codes, influencer's code etc to make more sales and make your customers happy</p>
+      <a href="javascript:void(0)" (click)="CreatePromoCode()">Add New Offer, Coupon & Code</a>
+   </div>
+   <div class="row mt-3" *ngIf="NotavailOfferList">
+      <div class="col-12">
+         <div class="admin-table admin-table-y">
+            <table>
+               <thead>
+                  <tr>
+                     <th>#</th>
+                     <th>Offer Name</th>
+                     <th>Discount Type</th>
+                     <th>Coupons/Codes</th>
+                     <th>Valid upto</th>
+                     <th>Applied for</th>
+                     <th>Total Used</th>
+                     <th>Status</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+                   <tr *ngFor="let item of NewOfferPromocodesList;let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{item.offerName}}</td>
+                      <th *ngIf="item.amount == 0">{{item.discount}}%&nbsp;Off</th>
+                      <th *ngIf="item.discount == 0">{{item.amount}}</th>
+                      <td>{{item.promocode}}</td>
+                      <td>{{item.validUpto | date}}</td>
+                      <td>{{item.AppliedFor}}</td>
+                      <th>{{item.totalUsed}}</th>
+                      <th>
+                         <img src="assets/images/icons/inbox-icons/inbox-online.svg" *ngIf="item.status == true" alt="online">
+                         <img src="assets/images/icons/inbox-icons/inbox-offline.svg" *ngIf="item.status == false" alt="available">
+                        </th>
+                      <td>
+                         <span>
+                            <div class="dropdown data-item-dropdown">
+                               <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               <img src="assets/images/icons/inbox-icons/three_dots.svg" style="height:25px;">
+                               </button>
+                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="javascript:void(0)" (click)="EditOfferList(item)">
+                                  <span class="date-item-dropdown-option-icon">
+                                  <img src="./assets/images/icons/edit.png" alt="">
+                                  </span>
+                                  <span>Edit</span>
+                                  </a>
+                                  <!-- <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#Duplicate" (click)="SetDuplicateItem(item)">
+                                  <span class="date-item-dropdown-option-icon">
+                                  <img src="./assets/images/icons/copy-files.png" alt="">
+                                  </span>
+                                  <span>Duplicate</span></a> -->
+                                  <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#closeoffer" (click)="CloseOfferBtnClick(item)">
+                                  <span class="date-item-dropdown-option-icon">
+                                  <img src="./assets/images/icons/delete.png" alt="">
+                                  </span>
+                                  <span >Close Offer</span></a>
+                               </div>
+                            </div>
+                         </span>
+                      </td>
+                   </tr>
+             </tbody>
+               <!-- <tbody>
+                  <ng-container *ngFor="let item of NewOfferPromocodesList;index as i">
+                     <tr *ngIf="activeIndex !== i">
+                        <td>{{i+1}}</td>
+                        <td>{{item.OfferName}}</td>
+                        <th>{{item.DiscountType}}</th>
+                        <td>{{item.CoupenCodes}}</td>
+                        <td>{{item.ValidUpto | date}}</td>
+                        <td>{{item.appliedFor}}</td>
+                        <th>{{item.TotalUsed}}</th>
+                        <th><img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online"></th>
+                        <td>
+                           <span>
+                              <div class="dropdown data-item-dropdown">
+                                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <img src="assets/images/icons/inbox-icons/three_dots.svg" style="height:25px;">
+                                 </button>
+                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javascript:void(0)" (click)="EditOfferList(i)">
+                                    <span class="date-item-dropdown-option-icon">
+                                    <img src="./assets/images/icons/edit.png" alt="">
+                                    </span>
+                                    <span>Edit</span>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#Duplicate" (click)="SetDuplicateItem(item)">
+                                    <span class="date-item-dropdown-option-icon">
+                                    <img src="./assets/images/icons/copy-files.png" alt="">
+                                    </span>
+                                    <span>Duplicate</span></a>
+                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#closeoffer">
+                                    <span class="date-item-dropdown-option-icon">
+                                    <img src="./assets/images/icons/delete.png" alt="">
+                                    </span>
+                                    <span (click)="CloseOfferBtnClick(item,i)">Close Offer</span></a>
+                                 </div>
+                              </div>
+                           </span>
+                        </td>
+                     </tr>
+                     <tr *ngIf="activeIndex === i">
+                          <td>{{i+1}}</td>
+                          <td><input class="form-control" name='OfferName' [(ngModel)]="item.OfferName"></td>
+                          <th><input class="form-control" name='DiscountType' [(ngModel)]="item.DiscountType"></th>
+                          <td><input class="form-control" name='CoupenCodes' [(ngModel)]="item.CoupenCodes"></td>
+                          <td><input class="form-control" name='ValidUpto' [(ngModel)]="item.ValidUpto"></td>
+                          <td><input class="form-control" name='appliedFor' [(ngModel)]="item.appliedFor"></td>
+                          <th><input class="form-control" name='TotalUsed' [(ngModel)]="item.TotalUsed"></th>
+                          <th><img src="assets/images/icons/inbox-icons/inbox-online.svg" alt="online"></th>
+                          <td>
+                            <button type="button" class="btn btn-success" (click)="CancelOfferList(i)">Cancel</button>
+                              <button type="button" class="btn btn-success" (click)="SaveOfferList(item,i)">Save</button>
+                          </td>
+                     </tr>
+                  </ng-container>
+               </tbody> -->
+            </table>
+         </div>
+      </div>
+      <div class="col-12">
+         <div class="page-pagination">
+            <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+               <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
+               </select>
+               <label>Items per page </label>
+               <label class="page-count">{{PageNo}} of {{totalPages}} pages</label>
+               <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></button></li>
+                     <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></button></li>
+                     <li class="page-item"><button class="page-link active" href="javascript:void(0)">{{PageNo}}</button></li>
+                     <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></button></li>
+                     <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></button></li>
+                  </ul>
+               </nav>
+            </div>
+         </div>
+      </div>
+      <!-- <div class="col-12">
+         <div class="page-pagination">
+            <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+               <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
+               </select>
+               <label>Items per page </label>
+               <label class="page-count">{{PageNo}} of {{totalpage}} pages</label>
+               <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item"><a class="page-link" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></a></li>
+                     <li class="page-item"><a class="page-link" href="javascript:void(0)" [name]="PageNo" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></a></li>
+                     <li class="page-item"><a class="page-link active" href="javascript:void(0)" [TotalPages]="totalpage" appPagination (onChangeEventEmitter)="onPageChange($event)">{{PageNo}}</a></li>
+           
+                     <li class="page-item"><a class="page-link" href="javascript:void(0)" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></a></li>
+                     <li class="page-item"><a class="page-link" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></a></li>
+                  </ul>
+               </nav>
+            </div>
+         </div>
+      </div> -->
+   </div>
+</div>
+
+
+<div *ngIf="createnewoffer" id="create-new-offer">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p *ngIf="EditOffer">Create New Offer & Promo Codes </p>
+            <p *ngIf="!EditOffer">Edit Offer & Promo Codes </p>
+         </li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <form class="mt-3" [formGroup]="NewOfferForm">
+            <div class="admin-form-table table">
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Promocode Type</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <div class="form-control-big select2-val">
+                        <ng-select2 width="100%" [data]="PromocodeType" formControlName="PromocodeType"  [placeholder]="'Select PromocodeType'"></ng-select2>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Offer Name</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text"  class="form-control form-control-big input-field" placeholder="Write offer name" formControlName="OfferName">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Offer Type</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <div class="form-control-big select2-val">
+                        <ng-select2 width="100%" [data]="OfferType" formControlName="OfferType"  [placeholder]="'Select OfferType'"></ng-select2>
+                     </div>
+                  </div>
+                  <div class="form-group col-sm-2 Percentage-input">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write Amount/percentage" formControlName="discount">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Offer For Buyer</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <div class="form-control-big select2-val">
+                        <ng-select2 width="100%" [data]="OfferForBuyer" formControlName="offerforbuyer"  [placeholder]="'Select Offer For Buyer'"></ng-select2>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-row" *ngIf="this.NewOfferForm.controls.PromocodeType.value == 'selected'">
+                  <div class="form-group col-sm-2">
+                     <label>Apply this offer for</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <button class="btn d-inline-block form-control form-control-big text-left" data-toggle="modal" data-target="#linkproduct" (click)="OpenProductPopup()" [class.myClass]="LinkProductAvail == false">Link More Product
+                     </button>
+                     <p *ngFor="let items of SelectedProducts" ><span >{{items.productName}}</span></p>
+                     <!-- <div class="form-control-big select2-multival">
+                        <ng-select2 width="100%" [data]="ApplyOfferType" [options]="options" formControlName="offerFor" [placeholder]="'select offerFor'"></ng-select2>
+                     </div> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Promo Code</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <input type="text"  class="form-control form-control-big input-field" placeholder="Add promo code (opt)" formControlName="PromoCode">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-2">
+                     <label>Valid Upto</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" [min]="today" formControlName="ValidUpto">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                     <!-- <input type="text" class="form-control form-control-big input-field" value="April 12, 2021"> -->
+                  </div>
+               </div>
+               <div class="form-row d-flex align-items-center">
+                  <div class="form-group col-sm-2 d-md-flex justify-content-end">
+                     <input type="checkbox" class="form-control" id="chkboxid" formControlName="visibleAll" style="width:22px; margin-right: 15px;"/>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <label for="chkboxid">VisibleAll</label>
+                   </div>
+               </div>
+               <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                  <button (click)="CreatePromoCodeCancel()"  class="cancel-no-effect btn btn-outline-secondary btn-cancel new-createpromo-cancel">Cancel</button>
+                  <button class="btn btn-primary" *ngIf="EditOffer" (click)="AddNewOffer(f)">Publish</button>
+                  <button class="btn btn-primary" *ngIf="!EditOffer" (click)="UpdateOffer(f)">Update</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade action-modal" id="closeoffer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-body pb-0">
+            <div class="images-search-close prod-closemain mb-3">
+               <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0" src="assets/images//icons/close.svg" alt="close">
+            </div>
+            <b>Are you sure for Remove the category ?</b>
+            <p class="mt-3">
+              This will remove the entire products listed under this category.
+            </p>
+         </div>
+         <div class="modal-footer border-0">
+            <button type="button" class="btn btn-modal-cancel pl-5 pr-5" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-deactivate-action pl-5 pr-5 ml-2" data-dismiss="modal" (click)="DeleteOffer()">Remove</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="linkproduct" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+           <div class="modal-body">
+               <h3 class="modal-heading">Link Products with more colors</h3>
+               <div class="select-color-wrap-product linkproduct-withcolor-main images-upload-multiple">
+                   <div id="message" class="prod-box-video-audio">
+                       <div class="product-box" style="display:block;">
+                           <ul class="list-group">
+                               <li class="images-search-close d-none">
+                                   <img class="product-icon" src="assets/images/icons/close.svg" alt="close">
+                               </li>
+                               <li class="list-group-item d-none">
+                                   <div class="images-upload-search p-0">
+                                       <input type="text" placeholder="Search">
+                                       <div class="search-icon">
+                                           <img src="./assets/images/icons/icon-search.svg" alt="" width="15" />
+                                       </div>
+                                   </div>
+                               </li>
+                               <li class="list-group-item" *ngFor="let item of SellerWiseProductList;let i=index">
+                                   <div class="media">
+                                       <div class="custom-input-check mt-2 add-prod-checkbox">
+                                          <input type="checkbox" class="form-control" id="info-attr"
+                                             name="conditions"
+                                             (change)="onChange($event, item)"
+                                             [checked]="checkedProduct(item)">
+                                          <span class="check-checked"></span>
+                                       </div>
+                                       <div class="media-body align-self-center">
+                                           <p class="mb-0">{{item.productName}}</p>
+                                           <small>{{item.productId}}</small>
+                                           <div class="price">{{item.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{item.variations[0]?.MRP |currency:currencyUnit:'symbol'}}</span></div>
+                                       </div>
+                                       <img class="ml-3" src="{{item.productPhotos[0]?.image}}"
+                                           alt="Generic placeholder image">
+                                   </div>
+                               </li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+               <div class="text-right pt-2 mt-1">
+                   <button type="button" class="btn modal-button white-border-button"
+                        (click)="CancelProductPopup()">Cancel</button>
+                   <button type="button" class="btn modal-button btn-outline-primary ml-2"
+                       (click)="SelectProductpopupclick()">Select</button>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

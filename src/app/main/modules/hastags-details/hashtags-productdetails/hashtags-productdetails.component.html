@@ -1,0 +1,38 @@
+<div class="row half-row" *ngFor="let item of HashtagProductdetailList">
+    <div *ngIf="item.products?.length === 0" class="order-history-defalut product-sub-small">
+        <div class="order-history-defalut-img">
+            <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut"/>
+        </div>
+        <p>No Products have been made yet</p>
+        <!-- <p>Upload images of any kinds of posts like looks & styles, fashion & designs, beauty & makeup, your personal photos, products, offer, & coupons, jokes, memes, quotes, literally anything...</p> -->
+    </div>
+    <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let subitem of item.products">
+        <div class="product-items-wrapper hashtag-post-border-line" >
+            <div class="product-items-image">
+                
+                    <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag">
+                        <owl-carousel [options]="SlideOptions" [carouselClasses]="['owl-theme', 'sliding']">
+                                <div class="item" *ngFor="let photos of subitem.productPhotos">
+                                    <img [src]="photos.image"/>
+                                </div>
+                        </owl-carousel>
+                      </div>
+
+                <div class="abs-hover-items"></div>
+            </div>
+
+            <div class="post-detail-wrap">
+                <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                    <label class="post-uploader-name">{{subitem.productId}}</label>
+                    <div *ngIf="subitem.isWishlist == false" class="hashtag-save-icon"><img id="postSave" (click)="WishlistProduct(subitem)" src="assets/images/icons/icons-post-save.svg"></div>
+                    <div *ngIf="subitem.isWishlist == true" class="hashtag-save-icon"><img id="postSave" (click)="UnsavedWishlistProduct(subitem)" src="assets/images/icons/icons-post-saved.svg"></div>
+                </div>
+                <p class="product-name" title="Black full sleave sweater">{{subitem.productName}}</p>
+                <div class="price-block mt-0" *ngFor="let vari of subitem.variations">
+                    <label><span style="margin-right: 15px;">size:-{{vari.variationTitle}}</span>{{vari.sellingPrice |currency:currencyUnit:'symbol'}}<del>{{vari.MRP |currency:currencyUnit:'symbol'}}</del></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

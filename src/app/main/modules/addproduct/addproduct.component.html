@@ -1,0 +1,1287 @@
+<!-- / _begin > Page Main Content < SHB / -->
+<div class="row mt-4 ml-md-2">
+    <div class="col-12 p-0">
+        <div class="tabs-items-flex">
+            <ul class="nav nav-pills mb-3 addprod-category" id="pills-tab" role="tablist">
+                <li class="nav-item border-bottom-05px">
+                    <a class="nav-link active" id="pills-category-tab" data-toggle="pill" href="#pills-category"
+                        role="tab" aria-controls="pills-category" aria-selected="true">Category</a>
+                </li>
+                <li class="nav-item border-bottom-05px">
+                    <a class="nav-link" id="pills-info-tab" data-toggle="pill" href="#pills-info" role="tab"
+                        aria-controls="pills-info" aria-selected="false">Info & Attributes</a>
+                </li>
+                <li class="nav-item border-bottom-05px">
+                    <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#pills-images" role="tab"
+                        aria-controls="pills-images" aria-selected="false">Photos</a>
+                </li>
+                <li class="nav-item border-bottom-05px">
+                    <a class="nav-link" id="pills-videos-tab" data-toggle="pill" href="#pills-videos" role="tab"
+                        aria-controls="pills-videos" aria-selected="false">Videos</a>
+                </li>
+                <li class="nav-item border-bottom-05px">
+                    <a class="nav-link" id="pills-offer-tab" data-toggle="pill" href="#pills-offer" role="tab"
+                        aria-controls="pills-offer" aria-selected="false">Offer, Pricing & Shipping</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active mt-3" id="pills-category" role="tabpanel"
+                aria-labelledby="pills-category-tab">
+                <div class="row  mr-0 ml-0">
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12 p-0 text-lg-left text-md-left text-center brandnameval">
+                        <ng-select2 *ngIf="productnobrand == false" width="210" [data]="exampleData" [(ngModel)]="productnobrandvalue" (valueChanged)="productbrandvalue()" [placeholder]="'Choose Your Brand Name'">
+                        </ng-select2>
+                        <div class="checkbox-user-member add-prod-checkbox">
+                            <div class="custom-input-check mt-3">
+                                <input type="checkbox" class="form-control" id="thisprod" name="conditions" [(ngModel)]="productnobrand" (click)="productbrand($event)">
+                                <span class="check-checked"></span>
+                                <label for="thisprod" class="terms-label">
+                                    This product has no brand.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-lg-2 col-md-2 col-sm-12 col-12 p-0 d-flex align-items-center justify-content-center or-divider-wrapper">
+                        <div class="or-divider-vertical-line">
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center or-text-circle">
+                            <span>
+                                OR
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-12 p-0 text-lg-right text-md-right text-center">
+                        <a [routerLink]="['/brand-approval']">
+                            <button class="btn btn-border-blue w-auto">Apply for brand approval</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 mb-3">
+                        <span class="select-cat-bold">
+                            1. Select Category
+                        </span>
+                        <div class="mt-2">
+                            <ul class="list-group product_category_height category">
+                                <li *ngFor="let item of selectcatogorymenu" (click)="menucategory(item)"
+                                    class="list-group-item select-category d-flex">
+                                    <span>
+                                        {{item.title}}
+                                    </span>
+                                    <img src="assets/images/icons/inbox-icons/right.svg" width="22px" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div  class="col-lg-4 col-md-4 col-sm-12 col-12 mb-3">
+                        <span class="select-cat-bold">
+                            2. Select Sub-Category
+                        </span>
+                        <div *ngIf="SubCategorynotfound" class="mt-2">
+                            <ul class="list-group product_category_height subcategory">
+                                <li *ngFor="let submenu of selectcatogorymenusub" (click)="menucategorysub(submenu)"
+                                    class="list-group-item select-category d-flex">
+                                    <span>
+                                        {{submenu.title}}
+                                    </span>
+                                    <img src="assets/images/icons/inbox-icons/right.svg" width="22px" />
+                                </li>
+                                <li *ngIf="SubCategorynotfound == false"
+                                    class="list-group-item select-category d-flex text-danger">
+                                    <span>Category Not Found</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12 mb-3">
+                        <span class="select-cat-bold">
+                            3. Select Product Type
+                        </span>
+                        <div *ngIf="producttypenotfound" class="mt-2">
+                            <ul class="list-group product_category_height producttype">
+                                <li class="list-group-item product-type d-flex"
+                                    *ngFor="let productitem of selectcatogorytype, let i = index">
+                                    <div class="product-item-check">
+                                        <label for="producttype{{i}}" class="product-type-label">{{productitem.title}}</label>
+                                        <div class="checkbox-wrapper-area">
+                                            <input type="radio" name="producttype" class="form-control" (click)="productitemdata(productitem)"
+                                                id="producttype{{i}}"/>
+                                            <span class="checkmark-overlay"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li *ngIf="producttypenotfound == false"
+                                    class="list-group-item select-category d-flex text-danger">
+                                    <span>Category Not Found</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mr-0 ml-0 align-items-center">
+                    <div class="alert-width-product">
+                        <span class="font-size-12">
+                            <span class="requiredInput">Alert</span>: You are not allowed to sell any used, defective,
+                            refurbished or too old products. Doing so shall suspend your seller account permanently.
+                        </span>
+                    </div>
+                    <div class="view-demo-proupload mt-3" (click)="changeVideo('Zzs6kLlkAUQ')">
+                        <img src="assets/images/icons/play.svg" alt="" />
+                        View demo for product upload
+                    </div>
+                    <div class="d-block w-100 mt-3 text-right">
+                        <button class="btn btn-primary" (click)="productnext1()">Next</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                <form [formGroup]="infoAttributes">
+                    <table class="table table-borderless table-responsive-form">
+                        <tr>
+                            <td class="common-table-data-width">
+                                Product Name <span class="requiredInput">*</span>
+                            </td>
+                            <td>
+                                <input type="text" name="" class="form-control" placeholder="Write Product's Name" formControlName="productname">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="common-table-data-width">
+                                Product ID <span class="requiredInput">*</span>
+                            </td>
+                            <td class="prod-id-icon">
+                                <input type="text" name="" class="form-control form-control-big" [class.myClass]="IsAvailProductId == true"
+                                    placeholder="Choose Product's ID (Product's Username)"
+                                    formControlName="productid" (ngModelChange)="CheckProductId($event)" />
+                                    <div class="true-false-smallicon">
+                                        <a href="javascript:void(0)" *ngIf="IsAvailProductId == false">
+                                            <img src="assets/images/icons/inbox-icons/approve.svg" alt="true"/>
+                                        </a>
+                                        <a href="javascript:void(0)" *ngIf="IsAvailProductId == true">
+                                            <img src="assets/images/icons/inbox-icons/not_available.svg" alt="false">
+                                        </a>
+                                    </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Product code</td>
+                            <td>
+                                <div class="d-flex form-control-big">
+                                    <div class="col-md-4 p-0 select2-val">
+                                        <ng-select2 width="180" [data]="productcode" formControlName="productcode" [placeholder]="'Select Code Type'"></ng-select2>
+                                    </div>
+                                    <div class="col-md-8 ml-3 px-0">
+                                        <input type="text" name="" class="form-control" placeholder="Write Product's Code" formControlName="writeproductscode"/>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Color <span class="requiredInput">*</span></td>
+                            <td class="addprod-color-picker d-flex align-items-center">
+                                <button *ngIf="colorarrraylist" class="btn d-inline-block mr-2" data-toggle="modal" data-target="#colorSelect">{{ShowSelectedColorname}}</button>
+                                <button *ngIf="colorarrraylist == undefined" class="btn d-inline-block"  data-toggle="modal" data-target="#colorSelect" (click)="addcolorclick()">Add Color</button>
+                                <button *ngIf="colorarrraylist != undefined" class="btn d-inline-block" (click)="removecolor()">Remove</button>
+                                <!-- <input type="file" name="" class="form-control"> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Link Products with more colors<br />
+                                <small>(First, upload same products with different colors and then link)</small>
+                            </td>
+                            <td>
+                                <button class="btn d-inline-block form-control form-control-big text-left"
+                                    data-toggle="modal" data-target="#linkproduct-with-color" (click)="OpenLinkProductPopup()">Link Products with more
+                                    colors</button>
+                                    <p *ngFor="let items of selected" ><span >{{items.productName}}</span></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Size<span class="requiredInput">*</span><br />
+                                <small>(Add more sizes on variation tab)</small>
+                            </td>
+                            <td class="addprod-color-picker">
+                                <div class="d-flex flex-column">
+                                    <table>
+                                        <tbody>
+                                            <tr *ngIf="sizevariationheadershow">
+                                                <td>Size</td>
+                                                <td>Seller SKU</td>
+                                                <td>Quantity</td>
+                                                <td>Max Retail Price (MRP)</td>
+                                                <td>Your Selling Price</td>
+                                                <td>Discount</td>
+                                            </tr>
+                                            <tr formArrayName="variations" *ngFor="let item of infoAttributes.get('variations')['controls']; let i = index;">
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" placeholder="Medium" formControlName="variationTitle"></td>
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" placeholder="My-brand-Jeans-Blue-Small" formControlName="sellerSku"></td>
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" placeholder="100" formControlName="stockQuantity"></td>
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" placeholder="10,000" (ngModelChange)="detectValueChange(i)" formControlName="MRP"></td>
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" placeholder="8,500" (ngModelChange)="detectValueChange(i)" formControlName="sellingPrice"></td>
+                                                <td [formGroupName]="i" class="pt-2"><input type="text" class="form-control" formControlName="discount" [readonly]="true"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <button class="btn d-inline-block" (click)="addsizevaration()" [class.myClass]="sizeavail == false">Add Size</button>
+                                        <a *ngIf="infoAttributes.controls.variations.value.length > 1" class="btn btn-link p-0 btn-link-14" (click)="removevarition()">Remove Last</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Warranty period</td>
+                            <td>
+                                <div class="d-flex form-control-big">
+                                    <div class="col-md-4 pl-0">
+                                        <input type="text" name="" class="form-control" placeholder=""
+                                            formControlName="warrantyperiod"/>
+                                    </div>
+                                    <div class="col-md-8 p-0 select2-val">
+                                        <ng-select2 [data]="warrantyperdayddata" formControlName="warrantydays" [placeholder]="'Select Warranty period'" width="100%">
+                                        </ng-select2>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Return</td>
+                            <td>
+                                <div *ngIf="infoAttributes.get('nonreturnableitems').value == false" class="d-flex form-control-big">
+                                    <div class="col-md-4 pl-0">
+                                        <input type="text" class="form-control" placeholder="" formControlName="returnitemperiod" />
+                                    </div>
+                                    <div class="col-md-8 p-0 select2-val">
+                                        <ng-select2 [data]="returnitemday" formControlName="returnitemdays" [placeholder]="'Select returnitem period'" width="100%">
+                                        </ng-select2>
+                                    </div>
+                                </div>
+                                <!-- <div class="custom-input-check mt-2 add-prod-checkbox">
+                                    <input type="checkbox" class="form-control" id="Non-Returnable" name="conditions"
+                                        value="agree" formControlName="nonreturnableitems">
+                                    <span class="check-checked"></span>
+                                    <label for="Non-Returnable" class="terms-label">
+                                        Non-Returnable Items
+                                    </label>
+                                </div> -->
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="common-table-data-width">
+                                Search Keywords
+                                <span class="requiredInput">*</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column form-control-big">
+                                    <div formArrayName="searchkeywords" *ngFor="let item of infoAttributes.get('searchkeywords')['controls']; let i = index;" >
+                                        <div [formGroupName]="i" class="mb-2">
+                                            <input type="text" class="form-control" placeholder="Write Specification" formControlName="searchkeyword">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a class="btn btn-link p-0 btn-link-14" (click)="searchkeywordsadd()">Add More</a>
+                                        <a *ngIf="infoAttributes.controls.searchkeywords.value.length > 1" class="btn btn-link p-0 btn-link-14" (click)="searchkeywordsremove()">Remove Last</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="common-table-data-width">
+                                HighLights <span class="requiredInput">*</span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column form-control-big">
+                                    <div formArrayName="highlights" *ngFor="let item of infoAttributes.get('highlights')['controls']; let i = index;" >
+                                        <div [formGroupName]="i" class="mb-2">
+                                            <input type="text" class="form-control" placeholder="Write Highlights" formControlName="highlightsarray">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a class="btn btn-link p-0 btn-link-14" (click)="highlightsadd()">Add More</a>
+                                        <a *ngIf="infoAttributes.controls.highlights.value.length > 1" class="btn btn-link p-0 btn-link-14" (click)="highlightsremove()">Remove Last</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr formArrayName="addmorespecific" *ngFor="let item of infoAttributes.get('addmorespecific')['controls']; let i = index;">
+                            <td [formGroupName]="i">
+                                <div class="d-flex flex-column">
+                                    <input class="info-highlight" type="text" class="form-control mb-2 font-weight-bold" placeholder="SPECIFICATIONS NAME" value="SPECIFICATIONS NAME" formControlName="specifictitle" />
+                                    <div formArrayName="generalspecific" *ngFor="let item of item.get('generalspecific')['controls']; let ii = index;" >
+                                        <div [formGroupName]="ii" class="mb-2">
+                                            <input type="text" class="form-control" placeholder="Write Specification" formControlName="specific">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a class="btn btn-link p-0 btn-link-14" (click)="generalspecificadd(item.get('generalspecific'),i)">Add More</a>
+                                        <a *ngIf="item.controls.generalspecific.value.length > 1" class="btn btn-link p-0 btn-link-14" (click)="generalspecificremove(item.get('generalspecific'))">Remove Last</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td [formGroupName]="i">
+                                <div formArrayName="generalspecific" *ngFor="let item of item.get('generalspecific')['controls']; let ii = index;" >
+                                    <div [formGroupName]="ii" class="mb-2" [ngClass]="ii === 0?'mt-4':''">
+                                        <input type="text" class="form-control" placeholder="Write corresponding attributes" formControlName="corresponding">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="d-flex justify-content-between">
+                                    <a class="btn btn-link p-0 btn-link-14" (click)="addmorespecification()">Add MORE SPECIFICATIONS</a>
+                                    <a *ngIf="infoAttributes.controls.addmorespecific.value.length > 1" class="btn btn-link p-0 btn-link-14" (click)="removemorespecification()">Remove Last</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="d-flex flex-column">
+                                    <div class="font-weight-bold info-highlight"> DESCRIPTION
+                                    </div>
+                                    <textarea class="form-control height-resize-none" rows="4" cols="50"
+                                        placeholder="Describe your product..." formControlName="description"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <button class="btn btn-cancel" (click)="productback()">Back</button>
+                                <button class="btn btn-primary" (click)="productnext2()">Next</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
+                <div class="row">
+                    <div class="col-xl-5 col-md-6 col-12">
+                        <div class="images-upload-multiple mt-3 mt-md-0" [ngClass]="cropimagereturn?'cropimagereturn':''">
+                            <img *ngIf="previewmain != null && cropimagereturn == false" src={{previewmain.file}} alt="" />
+                            <div [ngClass]="cropimagereturn?'':'d-none'" class="images-crop-product">
+                                <ly-img-cropper [withClass]="classes.cropper" [config]="myConfig" [(scale)]="scale"
+                                    (minScale)="minScale = $event" (ready)="ready = true" (cleaned)="ready = false"
+                                    (cropped)="onCropped($event)" (error)="onError($event)">
+                                    <span>Drag and drop image</span>
+                                </ly-img-cropper>
+                            </div>
+                            <img *ngIf="previewmain == null" src="https://i.pinimg.com/originals/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.png" alt="images" height="100%" width="100%" />
+                            <div class="images-upload-icon-main">
+                                <a *ngIf="previewmain != null" (click)='userreference()' class="user-icon">
+                                    <img src="assets/images/icons/user_icon.svg">
+                                    <span>Tag Users</span>
+                                </a>
+                                <a *ngIf="previewmain != null" (click)='tagprodreference()' class="product-icon">
+                                    <img src="assets/images/icons/tag_product.svg" />
+                                    <span>Tag Products</span>
+                                </a>
+                                <div *ngIf="previewmain != null" class="tags-inner-main">
+                                    <div *ngFor="let data of previewmain.taggedUsers;let i = index" class="tags-inner" [ngStyle]="{'transform': 'translate3d('+ (data.x + 'px ,' + data.y + ('px ,') + '0px') +')'}" (cdkDragEnded)="onDragDroppeduser($event,i)" cdkDragBoundary=".images-upload-multiple" cdkDrag>{{data.username}}<img src="assets/images/icons/right_white_arrow.svg" alt="right-arrow">
+                                    </div>
+                                </div>
+                                <div *ngIf="previewmain != null" class="tags-inner-main" style="left: inherit;right: 10px;bottom: 30px;">
+                                    <div class="tags-inner" *ngFor="let data of previewmain.taggedProducts;let i = index" [ngStyle]="{'transform': 'translate3d('+ (data.x + 'px ,' + data.y + ('px ,') + '0px') +')'}" (cdkDragEnded)="onDragDroppedproduct($event,i)" cdkDragBoundary=".images-upload-multiple" cdkDrag>
+                                        <p class="mb-0">{{data.productName}}</p>
+                                        <!-- <div class="d-flex align-items-center" *ngFor="let vari of data.variations">
+                                            size:-{{vari.variationTitle}}
+                                        {{vari.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{vari.MRP |currency:currencyUnit:'symbol'}}</span><img src="assets/images/icons/right_white_arrow.svg" alt="right-arrow">
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="user-serachbar-reference" *ngIf="userserachbarreference">
+                                    <div class="images-search-close" (click)="usersearchclose()">
+                                        <img class="product-icon" src="assets/images/icons/close.svg" alt="close"/>
+                                    </div>
+                                    <div class="images-upload-search mt-0">
+                                        <input *ngIf="getUsersboolean == false" (keyup)="getUsers()" [(ngModel)]="usersearch" placeholder="Search">
+                                        <input *ngIf="getUsersboolean == true" (keyup)="getUsersmore()" [(ngModel)]="usersearchmore" placeholder="Search">
+                                        <div class="search-icon">
+                                            <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                                        </div>  
+                                    </div>
+                                    <div *ngIf="getUsersboolean == false">
+                                        <div (click)="taguserdata(userdata)" class="user-tbl-detail" *ngFor="let userdata of usersearchdata,index as indexuser" id={{userdata._id}}>
+                                            <img [src]="userdata.profilePic || 'assets/images/profile.jpg'" alt="img" />
+                                            <div class="user-tbl-detail-inner">
+                                                <div>{{userdata.fullName}}</div>
+                                                <p>{{userdata.username}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="getUsersboolean == true">
+                                        <div (click)="taguserdatamore(userdata)" class="user-tbl-detail" *ngFor="let userdata of usersearchdatamore,index as indexuser" id={{userdata._id}}>
+                                            <img [src]="userdata.profilePic || 'assets/images/profile.jpg'" alt="img">
+                                            <div class="user-tbl-detail-inner">
+                                                <div>{{userdata.fullName}}</div>
+                                                <p>{{userdata.username}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="message" class="prod-box-video-audio">
+                                    <div class="product-box" *ngIf="tagprod">
+                                        <ul class="list-group">
+                                            <li class="images-search-close" (click)="productsearchclose()">
+                                                <img class="product-icon" src="assets/images/icons/close.svg" alt="close">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="images-upload-search p-0">
+                                                    <!-- <input type="text" placeholder="Search" (keyup)="getProduct()" [(ngModel)]="productsearch">
+                                                    <div class="search-icon">
+                                                        <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                                                    </div>   -->
+                                                    <input *ngIf="getProductboolean == false" (keyup)="getProduct()" [(ngModel)]="productsearch" placeholder="Search" />
+                                                    <input *ngIf="getProductboolean == true" (keyup)="getProductmore()" [(ngModel)]="productsearchmore" placeholder="Search" />
+                                                    <div class="search-icon">
+                                                        <img src="./assets/images/icons/icon-search.svg" alt="" width="15" />
+                                                    </div>
+                                                </div>                       
+                                            </li> 
+                                            <ng-container *ngIf="getProductboolean == false"></ng-container>
+                                                <li class="list-group-item" (click)="tagproductdata(productdata)"  *ngFor="let productdata of productsearchdata;let productindex = index" id={{productdata._id}}>
+                                                    <div class="media" >
+                                                        <div class="media-body align-self-center">
+                                                            <p class="mb-0">{{productdata.productName}}</p>
+                                                            <small>{{productdata.brand_details?.brandName}}</small>
+                                                            <div class="price" *ngFor="let vari of productdata.variations">
+                                                                size:-{{vari.variationTitle}}
+                                                                {{vari.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{vari.MRP |currency:currencyUnit:'symbol'}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <img class="ml-3" src="{{productdata.productPhotos[0]?.image}}" alt="Generic placeholder image">
+                                                    </div>
+                                                </li>  
+                                            <ng-container *ngIf="getProductboolean == true">
+                                                <li class="list-group-item" (click)="tagproductdatamore(productdata)"  *ngFor="let productdata of productsearchdatamore;let productindex = index" id={{productdata._id}}>
+                                                    <div class="media">
+                                                        <div class="media-body align-self-center">
+                                                            <p class="mb-0">{{productdata.productName}}</p>
+                                                            <small>{{productdata.brand_details?.brandName}}</small>
+                                                            <div class="price" *ngFor="let vari of productdata.variations">
+                                                                size:-{{vari.variationTitle}}
+                                                                {{vari.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{vari.MRP |currency:currencyUnit:'symbol'}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <img class="ml-3" src="{{productdata.productPhotos[0]?.image}}" alt="Generic placeholder image">
+                                                    </div>
+                                                </li>
+                                            </ng-container>
+                                                                                               
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>       
+                            <div *ngIf="previewmain != null" class="crop-images-icon" (click)="cropimages();">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <defs>
+                                        <style> .cls-1 { fill: none; } </style>
+                                    </defs>
+                                    <g id="Layer_2" data-name="Layer 2">
+                                        <g id="Layer_13" data-name="Layer 13">
+                                            <path
+                                                d="M13.9,19.58a1,1,0,0,1-1,1H4.42a1,1,0,0,1-1-1V11.1a1,1,0,0,1,2,0v7.48H12.9A1,1,0,0,1,13.9,19.58ZM20.29,3.71a1,1,0,0,0-.71-.29H11.1a1,1,0,0,0,0,2h7.48V12.9a1,1,0,0,0,2,0V4.42A1,1,0,0,0,20.29,3.71Z" />
+                                            <rect class="cls-1" width="24" height="24" />
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>                         
+                        </div>
+                        <div [ngClass]="cropimagereturn?'':'d-none'">
+                              <div *ngIf="ready" [className]="classes.sliderContainer">
+                                <ly-slider
+                                  [thumbVisible]="false"
+                                  [min]="minScale"
+                                  [max]="1"
+                                  [(ngModel)]="scale"
+                                  (input)="scale = $event.value"
+                                  [step]="0.000001"></ly-slider>
+                              </div>
+                              <!-- <button (click)="cropper.center()" ly-button appearance="icon"><ly-icon>filter_center_focus</ly-icon></button> -->
+                              <!-- 
+                                <div>
+                                    <img *ngIf="croppedImage" [src]="croppedImage" />
+                                </div> -->
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-link btn-link-14 pr-0" data-toggle="modal"
+                                data-target="#imageRequirements">Images Requirements</a>
+                        </div>
+                        <b class="text-center d-block">Preview, Adjust &amp; Tag</b>
+                    </div>
+                    <div class="col-xl-7 col-md-6 col-12">
+                        <div class="d-flex flex-column mt-md-2">
+                            <b><label for="">Add suitable #Hashtags</label></b>
+                            <div class="hashtags-include">
+                                <mat-form-field class="example-chip-list" appearance="fill">
+                                    <mat-chip-list #chipList aria-label="Fruit selection">
+                                    <mat-chip
+                                        *ngFor="let hashtags of hashtag"
+                                        (removed)="remove(hashtags)">
+                                        {{hashtags}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip>
+                                    <input
+                                        placeholder="Add a hashtag in order to increase visibility"
+                                        #hashtagInput
+                                        [matChipInputFor]="chipList"
+                                        (matChipInputTokenEnd)="add($event)">
+                                    </mat-chip-list>
+                                    <!-- [matAutocomplete]="auto" -->
+                                    <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                    <mat-option *ngFor="let filterhash of filteredHashtags | async" [value]="hashtag">
+                                        {{filterhash}}
+                                    </mat-option>
+                                    </mat-autocomplete> -->
+                                </mat-form-field>
+                            </div>
+                            <!-- <ngx-tags-input [limit]=10  [header]="'Add suitable #Hashtags  '" [placeholder]="'Add a hashtag in order to increase visibility'" (tagsChange)="displayTags($event)" ></ngx-tags-input> -->
+                            <div class="add-photo-addprod mt-4">
+                                <div class="add-photo-title">Add photos (Maximum 10 photos)</div>
+                                <!-- <div class="row add-more-images-main">
+                                    <div *ngFor="let item of addphotos;index as indexs" class="col-md-3 col-4"  [ngClass]="indexs==activeindex?'active':''">
+                                        <img [src]="item.file" alt="" (click)="imagesdata(addphotos,indexs)" id={{indexs}}/>
+                                        <div>{{item.addphotos}}</div>
+                                    </div>
+                                    <div *ngIf="addphotos.length <= 9" class="col-md-3 col-4">
+                                        <div class="add-more-images">
+                                            <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                            <input type="file" #addphotosfile name="file" accept="image/png, image/jpeg" (change)="onSelectFile($event)" multiple />
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="row add-more-images-main addphotos">
+                                    <div *ngFor="let item of addphotos;index as indexs" class="col-md-3 col-4"  [ngClass]="indexs==activeindex?'active':''">
+                                        <img [src]="item.file" alt="" (click)="imagesdata(addphotos,indexs)" id={{indexs}}/>
+                                        <div>{{item.addphotos}}</div>
+                                        <div class="trash" data-toggle="modal" data-target="#productimgdelete" (click)="removeImages(indexs);"><i class="fa fa-trash" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div *ngIf="addphotos.length <= 9" class="col-md-3 col-4">
+                                        <div class="add-more-images">
+                                            <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                            <input type="file" name="file" accept="image/png, image/jpeg" (change)="onSelectFile($event)" multiple />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-photo-addprod mt-4">
+                                <div class="add-photo-title">
+                                    Add more photos (of any colors) to be appeared below the descriptions (Max 15 photos)
+                                </div>
+                                <!-- <div class="row add-more-images-main">
+                                    <div *ngFor="let item of Addmorephotos;index as indexs" class="col-md-3 col-4"  [ngClass]="indexs==activeindexmore?'active':''">
+                                        <img [src]="item.file" alt="" (click)="imagesdatamore(Addmorephotos,indexs)" id={{indexs}}/>
+                                        <div>{{item.Addmorephotos}}</div>
+                                    </div>
+                                    <div *ngIf="Addmorephotos.length <= 14" class="col-md-3 col-4">
+                                        <div class="add-more-images">
+                                            <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                            <input type="file" #addmorephotos name="file" accept="image/png, image/jpeg" (change)="onSelectFileMore($event)" multiple />
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="row add-more-images-main Addmorephotos">
+                                    <div *ngFor="let item of Addmorephotos;index as indexs" class="col-md-3 col-4"  [ngClass]="indexs==activeindexmore?'active':''">
+                                        <img [src]="item.file" alt="" (click)="imagesdatamore(Addmorephotos,indexs)" id={{indexs}}/>
+                                        <div>{{item.Addmorephotos}}</div>
+                                        <div class="trash" data-toggle="modal" data-target="#productimgdelete" (click)="removeImagesmore(indexs);"><i class="fa fa-trash" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div *ngIf="Addmorephotos.length <= 14" class="col-md-3 col-4">
+                                        <div class="add-more-images">
+                                            <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                            <input type="file" name="file" accept="image/png, image/jpeg" (change)="onSelectFileMore($event)" multiple />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end my-3">
+                    <button class="btn btn-cancel add-photo-nextbtn" (click)="productback()">Back</button>
+                    <button class="btn btn-primary add-photo-nextbtn" (click)="productnext3()">Next</button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-videos" role="tabpanel" aria-labelledby="pills-videos-tab">
+                <div class="row video-upload-section mt-3 mt-md-0">
+                    <div class="col-xl-5 col-md-6 col-12">
+                        <div class="images-upload-multiple">
+                            <div class="images-upload-icon-main">
+                                <a *ngIf="format==='video' && url" (click)="userreference()" class="user-icon">
+                                    <img src="assets/images//icons/user_icon.svg" />
+                                    <span>Tag Users</span>
+                                </a>
+                                <a *ngIf="format==='video'" href="javascript:void(0)" data-toggle="modal" data-target="#productdelete" style="z-index:1;position:absolute;">
+                                    <span class="deletevideo">
+                                        <img src="./assets/images//icons/delete.png" alt="" />
+                                    </span>
+                                </a>
+                                <a *ngIf="format==='video' && url" (click)="tagprodreference()" class="product-icon">
+                                    <img src="assets/images//icons/tag_product.svg" />
+                                    <span>Tag Products</span>
+                                </a>
+    
+                                <div *ngIf="format==='video' && url else addvideo" class="mb-1 contain-video product-card card-vids">
+                                    <video [src]="url" *ngIf="format==='video' && url" height="200" controls (loadedmetadata)="getDuration($event)"></video>
+                                </div>
+    
+                                <ng-template #addvideo>
+                                    <label class="add-video-section" for="file-input-video">
+                                        <img src="assets/images//icons/inbox-icons/plus.svg" alt="">
+                                        <input class="d-none" id="file-input-video" type="file" name="file" accept="video/*" (change)="onSelectFilevideo($event)" />
+                                        <p>Add Video</p>
+                                        <p>(Video must be 30 seconds or below & 5MB or below)</p>
+                                    </label>
+                                </ng-template>                                                                     
+    
+                                <div *ngIf="previewmainvideo != null" class="tags-inner-main video-tag-user">
+                                    <div *ngFor="let data of previewmainvideo.taggedUsers;let i = index" class="tags-inner" [ngStyle]="{'transform': 'translate3d('+ (data.x + 'px ,' + data.y + ('px ,') + '0px') +')'}" (cdkDragEnded)="onDragDroppedvideouser($event,i)" cdkDragBoundary=".images-upload-multiple" cdkDrag>{{data.username}}<img src="assets/images/icons/right_white_arrow.svg" alt="right-arrow">
+                                    </div>
+                                </div>
+                                <div *ngIf="previewmainvideo != null" class="tags-inner-main video-tag-user" style="left: inherit;right: 10px;bottom: 70px;">
+                                    <div class="tags-inner" *ngFor="let data of previewmainvideo.taggedProducts;let i = index" [ngStyle]="{'transform': 'translate3d('+ (data.x + 'px ,' + data.y + ('px ,') + '0px') +')'}" (cdkDragEnded)="onDragDroppedvideoproduct($event,i)" cdkDragBoundary=".images-upload-multiple" cdkDrag>
+                                        <p class="mb-0">{{data.productName}}</p>
+                                        <!-- <div class="d-flex align-items-center" *ngFor="let vari of data.variations">
+                                            size:-{{vari.variationTitle}}
+                                        {{vari.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{vari.MRP |currency:currencyUnit:'symbol'}}</span><img src="assets/images/icons/right_white_arrow.svg" alt="right-arrow">
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div *ngIf="userserachbarreference" class="user-serachbar-reference">
+                                    <div class="images-search-close" (click)="usersearchclose()">
+                                        <img class="product-icon" src="assets/images//icons/close.svg" alt="close"/>
+                                    </div>
+                                    <div class="images-upload-search mt-0">
+                                        <input type="text" (keyup)="getUsersvideo()" [(ngModel)]="usersearchvideo" placeholder="Search">
+                                        <div class="search-icon">
+                                            <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                                        </div>
+                                    </div>  
+                                    <div (click)="taguserdatavideo(userdata)" class="user-tbl-detail" *ngFor="let userdata of usersearchdatavideo,index as indexuser" id={{userdata._id}}>
+                                        <img [src]="userdata.profilePic || 'assets/images/profile.jpg'" alt="img">
+                                        <div class="user-tbl-detail-inner">
+                                            <div>{{userdata.fullName}}</div>
+                                            <p>{{userdata.username}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="message" class="prod-box-video-audio">
+                                    <div class="product-box" *ngIf="tagprod">
+                                        <ul class="list-group">   
+                                            <li class="images-search-close" (click)="productsearchclose()">
+                                                <img class="product-icon" src="assets/images/icons/close.svg" alt="close">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="images-upload-search p-0">
+                                                    <input type="text" placeholder="Search" (keyup)="getProductvideo()" [(ngModel)]="productsearchvideo">
+                                                    <div class="search-icon">
+                                                        <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                                                    </div>  
+                                                </div>                       
+                                            </li>                              
+                                            <li class="list-group-item" (click)="tagproductdatavideo(productdata)"  *ngFor="let productdata of productsearchdatavideo;let productindex = index" id={{productdata._id}}>
+                                                <div class="media">
+                                                    <div class="media-body align-self-center">
+                                                        <p class="mb-0">{{productdata.productName}}</p>
+                                                        <small>{{productdata.brand_details?.brandName}}</small>
+                                                        <div class="price" *ngFor="let vari of productdata.variations">
+                                                            size:-{{vari.variationTitle}}
+                                                            {{vari.sellingPrice |currency:currencyUnit:'symbol'}}<span>{{vari.MRP |currency:currencyUnit:'symbol'}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <img class="ml-3" src="{{productdata.productPhotos[0]?.image}}" alt="Generic placeholder image">
+                                                </div>
+                                            </li>                                                    
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+                        <div class="add-videocover-images" *ngIf="videouploadformate.length !=0">
+                            <p class="mb-1" *ngIf="addphotoscover.length < 1">Add a cover image</p>
+                            <p class="mb-1" *ngIf="addphotoscover.length >= 1">cover image</p>
+                            <!-- <div class="add-videocover-images-inner">
+                                <div *ngIf="addphotoscover.length < 1" class="add-more-images">
+                                    <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                    <input type="file"  name="file" accept="image/png, image/jpeg" (change)="onSelectFileimages($event)"/>
+                                </div>
+                                <div *ngIf="addphotoscover.length >= 1" class="add-more-images">
+                                    <img class="withimg" [src]="addphotoscover" alt=""/>
+                                </div>
+                                <a *ngIf="addphotoscover.length >= 1" (click)="removecoverimg()" href="javascript:void(0)">Remove</a>
+                            </div> -->
+                            <div class="add-videocover-images-inner">
+                                <div *ngIf="addphotoscover.length < 1" class="add-more-images">
+                                    <img src="assets/images/icons/inbox-icons/plus.svg" alt=""/>
+                                    <input type="button"  name="file" accept="image/png, image/jpeg" (click)="onSelectFileimages()"/>
+                                </div>
+                                <div *ngIf="addphotoscover.length >= 1" class="add-more-images">
+                                    <img class="withimg" [src]="addphotoscover" alt=""/>
+                                    <!-- <img src="assets/images//icons/inbox-icons/plus.svg" alt=""> -->
+                                </div>
+                                <a *ngIf="addphotoscover.length >= 1" (click)="removecoverimg()" href="javascript:void(0)">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-md-6 col-12 mb-3">
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-cancel add-photo-nextbtn" (click)="productback()">Back</button>
+                    <button class="btn btn-primary add-photo-nextbtn" (click)="productnext4()">Next</button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-offer" role="tabpanel" aria-labelledby="pills-offer-tab">
+                <form [formGroup]="pricingshipping">
+                    <table class="table table-borderless table-responsive-form">
+                        <!-- <tr>
+                            <td>Maximum Retail Price <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small"
+                                    placeholder="MRP (including all taxes)" formControlName="maximumretailprice"></td>
+                        </tr> -->
+                        <!-- <tr>
+                            <td class="common-table-data-width">Your Selling Price <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small"
+                                    placeholder="Selling price (including all taxes)" formControlName="yoursellingprice"></td>
+                        </tr>
+                        <tr>
+                            <td>Discount</td>
+                            <td><input type="text" name="" class="form-control form-control-small" value="15%" formControlName="discount"></td>
+                        </tr> -->
+                        <tr>
+                            <td>Sales Tax (GST) <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small" placeholder="18%" formControlName="salestax"></td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Stock Quantity <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small" placeholder="100" formControlName="stockquantity"></td>
+                        </tr> -->
+                        <tr>
+                            <td>Maximum Order Quantity <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small" placeholder="10" formControlName="maximumorderquantity"></td>
+                        </tr>
+                        <tr>
+                            <td>Minimum Order Quantity <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small" placeholder="1" formControlName="minimumorderquantity"></td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Seller SKU</td>
+                            <td><input type="text" name="" class="form-control form-control-small"
+                                    placeholder="Jeans_Black_Medium_Size" formControlName="sellerSKU"></td>
+                        </tr> -->
+                        <tr>
+                            <td>HSN Code <span class="requiredInput">*</span></td>
+                            <td><input type="text" name="" class="form-control form-control-small" placeholder="1" formControlName="hsncode"></td>
+                        </tr>
+                        <tr>
+                            <td>Let Influencers Promote/Market <span class="requiredInput">*</span></td>
+                            <td>
+                                <div class="form-control-small select2-val">
+                                    <ng-select2 width="100%" [data]="promotemarket" formControlName="influencerspromotemarket" [placeholder]="'Select Influencers Promote/Market '" (ngModelChange)="changeInfluencerPromoteValue()"></ng-select2>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="this.pricingshipping.controls.influencerspromotemarket.value == 'true'">
+                            <td></td>
+                            <td>
+                                <div class="form-control-big quantity-border xl-width-100">
+                                    <div class="quantity-sold-unit">
+                                        <div class="quantity-sold-unit-title mb-2">
+                                            <div class="quantity-sold-title">Quantity Sold</div>
+                                            <div class="quantity-unit-title">Pay Per Unit</div>
+                                        </div>
+                                        <ul>
+                                            <li *ngFor="let item of influencerPrice; let i = index;">
+                                                <div class="d-flex justify-content-between w-100">
+                                                    <div class="quantity-sold-inner">
+                                                        <input type="text" class="form-control" placeholder="Start unit" readonly [(ngModel)]="item.quantitysoldfrom" [ngModelOptions]="{standalone: true}"/>
+                                                        <span>To</span>
+                                                        <input type="text" class="form-control" placeholder="End unit" [(ngModel)]="item.quantitysoldto" [ngModelOptions]="{standalone: true}" (keyup)="unitChange(i)" [ngClass]="{'is-invalid': (item.quantitysoldfrom > item.quantitysoldto)}"/>
+                                                    </div>
+                                                    <div class="quantity-unit-inner">
+                                                        <input type="text" class="form-control" min=1 placeholder="Total Amount" #price="ngModel" [(ngModel)]="item.payperunit" [ngModelOptions]="{standalone: true}" [ngClass]="{'is-invalid': (!item.payperunit || item.payperunit <= 0) && (price.touched || isFormSubmited)}" />
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div  class="d-flex justify-content-between w-100">
+                                                    <div class="quantity-sold-inner">
+                                                        <input type="text" class="form-control" placeholder="Start unit" readonly [(ngModel)]="quantitysoldfrom" [ngModelOptions]="{standalone: true}"  />
+                                                        <span>And </span>
+                                                        <input type="text" class="form-control" placeholder="above" readonly />
+                                                    </div>
+                                                    <div class="quantity-unit-inner">
+                                                        <input type="text" class="form-control" placeholder="Total Amount" #aboveprice="ngModel" [(ngModel)]="payperunit" [ngModelOptions]="{standalone: true}" [ngClass]="{'is-invalid': (!payperunit || payperunit <= 0) && (aboveprice.touched || isFormSubmited)}"/>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <!-- <a href="javascript:void(0)" class="quantity-sold-title" (click)="onAdd()">Add</a> -->
+                                        
+                                        <!-- <ul>
+                                            <li formArrayName="influencerspromote" *ngFor="let item of pricingshipping.get('influencerspromote')['controls']; let i = index;">
+                                                <div [formGroupName]="i" class="d-flex justify-content-between w-100">
+                                                    <div class="quantity-sold-inner">
+                                                        <input type="text" class="form-control" placeholder="Start unit" formControlName="quantitysoldfrom" readonly/>
+                                                        <span>To</span>
+                                                        <input type="text" class="form-control" placeholder="End unit" formControlName="quantitysoldto"/>
+                                                    </div>
+                                                    <div class="quantity-unit-inner">
+                                                        <input type="text" class="form-control" placeholder="Total Amount" formControlName="payperunit" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> -->
+                                        <!-- <ul>
+                                            <li>
+                                                <div  class="d-flex justify-content-between w-100">
+                                                    <div class="quantity-sold-inner">
+                                                        <input type="text" class="form-control" placeholder="Start unit" readonly [(ngModel)]="quantitysoldfrom" [ngModelOptions]="{standalone: true}"  />
+                                                        <span>And </span>
+                                                        <input type="text" class="form-control" placeholder=" above" readonly />
+                                                    </div>
+                                                    <div class="quantity-unit-inner">
+                                                        <input type="text" class="form-control" placeholder="Total Amount" [(ngModel)]="payperunit" [ngModelOptions]="{standalone: true}" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul> -->
+                                        <div class="quantity-sold-unit-title mt-2">
+                                            <a href="javascript:void(0)" class="quantity-sold-title" (click)="onAdd()">Add More</a>
+                                            <!-- <a *ngIf="pricingshipping.controls.influencerspromote.value.length > 1" href="javascript:void(0)" class="quantity-unit-title" (click)="quantitysoldremove()">Remove Last</a> -->
+                                            <a *ngIf="influencerPrice.length > 1" href="javascript:void(0)" class="quantity-unit-title" (click)="onRemove()">Remove Last</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Age Restriction <span class="requiredInput">*</span></td>
+                            <td>
+                                <div class="form-control-small select2-val">
+                                    <ng-select2 width="100%" [data]="agerestriction" formControlName="agerestriction" [placeholder]="'Select Age Restriction'"></ng-select2>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Target for <span class="requiredInput">*</span></td>
+                            <td>
+                                <div class="form-control-small select2-val">
+                                    <ng-select2 width="100%" [data]="targetfor" formControlName="targetfor" [placeholder]="'Target for'">
+                                    </ng-select2>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Country of Origin <span class="requiredInput">*</span></td>
+                            <td>
+                                <div class="form-control-small select2-val">
+                                    <ng-select2 [data]="countryoforigin" width="100%" formControlName="countryoforigin" [placeholder]="'Country of Origin'">
+                                    </ng-select2>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Domestic Shipping Charges</td>
+                            <td>
+                                <input type="text" name="" class="form-control form-control-small" placeholder="0.00" formControlName="domesticshippingcharges">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <button class="btn btn-cancel" (click)="productback()">Back</button>
+                                <button class="btn btn-primary" (click)="productnext5()">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / _end > Page Main Content < SHB / -->
+
+<!-- / _begin > COLLECTION [Custom Element] - All page modal collection < SHB / -->
+<div name="shb-page-modal">
+    <!-- / _begin > MODAL - Cart item Remove Confirm Modal < SHB / -->
+    <div class="modal fade shb-modal" id="modalConfirmCartRemove" data-backdrop="static" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Cart Item Remove</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                            name="shbicon-close">
+                            <path
+                                d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li> Are you sare you want to remove item from cart.</li>
+                        <li> If you don't want remove from cart, you can move item to <strong>Save List.</strong></li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal btn-modal-blue">Move to Save List</button>
+                    <button type="button" class="btn-modal btn-modal-white">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > MODAL - Cart item Remove Confirm Modal < SHB / -->
+
+    <!-- / _begin > MODAL - Image Requirements < SHB / -->
+    <div class="modal fade" id="imageRequirements" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-3 p-lg-5">
+                    <div class="modal-header-wrapper">
+                        <h6 class="modal-header-title">Image Requirements</h6>
+                        <button class="close-popup-sidebar ml-auto contain-image" data-dismiss="modal"
+                            aria-label="Close">
+                            <img style="height:inherit;" src="assets/images/icons/close.svg" />
+                        </button>
+                    </div>
+
+                    <div class="modal-data-wrapper">
+                        <ul class="requirement-list">
+                            <li class="requirement-list-items">Choose images that are clear, information-rich, and
+                                attractive</li>
+                            <li class="requirement-list-items">Products must fill at least 85% of the images. Images
+                                must show only the product that is for sale, with few or no props and with no logos,
+                                watermarks, or inset images. images may only contain text that is a part of the product.
+                            </li>
+                            <li class="requirement-list-items">Main images must have a pure white background, must be a
+                                photo (not a drawing), and must not contain excluded accessories.</li>
+                            <li class="requirement-list-items">Images must be at least 1000 pixels on the longest side
+                                and at least 500 pixels on the shortest side to be zoomable.</li>
+                            <li class="requirement-list-items">Images must not exceed 2000px x 3000px and less than
+                                10MB.</li>
+                            <li class="requirement-list-items">We currently accept JPG, JPEG, PNG format(s) only.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > MODAL - Image Requirements < SHB / -->
+
+    <!-- / _begin > MODAL - Color Select < SHB / -->
+    <div class="modal fade" id="colorSelect" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="modal-heading">Select Color</h3>
+                    <div class="select-color-wrap-product">
+                        <ul class="colorList">
+                            <li class="colorItemCircleWrap" *ngFor="let item of colors,let i = index">
+                                <div class="radio-check-wrap">
+                                    <label><input type="radio" name="colorOption" data-toggle="tooltip"
+                                            title="color-name"  (click)="colorarray(item)" />
+                                        <span class="checkmark-radio"
+                                            [style]="{'background-color': item.colorCode}"></span>
+                                    </label>
+                                </div>
+                                <div class="colorcode">{{item.colorName}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="text-right pt-2 mt-1">
+                        <button type="button" class="btn modal-button white-border-button"
+                            data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn modal-button blue-button ml-2" data-dismiss="modal"
+                            (click)="selectcolor()">Select</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="linkproduct-with-color" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="modal-heading">Link Products with more colors</h3>
+                    <div class="select-color-wrap-product linkproduct-withcolor-main images-upload-multiple">
+                        <div id="message" class="prod-box-video-audio">
+                            <div class="product-box" style="display:block;">
+                                <ul class="list-group">
+                                    <li class="images-search-close d-none">
+                                        <img class="product-icon" src="assets/images/icons/close.svg" alt="close">
+                                    </li>
+                                    <li class="list-group-item d-none">
+                                        <div class="images-upload-search p-0">
+                                            <input type="text" placeholder="Search">
+                                            <div class="search-icon">
+                                                <img src="./assets/images/icons/icon-search.svg" alt="" width="15" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" *ngFor="let item of SellerWiseProductList;let i=index">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                  name="conditions"     
+                                                  [disabled]="item.checkedbool == false && isDisabled == true ? 'isDisabled' : ''"
+                                                  (change)="onChange($event, item)"
+                                                  [checked]="checkedProduct(item)">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">{{item.productName}}</p>
+                                                <small>{{item.productId}}</small>
+                                                <div class="price">{{item.variations[0].sellingPrice |currency:currencyUnit:'symbol'}}<span>{{item.variations[0].MRP |currency:currencyUnit:'symbol'}}</span></div>
+                                            </div>
+                                            <img class="ml-3" src="{{item.productPhotos[0].image}}"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <!-- <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Green Kurti Anarka</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 41.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Orange Kurti Sets</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 43.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Patiyala Kurti</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 42.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Green Kurti Anarka</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 41.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Green Kurti Anarka</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 41.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="media">
+                                            <div class="custom-input-check mt-2 add-prod-checkbox">
+                                                <input type="checkbox" class="form-control" id="info-attr"
+                                                    name="conditions" value="agree">
+                                                <span class="check-checked"></span>
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                <p class="mb-0">Green Kurti Anarka</p>
+                                                <small>levisindia</small>
+                                                <div class="price">INR 596.00<span>INR 899.00</span></div>
+                                            </div>
+                                            <img class="ml-3" src="./assets/images/Rectangle 41.jpg"
+                                                alt="Generic placeholder image">
+                                        </div>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right pt-2 mt-1">
+                        <button type="button" class="btn modal-button white-border-button"
+                             (click)="LinkProductCancel()">Cancel</button>
+                        <button type="button" class="btn modal-button btn-outline-primary ml-2"
+                            (click)="SelectWithLinkProduct()">Select</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade addsize-prod-pop" id="addsize-prod" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body quantity-sold-unit">
+                    <div class="images-upload-search m-0 mb-3">
+                        <input type="text" placeholder="Search">
+                        <div class="search-icon">
+                            <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                        </div>
+                    </div>
+                    <div class="quantity-sold-unit-title mb-2">
+                        <div class="quantity-sold-title">Formal Name</div>
+                        <div class="quantity-unit-title">Symbol</div>
+                    </div>
+                    <ul>
+                        <li (click)="sizenamevalue(item, indexs)" *ngFor="let item of productsize;index as indexs" [ngClass]="indexs==sizeactiveindex?'active':''">
+                            <div class="formal-name-size">
+                                {{item.formalname}}
+                            </div>
+                            <div class="Symbol-size">
+                                {{item.Symbolsize}}
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="quantity-sold-unit-title mt-2">
+                        <a data-toggle="modal" data-dismiss="modal" data-target="#addsize-addprod"
+                            href="javascript:void(0)" class="quantity-sold-title">
+                            Add New Size
+                        </a>
+                    </div>
+                    <div class="text-right pt-2 mt-1">
+                        <button type="button" class="btn modal-button white-border-button"
+                            data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn modal-button btn-outline-primary ml-2" (click)="addsizedata()">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade addsize-prod-pop" id="addsize-addprod" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <form class="modal-body quantity-sold-unit" [formGroup]="addNewSize">
+                    <div class="d-block"><b>Add New Size</b></div>
+                    <div class="add-new-size">
+                        <div>
+                            <label>Formal Name</label><input type="text" placeholder="Medium"
+                                formControlName="newsizeformal">
+                        </div>
+                        <div>
+                            <label>Symbol Name</label><input type="text" placeholder="M"
+                                formControlName="newsizesymbol"/>
+                        </div>
+                    </div>
+                    <div class="text-right pt-2 mt-1">
+                        <button type="button" class="btn modal-button white-border-button"
+                            data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn modal-button btn-outline-primary ml-2"
+                            (click)="Addnewsize(f2)">Select</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > MODAL - Color Select < SHB / -->
+</div>
+
+<!-- Modals Starts -->
+<div class="modal fade action-modal" id="productdelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pb-0">
+                <div class="images-search-close prod-closemain mb-3">
+                <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0" src="assets/images/icons/close.svg" alt="close">
+                </div>
+                <b>Are you sure want Remove this video?</b>
+                <p class="mt-3">This video will be permanently deleted. This cannot be undone.</p>
+            </div>               
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-modal-cancel pl-5 pr-5" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-deactivate-action pl-4 pr-4 ml-2" data-dismiss="modal" (click)="removevideo()">Yes, Remove</button>
+            </div>
+        </div>
+    </div>
+</div>    
+<!-- Modals End -->
+
+<!-- Modals Starts -->
+<div class="modal fade action-modal" id="productimgdelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pb-0">
+                <div class="images-search-close prod-closemain mb-3">
+                <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0" src="assets/images/icons/close.svg" alt="close">
+                </div>
+                <b>Are you sure want remove this product?</b>
+                <p class="mt-3">This product will be permanently deleted. This cannot be undone.</p>
+            </div>               
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-modal-cancel pl-5 pr-5" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-deactivate-action pl-4 pr-4 ml-2" data-dismiss="modal" (click)="productimgdelete()">Yes, Remove</button>
+            </div>
+        </div>
+    </div>
+</div>    
+<!-- Modals End -->
+
+<!-- / _end > COLLECTION [Custom Element] - All page modal collection < SHB / -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <iframe id="iframeYoutube" width="100%" height="315" src="https://www.youtube.com/embed/e80BbX05D7Y"
+                    frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Product upload processing...</p>
+</ngx-spinner>
+

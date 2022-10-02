@@ -1,0 +1,75 @@
+<!-- / _begin > Page Header / -->
+<header class="user-action-header">
+    <div class="container">
+        <a class="brand-logo contain-image" [routerLink]="'/accounts/login'">
+            <img src="assets/images/logo.svg" alt="brand"/>
+        </a>
+    </div>
+</header>
+<!-- / _end > Page Header / -->
+<section class="user-action-section">
+    <div class="container">
+        <div class="row">
+            <div class='col-md-5 col-lg-6 order-2 order-md-1'>    
+                <app-owlcarousel></app-owlcarousel>
+            </div>
+            <div class="col-md-7 col-lg-6 order-1 order-md-2">
+                <div class="user-action-card">
+                    <div class="top-section-action">
+                        <div class="user-action-card-heading-wrap">
+                            <h1 class="user-action-card-heading">Login using Google or Facebook</h1>
+                        </div>
+                        <form class="action-form" id="login-form">
+                            <div class="formElement-bottomSpace country-code-flag">
+                                <div class="position-relative w-100">
+                                    <ngx-intl-tel-input [cssClass]="'custom form-control input-field user-action-input input-phone'" [preferredCountries]="preferredCountries"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+                                    [selectedCountryISO]="CountryISO.India" maxLength="15"
+                                    [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" name="phone">
+                                    </ngx-intl-tel-input>
+                                </div>
+                            </div>
+                
+                            <div class="formElement-bottomSpace">
+                                <div class="position-relative">
+                                    <input type="text" class="form-control input-field user-action-input otp-input" placeholder="Enter Email OTP">
+                                    <a class="otp-resend-link">Resend </a>
+                                </div>
+                            </div>
+                
+                            <div class="formElement-bottomSpace">
+                                <button type="submit" class="btn btn-user-action">Login</button>
+                            </div>
+                
+                        </form>
+                    </div>
+                
+                    <div class="user-action-internal-links-wrapper">
+                        <div class="bottom-section-action">
+                            <p class="an-account-heading">Already have an account?</p>
+                            <div class="create-account">
+                                <a class="create-account-link" [routerLink]="['/accounts/login']">Login</a>
+                                <a class="create-account-link" [routerLink]="['/accounts/signup']">or create a personal account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="app-download-box">
+                    <p class="app-download-box-heading">Get the app</p>
+                    <div class="app-download-store">
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-playstore.png" alt="playstore" />
+                        </a>
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-appstore.png" alt="appstore" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / _end > User Action Section < SHB / -->
+    </div>
+</section>            

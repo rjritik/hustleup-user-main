@@ -1,0 +1,52 @@
+    <!-- / _begin > Page Header / -->
+    <header class="user-action-header">
+        <div class="container">
+            <a class="brand-logo contain-image" [routerLink]="['/accounts/login']">
+                <img src="assets/images/logo.svg" alt="brand" />
+            </a>
+        </div>
+    </header>
+    <!-- / _end > Page Header / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <section class="forget-password-sec">
+        <div class="container">
+            <div class="center-screen-password password-card-padding">
+                <div class="forget-password-card">
+                    <form (ngSubmit)="sendOtp(f)" class="forget-card-pad-y" [formGroup]="sendOtpForm">
+                        <div class="user-action-card-heading-wrap">
+                            <h1 class="heading-forget">Forget your password</h1>
+                        </div>
+                        <div class="formElement-bottomSpace">
+                            <input type="text" class="form-control action-input" placeholder="Username, email or phone number" formControlName="userIdentityType" readOnly>
+                            <!-- <label class="mt-1 text-danger text-left w-100" *ngIf="f.controls.forgetPasswordOtp.invalid && f.controls.forgetPasswordOtp.touched">
+                                field is required
+                            </label> -->
+                        </div>
+                        <div class="formElement-bottomSpace">
+                            <div class="forget-password-otp-option-wrapper">
+                                <label class="label-forget-password-option">Receive OTP on</label>
+                                <div class="d-flex align-items-center">
+                                    <div class="custom-input-radio">
+                                        <label><input type="radio" value="email" formControlName="receiveOtpOn"> Email
+                                            <span class="radio-checked"></span>
+                                        </label>
+                                    </div>
+                                    <div class="custom-input-radio">
+                                        <label><input type="radio" value="mobile" formControlName="receiveOtpOn" checked> Mobile
+                                            <span class="radio-checked"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="formElement-btnBottomSpace">
+                            <button type="submit" class="btn btn-action-forget">Send OTP</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Main Content < SHB / -->

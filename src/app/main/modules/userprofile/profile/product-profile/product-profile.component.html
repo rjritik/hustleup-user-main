@@ -1,0 +1,74 @@
+<div id="pills-product" *ngIf="IsUser == false">
+    <ngx-horizontal-scroll-menu [items]="MenuCategoryList"  [distance]="100" (click)="horizontalscroll($event)" [text]="itemclass"></ngx-horizontal-scroll-menu>
+    <div class="order-history-defalut product-sub-small" *ngIf="ProductList.length == 0">
+        <div class="order-history-defalut-img">
+            <img src="assets/images/icons/new-icons/products.svg" alt="order-history-defalut"/>
+        </div>
+        <p>No products have been listed yet</p>
+        <p>You have so many ways to make your products visible, like search results, through your profile, influencers profile & shares, posts & tags, sizzles (videos), blogs, maps, your public and private channels, other user's channels, message, shares, embedded posts etc.</p>
+        <p>And fee? No marketplace fee up to total sales of Rs. 50,000 and then 4% only.</p>
+        <button  [routerLink]="['/addproduct']" class="btn btn-primary" type="submit" *ngIf="IsInfluencer == false">Upload Products</button>
+    </div>
+
+    <!-- <div class="pn-ProductNav_Wrapper mb-3" >
+        <nav id="pnProductNav" class="pn-ProductNav" data-overflowing="right">
+            <div id="widgetsContent" class="pn-ProductNav_Contents">
+                <a href="#" class="pn-ProductNav_Link" aria-selected="true">All</a>
+                <a href="#" class="pn-ProductNav_Link">Kidswear</a>
+                <a href="#" class="pn-ProductNav_Link">Menswear</a>
+                <a href="#" class="pn-ProductNav_Link">Look &amp; Style</a>
+                <a href="#" class="pn-ProductNav_Link">Fashion &amp; Apparel Design</a>
+                <a href="#" class="pn-ProductNav_Link">Beauty &amp; Makeup</a>
+                <a href="#" class="pn-ProductNav_Link">Health &amp; Fitness</a>
+                <a href="#" class="pn-ProductNav_Link">Beds</a>
+                <a href="#" class="pn-ProductNav_Link">Desks</a>
+                <a href="#" class="pn-ProductNav_Link">Flooring</a>
+                <a href="#" class="pn-ProductNav_Link">Lighting</a>
+                <a href="#" class="pn-ProductNav_Link">Mattresses</a>
+                <a href="#" class="pn-ProductNav_Link">Solar Panels</a>
+                <a href="#" class="pn-ProductNav_Link">Bookcases</a>
+                <a href="#" class="pn-ProductNav_Link">Mirrors</a>
+                <a href="#" class="pn-ProductNav_Link">Rugs</a>
+            </div>
+        </nav>
+        <button id="pnAdvancerLeft" class="pn-Advancer pn-Advancer_Left" type="button">
+            <svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" width="7.685" height="14.127" viewBox="0 0 7.685 14.127">
+                <path id="Path_2782" data-name="Path 2781" d="M36.021,15.128l3.056,3.056,2.655,2.655a.557.557,0,0,1-.007.795l-2.648,2.553-3.056,2.947" transform="translate(-34.96 -14.068)" fill="none" stroke="#222" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+            </svg>
+        </button>
+        <button id="pnAdvancerRight" class="pn-Advancer pn-Advancer_Right" type="button">
+            <svg class="pn-Advancer_Icon" xmlns="http://www.w3.org/2000/svg" width="7.685" height="14.127" viewBox="0 0 7.685 14.127">
+                <path id="Path_2782" data-name="Path 2782" d="M36.021,15.128l3.056,3.056,2.655,2.655a.557.557,0,0,1-.007.795l-2.648,2.553-3.056,2.947" transform="translate(-34.96 -14.068)" fill="none" stroke="#222" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+            </svg>
+        </button>
+    </div> -->
+    <div class="row half-row" *ngIf="ProductList.length != 0">
+        <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let item of ProductList">
+            <div class="product-items-wrapper hashtag-post-border-line">
+                <div class="product-items-image">
+                    <div class="product-items-image">
+                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag">
+                            <owl-carousel [options]="SlideOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+                                <div class="item" *ngFor="let items of item.productPhotos">
+                                    <img [src]="items.image"/>
+                                </div>
+                            </owl-carousel>
+                        </div>
+                      </div>
+                    <div class="abs-hover-items"></div>
+                </div>
+                <div class="post-detail-wrap">
+                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                    <label class="post-uploader-name">{{item?.brand_details?.brandName}}</label>
+                    <div *ngIf="item?.isWishlist == false" class="hashtag-save-icon"><img id="postSave" (click)="Wishlist(item)" src="assets/images/icons/icons-post-save.svg"></div>
+                    <div *ngIf="item?.isWishlist == true" class="hashtag-save-icon"><img id="postSave" (click)="Wishlistunsaved(item)" src="assets/images/icons/icons-post-saved.svg"></div>
+                    </div>
+                    <p class="product-name" title="Black full sleave sweater">{{item.productName}}</p>
+                    <div class="price-block mt-0" *ngFor="let subitem of item.variations">
+                        <label>{{item.variations[0].sellingPrice |currency:currencyUnit:'symbol'}}<del>{{item.variations[0].MRP |currency:currencyUnit:'symbol'}}</del></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

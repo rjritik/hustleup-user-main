@@ -1,0 +1,162 @@
+<div class="row">
+<!-- |< Feed Post Design _begin >| -->
+<div class="home-feed-post-wrapper sidebarpro">
+    <div class="home-feed-single-post" *ngFor="let item of BlogData">
+        <div class="user-and-post-info-wrapper" *ngIf="item.isMuted == false">
+            <div class="post-uploader-profile-info-wrapper">
+                <div class="post-uploader-profile cover-image">
+                    <img src="{{item.userDetails[0]?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="post-profile"/>
+                </div>
+                <div class="d-flex flex-column align-items-start">
+                    <div class="d-flex align-items-center">
+                        <label class="post-uploader-name">{{item.userDetails[0]?.username}}</label>
+                        <span *ngIf="item.isCurrent !== true" class="dot-circle"></span>
+                        <a *ngIf="item.isFollowing == true && item.isCurrent !== true" class="follow-post-uploader text-black" href="javascript:void(0)" (click)="followANDunfollow(item)">Following</a>
+                        <div *ngIf="item.isFollowing == false">
+                            <a *ngIf="item.isCurrent !== true" class="follow-post-uploader" href="javascript:void(0)" (click)="followANDunfollow(item)">Follow</a>
+                        </div>
+                    </div>
+                    <div class="post-timestamp">{{item.created_date | dateAgo}}</div>
+                </div>
+            </div>
+
+            <div class="from-right post-dropDown">
+                <div class="dropdown">
+                    <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                        <div class="post-option-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu">
+                        <ul>
+                            <li class="dropdown-item d-flex align-items-center alert-copied" (click)="copylink(item._id)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-link-b.svg" alt="drop-icons-1" /></div>
+                                <a class="menulabel dropText text-black">Copy Link</a>
+                            </li>
+                            <li *ngIf="item.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-mute" (click)="mutedaccount(item)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-mute-b.svg" alt="drop-icons-2" /></div>
+                                <a class="menulabel dropText text-black">Mute <b>@{{item.userDetails[0]?.username}}</b></a>
+                            </li>
+                            <li *ngIf="item.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-report" data-toggle="modal" data-target="#alertReport" (click)="BlogReportId(item._id)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-report-b.svg" alt="drop-icons-3" /></div>
+                                <a class="menulabel dropText text-black">Report</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-gap-wrapper" *ngIf="item.isMuted == false">
+            <div class="card-blog mb-3">
+                <div class="card-cover-blog cover-image">
+                <img src="{{item.coverImg}}" onerror="this.src='assets/images/logo.svg'" alt="post" class="object-position-top" />
+                </div>
+                <div class="blog-texts-wrapper">
+                <h3 class="two-line-clamp blog-card-head">{{item.description}}</h3>
+                </div>
+            </div>
+            <div class="home-feed-post-user-action">
+                <div class="home-feed-action-flex">
+                    <div class="post-action post-like">
+                        <div class="post-icon changeImage">
+                            <img *ngIf="item.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="LikeUnlikePostBlog(item)" />
+                            <img *ngIf="item.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="LikeUnlikePostBlog(item)"/>
+                        </div>
+                        <label class="post-action-counter">{{item.totalLikes}}</label>
+                    </div>
+                    <div class="post-action post-comment">
+                        <div class="post-icon" (click)="commentpost(item)"><img src="assets/images/icons/icons-post-comment.svg"></div>
+                        <label class="post-action-counter">{{item.totalComments}}</label>
+                    </div>
+                    <div class="post-action post-share">
+                        <div class="post-icon post-send-icon" (click)="postshare(item)"><img src="assets/images/icons/icons-post-send.svg"></div>
+                    </div>
+                    <div class="post-action post-save">
+                        <div class="post-icon">
+                            <img *ngIf="item.isBookmarked == false" src="assets/images/icons/icons-post-save.svg" alt="" (click)="SaveUnsaveBlog(item)"/>
+                            <img *ngIf="item.isBookmarked == true" src="assets/images/icons/icons-post-saved.svg" alt="" (click)="SaveUnsaveBlog(item)"/>
+                        </div>
+                    </div>
+                    <div class="post-action post-promote" (click)="PromoteClick(item)" *ngIf="item.userDetails[0]?.role === 4">
+                        <div class="post-icon"><img src="assets/images/icons/icon-promote.svg"></div>
+                    </div>
+                    <div class="post-action buy-coffee" *ngIf="item.userDetails[0]?.role == 5 && IsInfluencer == false && item.userDetails[0]?.isCoffeeEnable == true">
+                        <div class="post-icon" (click)="CoffeeIconClick(item)"><img src="assets/images/icons/coffee.svg"></div>
+                    </div>
+                </div>
+                <div class="home-feed-post-shop-link">
+                    <a class="home-feed-post-shop-btn" href="javascript:void(0)" (click)="postBlogOpen(item)">
+                        <span class="shop-btn-text">Read</span>
+                        <span class="shop-btn-arrow"><img src="assets/images/icons/icons-post-shop-left-arrow.svg"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-rightsidebar class="home-trend-table-wrapper"></app-rightsidebar>
+<!-- |< Feed Post Design _end >| -->
+<section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+</div>
+
+<div name="shb-page-toast">
+  <!-- / _begin > TOAST - Link Copied < SHB / -->
+  <div class="alert alert-bg-white d-none" role="alert" id="alertCopied">
+      Link copied to clipboard.
+      <button type="button" class="close">
+          <span class="contain-image"><img src="assets/images/icons/close.svg" alt="close" /></span>
+      </button>
+  </div>
+  <!-- / _end > TOAST - Link Copied < SHB / -->
+
+  <!-- / _begin > TOAST - Channle Mute < SHB / -->
+  <div class="alert alert-bg-white d-none" role="alert" id="alertMute">
+      <label class="m-0"><b>@levisindia </b> has been muted.</label>
+      <button type="button" class="close">
+          <span aria-hidden="true" class="contain-image"><img src="assets/images/icons/close.svg" alt="close" /></span>
+      </button>
+  </div>
+  <!-- / _end > TOAST - Channle Mute < SHB / -->
+
+  <!-- / _begin > MODAL - Post Report < SHB / -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="alertReport">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header align-items-center">
+                <h5 class="modal-title text-center mb-0">Report an issue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img src="assets/images/icons/close.svg" />
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="report-alert-list w-100">
+                     <li *ngFor="let item of reportIssue" (click)="reportBlog(item.issue)"><a class="report-alert-list-link">{{item.issue}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / _end > MODAL - Post Report < SHB / -->
+
+  <!-- / _begin > MODAL - Thank you Reporting < SHB / -->
+  <div class="modal fade" tabindex="-1" aria-hidden="true" id="alertReported">
+      <div class="modal-dialog modal-dialog-centered modal-thanks">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <p class="report-thanks-message">Thank you for reporting this post. We will review your issue and take necessary action.</p>
+                  <div class="text-center">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- / _end > MODAL - Thank you Reporting < SHB / -->
+</div>
+
+<div name="shb-page-sliders">
+    <app-blogs-show-sidebar [SinglePostData]="singlePostBlogDetail" [iconClickType]="iconClickType" [blogdetailsopen]="blogdetailsopen" (closebar)="closesidebar()"></app-blogs-show-sidebar>
+</div>

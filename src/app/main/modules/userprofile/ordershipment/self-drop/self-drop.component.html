@@ -1,0 +1,155 @@
+<div id="SelfDrop">
+  <div class="user-social-life-wrapper">
+     <ul class="user-pro-social-flex">
+        <li class="user-profile-title">
+           <p>
+              <a (click)='shipmentback()' class="shipment-backicon">
+              <img src="assets/images/icons/back_bold_arrow.svg" alt="order-ship">
+              </a>
+              Self Drop
+           </p>
+           <a href="javascript:void(0)" class="print-self-drop" (click)="print()">
+           <img src="assets/images/icons/print.svg" alt="print" >
+           Print
+           </a>
+        </li>
+     </ul>
+     <div class="row">
+        <div class="col-12">
+           <div class="acceptance-self-drop">
+              <button class="btn btn-primary w-auto" type="button" (click)="RequestAcceptance()" *ngIf="Isrequstcreatebtnshow">
+              Request for acceptance
+              </button>
+              <div class="acceptance-self-innerbtn">
+                 <!-- <button class="btn btn-outline-primary w-auto mr-4" type="button">
+                 Request for acceptance
+                 </button> -->
+                 <button class="btn btn-outline-danger w-auto" type="button" (click)="RequestCancel()" *ngIf="!Isrequstcreatebtnshow">
+                 Cancel Request
+                 </button>
+              </div>
+              <p class="mt-4">After requesting, ask the buyer (receiver) to accept the self drop delivery on their app.</p>
+              <!-- <p class="mt-5">If the buyer (receiver) does not accept the delivery on their app, please print out, get it signed by the receiver and <a (click)='uploaddelivary = !uploaddelivary' class="upload-delivery">Upload Delivery Note</a></p> -->
+           </div>
+           <!-- <div class="upload-delivery-note">
+              <form [formGroup]="DeliveryUploadForm">
+                 <div *ngIf="uploaddelivary"  class="admin-form-table table">
+                    <div class="form-row mt-5 align-items-center">
+                       <div class="form-group col-sm-3">
+                          <label>Upload self drop delivery note :</label>
+                       </div>
+                       <div class="form-group col-sm-6">
+                        <button type="button" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2" (click)="fileInput.click()"><span>Upload</span><input #fileInput type="file"  formControlName="uploadphotoname"  (change)="onFileInput($event)" accept="image/png, application/pdf, image/jpeg" style="display:none;" /></button>
+                        <small *ngIf="selectedfilename == null" [ngClass]="UploadNoStatement?'text-danger':''">(Accepted file formats: png, jpg & pdf)</small>
+                        <a href="javascript:void()" class="link-proof ml-2">
+                          <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                          View Delivery Note
+                        </a>
+                        <div class="file-info pt-2">{{ selectedfilename }}</div>
+                     </div>
+                    </div>
+                    <div class="form-row upload-delivery-nsub mit">
+                       <div class="form-group col-sm-3">
+                       </div>
+                       <div class="form-group col-sm-6 mt-4">
+                          <div class="d-flex flex-row align-items-center justify-content-end flex-wrap">
+                             <button type="button" class="btn btn-primary" (click)="Submit(f)">Submit</button>
+                          </div>
+                       </div>
+                    </div>
+                    <p class="mt-4"><b>Note :</b> If the buyer does not accept, neither you have got the delivery note signed, it will be difficult for you to claim the payment.</p>
+                 </div>
+              </form>
+           </div> -->
+        </div>
+     </div>
+  </div>
+</div>
+
+<div style="padding: 50px;width:30cm;min-height: 29.7cm;margin: 1cm auto;border: 1px #D3D3D3 solid;border-radius: 5px;background: white;box-shadow: 0 0 5px rgb(0 0 0 / 10%);display: none;" id="SelfDropInvoicePrint">
+   <ng-container *ngFor="let item of PrintInvoicedata">
+      <div style="text-align:center;">
+         <h2 style="margin-bottom:5px;">{{item.seller_details.businessName}}</h2>
+         <div>{{item.seller_details.businessAddress.address }}</div> 
+         <div>{{item.seller_details.businessAddress.street }}</div> 
+         <div> {{item.seller_details.businessAddress.city }}</div> 
+         <div>{{item.seller_details.businessAddress.state + " " + item.seller_details.businessAddress.pincode }}</div> 
+         <div>{{item.seller_details.businessAddress.countryCode }}</div> 
+         <div>GST: <span>{{item.seller_details.gstNumber}}</span></div>
+         <div>PAN: <span>{{item.seller_details.businessPAN}}</span></div>
+         <div >Tel : <span *ngFor="let subitem of item.seller_details.phoneForCustomer">{{subitem.phone }}/</span></div>
+      </div>                
+      <div style="display:flex; margin-top:25px;">
+         <div style="width: 50%;">
+            <div><b>Invoice Number :<span style="margin-left:5px;">{{item.invoiceNumber}}</span></b></div>
+            <div>Invoice Date :<span style="margin-left:5px;">{{item.invoiceDate | date}}</span></div>
+            <div>Order ID :<span style="margin-left:5px;">{{item.orderNumber}}</span></div>
+            <div>Order Via :<span style="margin-left:5px;">Direct</span></div>
+            <div>Payment Mode :<span style="margin-left:5px;">Prepaid</span></div>
+         </div>
+         <div style="margin-left: auto;">
+            <div style="font-size: 16px;font-weight:bold;">Delivered To:</div>
+            <div>{{item.userAddress_details.firstName+" "+item.userAddress_details.lastName}}</div>
+            <div>{{item.userAddress_details.address }}</div> 
+            <div>{{item.userAddress_details.street }}</div> 
+            <div> {{item.userAddress_details.city }}</div> 
+            <div>{{item.userAddress_details.state + " " + item.userAddress_details.pincode }}</div> 
+            <div>{{item.userAddress_details.country }}</div> 
+            <div>Phone {{item.userAddress_details.mobile }} </div>                   
+         </div>
+      </div>
+      <div style="margin-top:40px;">
+         <h2 style="margin-bottom:10px; text-align: center;">Self Drop Delivery Note</h2>
+         <table style="width:100%;">
+            <thead style="margin-top: 10px;">
+               <tr>
+                  <th>#</th>
+                  <th>Items & Descriptions</th>
+                  <th>Qty</th>
+                  <th>Rate</th>
+                  <th>Discount</th>
+                  <th>GST</th>
+                  <th>Amount (INR)</th>
+              </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let subitem of item.order_details;let i = index">
+                   <td>{{i+1}}</td>
+                   <td>
+                       <div><b>{{subitem.product_details.productName}}</b></div>
+                       <div>Product ID : <span>{{subitem.product_details.productId}}</span></div>
+                       <div>HSN : <span>{{subitem.product_details.hsnCode}}</span></div>
+                       <div>CGST ({{subitem.gst.cgstPercentage}}%) : <span>{{subitem.gst.cgstAmount}}</span></div>
+                       <div>SGST ({{subitem.gst.sgstPercentage}}%) : <span>{{subitem.gst.sgstAmount}}</span></div>
+                   </td>
+                   <td>{{subitem.quantity}}</td>
+                   <td>{{subitem.unitPrice}}</td>
+                   <td>-{{subitem.discount}}</td>
+                   <td>{{subitem.gst.totalGst}}</td>
+                   <td>{{subitem.totalPrice}}</td>
+               </tr>
+           </tbody>
+         </table>                
+         <div style="width:385px; margin-left: auto; margin-top:35px;">
+            <div style="padding:10px 5px 10px 20px;">Sub Total<span style="float:right;">{{item.totalSubAmount}}</span></div>
+            <div style="padding:10px 5px 10px 20px;">Discount<span style="float:right;">-{{item.totalDiscount}}</span></div>
+            <div style="padding:10px 5px 10px 20px;">GST<span style="float:right;">{{item.totalGstAmount}}</span></div>
+            <div style="padding:10px 5px 10px 20px;">Shipping Charge<span style="float:right;">500.00</span></div>
+            <div style="padding:10px 5px 10px 20px; background-color: #F4F3F1;"><b>Grand Total<span style="float:right;">{{item.totalAmount}}</span></b></div>
+         </div>
+      </div>
+      <div style="display: flex;">
+         <div style="margin-top: 10px">
+            <img src="{{item.seller_details.signature}}" style="max-width:100px;margin-bottom:8px;">
+            <div style="margin-bottom:12px; font-size:18px;">Authorised Signatory</div>
+            <div><b>Note :</b> Please get this delivery note signed by the buyer for proof. If the buyers does not accept the delivery on their app.</div>
+         </div>
+         <div style="margin-top: 30px; text-align: right;">
+            <textarea style="border: dashed 3px #707070; border-radius: 6px; padding: 9px; resize: none;" name="Receiver Signatory & Phone Number" cols="28" rows="5"></textarea>
+            <p style="margin-top: 5px;">Receiver Signatory & Phone Number</p>
+         </div>
+   
+      </div>
+    
+   </ng-container>
+</div>

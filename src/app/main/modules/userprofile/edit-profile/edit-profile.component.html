@@ -1,0 +1,350 @@
+ <div class="row mb-2">
+    <div class="col-12 text-center text-md-left">
+       <div class="user-editprofile">
+          <div class="hashtag-profile-image profile-image-bg cover-image p-0 mx-auto">
+             <img alt="" src={{userpic}}>
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120"
+                style="width: 70%;" fill="#707070">
+                <path
+                   d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z">
+                </path>
+             </svg>
+          </div>
+          <p class="change-profile mt-2" data-toggle="modal"
+             data-target="#exampleModalCenter1">Change Profile Photo</p>
+       </div>
+    </div>
+    <div style="clear: both;"></div>
+ </div>
+ <div class="row">
+ <div class="col-md-3 col-12">
+      <div class="nav flex-column d-md-flex  profile-setting-nav" id="v-pills-tab"
+         role="tablist" aria-orientation="vertical">
+         <a class="nav-link active" data-toggle="pill" href="#v-pills-home"
+            role="tab" aria-controls="v-pills-home" aria-selected="true">Profile Settings</a>
+         <a class="nav-link" data-toggle="pill" href="#v-pills-profile"
+            role="tab" aria-controls="v-pills-profile" aria-selected="false">Email & Phone</a>
+         <a class="nav-link" data-toggle="pill" href="#v-pills-pass"
+            role="tab" aria-controls="v-pills-settings" aria-selected="false">Password & Security
+         </a>
+      </div>
+ </div>
+ <div class="col-md-9 col-12">
+      <div class="tab-content" id="v-pills-tabContent">
+         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+            aria-labelledby="v-pills-home-tab">
+            <div>
+               <hr>
+               <label>Name</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="text" class="form-control profile-inputbox"
+                           name="fullName" [(ngModel)]="fullName" [disabled]=editModeToggle [ngClass]="!editModeToggle?'border p-1':''"  required/>
+                  </div>
+                  <div *ngIf="editModeToggle">
+                     <button class="btn edit-button" (click)="edit()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle && fullName.trim() != ''">
+                     <button class="btn save-button" (click)="saveChanges()">Save</button>
+                     <button class="btn cancel-button" (click)="cancelEdit()">Cancel</button>
+                  </div>
+               </div>
+               <p>&nbsp;</p>
+               <hr>
+            </div>
+            <div>
+               <label>Your username</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="text" class="form-control profile-inputbox"
+                     name="username" [(ngModel)]="username" [disabled]=editModeToggle1 [ngClass]="!editModeToggle1?'border p-1':''" required/>
+                  </div>
+                  <div *ngIf="editModeToggle1">
+                     <button class="btn edit-button" (click)="edit1()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle1 && username.trim() != ''">
+                     <button class="btn save-button" (click)="saveChanges1()">Save</button>
+                     <button class="btn cancel-button" (click)="cancelEdit1()">Cancel</button>
+                  </div>
+               </div>
+               <p class="mb-0 mt-2">
+                  <small>(Your username should include your authentic name. Trying to
+                  impersonate someone else shall ban your account).</small>
+               </p>
+               <hr class="mt-1">
+            </div>
+            <div>
+               <label>Gender</label>
+               <div class="d-flex">
+                  <div class="col pl-0" style="padding: .375rem .75rem">
+                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                           name="inlineRadioOptions" id="inlineRadio1" value="Male" 
+                           (change)="changeGender($event)" [(ngModel)]="gender">
+                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                     </div>
+                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                           name="inlineRadioOptions" id="inlineRadio2" value="Female"
+                           (change)="changeGender($event)" [(ngModel)]="gender">
+                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                     </div>
+                  </div>
+               </div>
+               <hr>
+            </div>
+            <div>
+               <label>Reply to comments</label>
+               <div class="d-flex">
+                  <div class="col pl-0" style="padding: .375rem .75rem">
+                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                           name="Enable-Disable" id="Enable" value="1" (change)="replyComment($event)" [checked]="recomment">
+                        <label class="form-check-label" for="Enable">Enable</label>
+                     </div>
+                     <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"
+                           name="Enable-Disable" id="Disable" value="0" (change)="replyComment($event)" [checked]="!recomment">
+                        <label class="form-check-label" for="Disable">Disable</label>
+                     </div>
+                  </div>
+               </div>
+               <hr>
+            </div>
+            <div>
+               <label>Date of Birth</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="date" name="dob" [(ngModel)]="dob" [disabled]=editModeToggle2 class="form-control profile-inputbox" [ngClass]="!editModeToggle2?'border p-1':''"  required/>
+                  </div>
+                  <div *ngIf="editModeToggle2">
+                     <button class="btn edit-button" (click)="edit2()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle2 && dob.trim() != ''">
+                     <button class="btn save-button" (click)="saveChanges2()">Save</button>
+                     <button class="btn cancel-button" (click)="cancelEdit2()">Cancel</button>
+                  </div>
+               </div>
+               <p class="mb-0 mt-2">
+                  <small>(It can not be changed for next one year once it gets
+                  changed).</small>
+               </p>
+               <hr class="mt-1">
+            </div>
+            <div>
+               <label>Bio</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <textarea class="form-control pl-0 profile-inputbox" rows="2"
+                        placeholder="Write about you..." [disabled]=editModeToggle3 [ngClass]="!editModeToggle3?'border p-1':''"  name="bio" [(ngModel)]="bio"></textarea>
+                  </div>
+                  <div *ngIf="editModeToggle3">
+                     <button class="btn edit-button" (click)="edit3()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle3">
+                     <button class="btn save-button" (click)="saveChanges3()">Save</button>
+                     <button class="btn cancel-button" (click)="cancelEdit3()">Cancel</button>
+                  </div>
+               </div>
+               <p>&nbsp;</p>
+               <hr>
+            </div>
+            <div>
+               <label>Website</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="text" class="form-control profile-inputbox"
+                        placeholder="www.yourwebsite.com" [disabled]=editModeToggle4 [ngClass]="!editModeToggle4?'border p-1':''" name="Website" [(ngModel)]="Website"/>
+                  </div>
+                  <div *ngIf="editModeToggle4">
+                     <button class="btn edit-button" (click)="edit4()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle4">
+                     <button class="btn save-button" (click)="saveChanges4()">Save</button>
+                     <button class="btn cancel-button" (click)="cancelEdit4()">Cancel</button>
+                  </div>
+               </div>
+               <p class="mb-0 mt-3">
+                  <small>(Website linked to any adult sites, disturbing contents etc. shall
+                  ban your account permanently).</small>
+               </p>
+               <hr class="mt-1">
+            </div>
+         </div>
+         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+            aria-labelledby="v-pills-profile-tab">
+            <div>
+               <hr>
+               <label>Your email</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="text" class="form-control profile-inputbox email_input"
+                     name="email" [(ngModel)]="email" [disabled]=editModeToggle5 [ngClass]="!editModeToggle5?'border p-1':''"/>
+                  </div>
+                  <div *ngIf="editModeToggle5">
+                  <button class="btn edit-button" (click)="edit5()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle5 && email.trim() != ''">
+                  <button class="btn save-button" (click)="saveChanges5()">Save</button>
+                  <button class="btn cancel-button" (click)="cancelEdit5()">Cancel</button>
+                  </div>
+               </div>
+               <p>&nbsp;</p>
+               <hr>
+            </div>
+            <div>
+               <label>Your Registered Mobile</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <input type="text" class="form-control profile-inputbox"
+                        name="registermobile" placeholder="+91 1234567890" [(ngModel)]="registermobile" [disabled]=editModeToggle6 [ngClass]="!editModeToggle6?'border p-1':''"/>
+                  </div>
+                  <div *ngIf="editModeToggle6">
+                  <button class="btn edit-button" (click)="edit6()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle6 && registermobile.trim() != ''">
+                  <button class="btn save-button" (click)="saveChanges6()">Save</button>
+                  <button class="btn cancel-button" (click)="cancelEdit6()">Cancel</button>
+                  </div>
+               </div>
+               <p>&nbsp;</p>
+               <hr>
+            </div>
+            <div>
+               <label>Your phone number for customers (to be appeared on your profile)</label>
+               <div class="d-flex">
+                  <div class="col pl-0">
+                     <div class="d-flex" *ngFor="let item of addNo;index as userid">
+                        <input type="text" [(ngModel)]="item.phone" class="form-control profile-inputbox mb-1" [disabled]=editModeToggle7 [ngClass]="!editModeToggle7?'border p-1':''"/>
+                        <button *ngIf="!editModeToggle7" class="btn btn-danger ml-3" style="height:35px" (click)="ondelete(userid)">remove</button>
+                     </div>
+                     <a *ngIf="addNo.length <= 1" href="javascript:void(0)" (click)="addanothernumber()">Add another</a>                              
+                  </div>
+                  <div *ngIf="editModeToggle7 && addNo.length != 0">
+                  <button class="btn edit-button" (click)="edit7()">Edit</button>
+                  </div>
+                  <div *ngIf="!editModeToggle7 && addNo.length != 0">
+                  <button class="btn save-button" (click)="saveChanges7()">Save</button>
+                  <button class="btn cancel-button" (click)="cancelEdit7()">Cancel</button>
+                  </div>
+               </div>
+               <p>&nbsp;</p>
+               <hr>
+            </div>
+         </div>
+         <div class="tab-pane fade" id="v-pills-pass" role="tabpanel"
+            aria-labelledby="v-pills-settings-tab">
+            <hr/>
+            <div class="col-12 col-md-6 p-0">
+               <div class="form-group">
+                  <label for="exampleInputPassword1" class="earning-title">Change Password</label>
+                  <input type="password" class="form-control mt-2"
+                     placeholder="Current Password" [(ngModel)]="oldpassword">
+               </div>
+               <form class="reset-form" id="passwordReset"  [formGroup]="resetPassword" (ngSubmit)="resetpassword(f);">
+                  <div class="new-pass-div mt-5">
+                     <input type="password" class="form-control" placeholder="New Password" formControlName="password" />
+                     <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.password.invalid && f.controls.password.touched">Password is required.</label>
+                     <input type="password" class="form-control mt-3"
+                        placeholder="Confirm new Password" formControlName="confirm_password" />
+                     <div *ngIf="f.controls.confirm_password.touched && f.controls.confirm_password.invalid">
+                        <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.confirm_password.errors.required">
+                              Confirm Password is required.
+                        </label>
+                        <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.confirm_password.errors.mustMatch">Passwords must match</label>
+                     </div>
+                  </div>
+                  <button type="submit" class="btn change-pass-btn mt-5 ml-auto d-block">Change Password</button>
+               </form>
+            </div>
+            <hr/>
+            <div class="col-8 col-md-4 p-0">
+               <div class="form-group">
+                  <button type="button" class="form-control mt-2 deactivate-youraccount" data-toggle="modal" data-target="#deactivate-account">Deactive your account</button>
+               </div>
+            </div>
+         </div>
+      </div>
+ </div>
+ </div>
+
+ <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+ aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" >
+ <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+       <div class="modal-body py-4 edit-crop">
+          <div *ngIf="uploadtoggle" class="text-center mb-3">
+             <img src="./assets/images/icons/upload.svg" />
+             <p class="mt-3"> <span class="choose-file-text">Choose a file</span> or drag it here.</p>
+          </div>
+          <div *ngIf="uploadtoggle" class="image-upload text-center my-4">
+             <label for="file-input1" class="verify-btn btn px-3">
+             Choose an image
+             </label>
+             <input *ngIf="uploadtoggle" id="file-input1" type="file" (change)="onFileChange($event)" class="profile-img" file-model="myFile" accept=".jpg, .png"/>
+          </div>
+         <div *ngIf="!uploadtoggle" class="imgescrop-preview">
+            <image-cropper [imageChangedEvent]="imgChangeEvt" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+              [resizeToWidth]="256" (imageCropped)="cropImg($event)" (imageLoaded)="imgLoad()"
+              (cropperReady)="initCropper()" (loadImageFailed)="imgFailed()">
+            </image-cropper>
+         
+            <div class="imagespreview text-center mb-4">
+               <h6 class="pb-0 mt-3">Image Preview</h6>
+               <img [src]="cropImgPreview"/>
+            </div>
+         </div> 
+          <div class="text-right">
+             <button type="button" class="btn cancel-btn py-2 px-4" (click)='profileuploadcancel()' data-dismiss="modal" aria-label="Close">
+               Cancel
+             </button>             
+             <button *ngIf="!uploadtoggle" (click)="imagesuploadsave()" type="button" class="btn btn btn-outline-primary py-2 px-4 ml-3" data-dismiss="modal" aria-label="Close">
+               Upload
+             </button>
+          </div>
+       </div>
+    </div>
+ </div>
+ </div>
+
+ <div class="modal fade action-modal" id="deactivate-account" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-body pb-0">
+            <div class="images-search-close prod-closemain mb-3">
+               <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0" src="/assets/images/icons/close.svg" alt="close">
+            </div>
+            <b>Are you sure you want to deactivate your account?</b>
+            <p class="mt-3">
+              When you deactivate your account, it will disable your profile and remove your name and photo from the majority of the content you've posted on HustleUp. Some information, such as your name in their followers list and messages you sent, may still be visible to others.
+            </p>        
+            <p>You can always come later and activate your account.</p>
+         </div>
+         <div class="modal-footer border-0">
+            <button type="button" class="btn btn-modal-cancel pl-5 pr-5" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-deactivate-action pl-5 pr-5 ml-2" data-dismiss="modal" (click)="deactiveactive()">Remove</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+ <!-- <div class="edit-profile-verification-popup">
+   <div>SMS Verification</div>
+   <p class="mt-4">We have mailed you a 6 digit code. Please check your phone and enter the code here to complete verification.</p>
+   <div class="verify-box mt-5 mb-5">
+      <input type="text" value="333-666" maxlength="7" class="mr-4 text-center" />
+      <button type="button" class="btn btn-outline-primary">Verify</button>
+   </div>
+   <hr/>
+   <p>Didn't receive the OTP?<a href="javascript:void(0)">Resend OTP</a></p>
+</div>
+<div class="edit-profile-verification-popup mt-5">
+   <div>E-mail Verification</div>
+   <p class="mt-4">We have mailed you a 6 digit code. Please check your emailand enter the code here to complete verification.</p>
+   <div class="verify-box mt-5 mb-5">
+      <input type="text" value="333-666" maxlength="7" class="mr-4 text-center" />
+      <button type="button" class="btn btn-outline-primary">Verify</button>
+   </div>
+   <hr/>
+   <p>Didn't receive the OTP?<a href="javascript:void(0)">Resend OTP</a></p>
+</div> -->

@@ -1,0 +1,40 @@
+    <!-- / _begin > Page Header / -->
+    <header class="user-action-header">
+        <div class="container">
+            <a class="brand-logo contain-image" [routerLink]="['/accounts/login']">
+                <img src="assets/images/logo.svg" alt="brand" />
+            </a>
+        </div>
+    </header>
+    <!-- / _end > Page Header / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <section class="forget-password-sec">
+        <div class="container">
+            <div class="center-screen-password password-card-padding">
+                <div class="forget-password-card">
+                    <form (ngSubmit)="otpValidation(f)" class="forget-card-pad-y" [formGroup]="validationOTPform">
+                        <div class="user-action-card-heading-wrap">
+                            <h1 class="heading-forget">Validate OTP</h1>
+                        </div>
+
+                        <div class="formElement-bottomSpace">
+                            <p class="label-validate-otp">Enter the 6 digit OTP code received in SMS to reset your password. </p>
+
+                            <input type="text" class="form-control action-input" placeholder="OTP" formControlName="validationOTP" [maxlength]="6">
+                            <label class="mt-1 text-danger w-100 text-left" *ngIf="f.controls.validationOTP.invalid && f.controls.validationOTP.touched">
+                                Otp is required
+                            </label>
+                        </div>
+
+                        <div class="formElement-btnBottomSpace">
+                            <button type="submit" class="btn btn-action-forget">Continue</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Main Content < SHB / -->

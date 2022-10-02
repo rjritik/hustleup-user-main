@@ -1,0 +1,40 @@
+<div id="pills-videos-saved">
+    <div *ngIf="getVideopostbookmarked?.length === 0" class="order-history-defalut product-sub-small">
+    <div class="order-history-defalut-img">
+        <img src="assets/images/icons/new-icons/sizzles_videos.svg" alt="order-history-defalut">
+    </div>
+    <p>You have not saved any sizzles (videos) yet.</p>
+    <p>Any sizzles (videos) you like across, can be saved for future reference.</p>
+    </div>
+    <div class="row half-row">
+    <div *ngFor="let item of getVideopostbookmarked; let i=index" class="col-md-6 col-lg-4 col-xl-3">
+        <div class="product-items-wrapper hashtag-post-border-line pb-0">
+            <div class="post-items-video cover-image" (click)="postvideoopen(item)">
+                <img src={{item.coverImg}} alt="product-items">
+                <div class="abs-video-views">
+                    <div class="video-view-icons contain-image">
+                        <img src="assets/images/icons/video-w.svg">
+                    </div>
+                    <label>{{item.totalViews|thousandSuff}} </label>
+                </div>
+            </div>
+            <div class="post-detail-wrap">
+                <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                <label class="post-uploader-name">{{item.postTitle}}</label>
+                <div *ngIf="item.isBookmarked == false" class="hashtag-save-icon"><img id="postSave" (click)="WishlistPostVideo(item)" src="assets/images/icons/icons-post-save.svg"></div>
+                <div *ngIf="item.isBookmarked == true" class="hashtag-save-icon"><img id="postSave" (click)="UnsavedWishlistPostVideo(item, i)" src="assets/images/icons/icons-post-saved.svg"></div>
+                </div>
+                <p class="product-name single-line-clamp" title="Black full sleave sweater">{{item.advanceCategory}}</p>
+            </div>
+        </div>
+    </div>
+    </div>
+<section *ngIf="sideoverhide == true" [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+</div>
+
+ <!-- |< Feed Post Details Slider _begin >| -->
+ <div name="shb-page-sliders">
+    <app-videos-show-sidebar [SingleVideoData]="SingleVideoData" [iconClickType]="iconClickType" [videodetailsopen]="videodetailsopen" (closebar)="closesidebar()"></app-videos-show-sidebar>
+</div>
+<!-- |< Feed Post Details Slider _end >| -->
+

@@ -1,0 +1,82 @@
+<div style="padding: 50px;width:30cm;min-height: 29.7cm;margin: 1cm auto;border: 1px #D3D3D3 solid;border-radius: 5px;background: white;box-shadow: 0 0 5px rgb(0 0 0 / 10%);" id="InvoicePrint">
+    <ng-container *ngFor="let item of PrintInvoicedata">
+    <div style="width:100%; display:flex;">
+          <div style="width:50%;">
+            <img style="max-height:38px; max-width:180px;" src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNS4zOCA0OCI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNmNDQyN2U7fS5jbHMtMntmaWxsOiM4MWFiNGE7fS5jbHMtM3tmaWxsOiMyMjk5Zjg7fS5jbHMtNHtmaWxsOiNlMDIzMmI7fS5jbHMtNXtmaWxsOiNmZmMxMDc7fTwvc3R5bGU+PC9kZWZzPjxnIGlkPSJMYXllcl8yIiBkYXRhLW5hbWU9IkxheWVyIDIiPjxnIGlkPSJMYXllcl8xMyIgZGF0YS1uYW1lPSJMYXllciAxMyI+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjM1LjM4IDYuOTggMjMuNDggMCAyMy41OCAxMy43OSAyMy41OSAxMy43OSAzNS4zOCA2Ljk4Ii8+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjM1LjM4IDYuOTggMzUuMzggNi45OCAzNS4zOCA2Ljk4IDM1LjM4IDYuOTgiLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMTEuNjUgMzQuMzEgMTEuNjYgMzQuMzEgMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMC4yIDI3LjYyIDAuMiAyNy42MiAwLjIgMjcuNjIgMC4zOSA0MS40NyAxMS42NSAzNC4zMiAxMS42NSAzNC4zMSIvPjxyZWN0IGNsYXNzPSJjbHMtMiIgeD0iMTEuNjYiIHk9IjM0LjMxIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMTYuNDcgMTEuNDcpIHJvdGF0ZSgtMzIuMTUpIi8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjAuMzkgNDEuNDcgMC4zOSA0MS40NyAwLjM5IDQxLjQ3IDAuMzkgNDEuNDciLz48cG9seWdvbiBjbGFzcz0iY2xzLTMiIHBvaW50cz0iMTEuNzcgMjAuNjQgMTEuOSA2Ljk4IDExLjkgNi45OCAxMS45IDYuOTggMTEuOSA2Ljk4IDExLjkgNi45OCAwIDAgMC4xIDEzLjc5IDAuMSAxMy43OSAwLjEgMTMuNzkgMC4xIDEzLjc5IDAuMSAxMy43OSAwLjIgMjcuNjIgMTEuNzcgMjAuNjQiLz48cG9seWdvbiBjbGFzcz0iY2xzLTQiIHBvaW50cz0iMjMuNTkgMTMuNzkgMjMuNyAyNy42MSAzNS4yNSAyMC42NCAzNS4zOCA2Ljk4IDM1LjM4IDYuOTggMzUuMzggNi45OCAzNS4zOCA2Ljk4IDIzLjU5IDEzLjc5IDIzLjU4IDEzLjc5IDIzLjU4IDEzLjc5IDIzLjU4IDEzLjc5IDIzLjU4IDEzLjc5IDIzLjU4IDEzLjc5IDIzLjU4IDEzLjggMjMuNTkgMTMuNzkiLz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iMzUuMjUgMjAuNjQgMjMuNyAyNy42MSAyMy43IDI3LjY1IDIzLjcgMjcuNjUgMjMuNyAyNy42NSAyMy43IDI3LjY2IDIzLjcgMjcuNjYgMjMuNjkgMjcuNjYgMjMuODcgNDEuNDcgMjMuODcgNDEuNDcgMjMuODcgNDEuNDcgMjMuODcgNDEuNDcgMjMuODcgNDEuNDcgMzUuMDIgNDggMzUuMTQgMzQuMzIgMzUuMTUgMzQuMzEgMzUuMTQgMzQuMzEgMzUuMjYgMjAuNjQgMzUuMjUgMjAuNjQiLz48cG9seWdvbiBjbGFzcz0iY2xzLTUiIHBvaW50cz0iMjMuNyAyNy42NiAyMy43IDI3LjY1IDIzLjcgMjcuNjUgMjMuNyAyNy42NSAyMy43IDI3LjYxIDIzLjU5IDEzLjc5IDIzLjU4IDEzLjggMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMTEuNzcgMjAuNjQgMTEuNjYgMzQuMzEgMTEuNjUgMzQuMzEgMTEuNjUgMzQuMzIgMTEuNjYgMzQuMzEgMTEuNjYgMzQuMzEgMTEuNjYgMzQuMzEgMjMuNjkgMjcuNjYgMjMuNyAyNy42NiAyMy43IDI3LjY2Ii8+PHBvbHlnb24gY2xhc3M9ImNscy0zIiBwb2ludHM9IjExLjY2IDM0LjMxIDExLjY1IDM0LjMyIDAuMzkgNDEuNDcgMC4zOSA0MS40NyAwLjM5IDQxLjQ3IDAuMzkgNDEuNDcgMTEuNTMgNDggMTEuNjYgMzQuMzIgMTEuNjYgMzQuMzEgMTEuNjYgMzQuMzEiLz48L2c+PC9nPjwvc3ZnPg=='/>
+             <div style="margin-bottom: 20px;">
+                <h1>Invoice</h1>
+                <div><b>Invoice Number :<span style="margin-left:5px;">{{item?.invoiceNumber}}</span></b></div>
+                <div>Order ID :<span style="margin-left:5px;">{{item?.orderNumber}}</span></div>
+                <div>Order Via :<span style="margin-left:5px;">{{item?.orderVia}}</span></div>
+                <div>Invoice Date :<span style="margin-left:5px;">{{item?.invoiceDate | date}}</span></div>
+             </div>
+             <div>
+                <div style="font-size: 18px;font-weight:bold;">Bill To:</div>
+                <div>{{item.userAddress_details?.firstName+" "+item.userAddress_details?.lastName}}</div>
+                <div>{{item.userAddress_details?.address }}</div> 
+                <div>{{item.userAddress_details?.street }}</div> 
+                <div>{{item.userAddress_details?.city }}</div> 
+                <div>{{item.userAddress_details?.state + " " + item.userAddress_details?.pincode }}</div> 
+                <div>{{item.userAddress_details?.country }}</div> 
+                <div>Phone {{item.userAddress_details?.mobile }}</div>
+             </div>
+          </div>
+          <div style="width: 50%; text-align:right;margin-top:40px;">
+             <h2>{{item.seller_details?.businessName}}</h2>
+             <div>{{item.seller_details.businessAddress?.address }}</div> 
+             <div>{{item.seller_details.businessAddress?.street }}</div> 
+             <div> {{item.seller_details.businessAddress?.city }}</div> 
+             <div>{{item.seller_details.businessAddress?.state + " " + item.seller_details.businessAddress?.pincode }}</div> 
+             <div>{{item.seller_details.businessAddress?.countryCode }}</div> 
+             <div>GST: <span>{{item.seller_details?.gstNumber}}</span></div>
+             <div>PAN: <span>{{item.seller_details?.businessPAN}}</span></div>
+             <div >Tel: <span *ngFor="let subitem of item.seller_details?.phoneForCustomer">{{subitem?.phone }}/</span></div>
+          </div>
+    </div>
+    <div style="margin-top:30px;">
+          <table style="width:100%;border-collapse: collapse;width: 100%;border: 1px solid #ddd;">
+             <thead>
+                <tr>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">#</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">Items & Descriptions</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">Qty</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">Rate</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">Discount</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">GST</th>
+                    <th style="padding: 15px; border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;background-color: rgb(170, 170, 170);">Amount (INR)</th>
+                </tr>
+             </thead>
+             <tbody>
+                <tr *ngFor="let subitem of item.order_details;let i = index">
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">{{i+1}}</td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">
+                         <div><b>{{subitem.product_details?.productName}}</b></div>
+                         <div>Product ID : <span>{{subitem.product_details?.productId}}</span></div>
+                         <div>HSN : <span>{{subitem.product_details?.hsnCode}}</span></div>
+                         <div>CGST ({{subitem.gst?.cgstPercentage}}%) : <span>{{subitem.gst?.cgstAmount}}</span></div>
+                         <div>SGST ({{subitem.gst?.sgstPercentage}}%) : <span>{{subitem.gst?.sgstAmount}}</span></div>
+                      </td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">{{subitem?.quantity}}</td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">{{subitem?.unitPrice}}</td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">-{{subitem?.discount}}</td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">{{subitem.gst?.totalGst}}</td>
+                      <td style="padding: 15px;border-right: none; border-left: none ;border: 1px solid #ddd;text-align: left;">{{subitem?.totalPrice}}</td>
+                </tr>
+             </tbody>
+          </table>
+          <div style="width:385px; margin-left: auto; margin-top:35px;">
+             <div style="padding:10px 5px 10px 20px;">Sub Total<span style="float:right;">{{item?.totalSubAmount}}</span></div>
+             <div style="padding:10px 5px 10px 20px;">Discount<span style="float:right;">-{{item?.totalDiscount}}</span></div>
+             <div style="padding:10px 5px 10px 20px;">GST<span style="float:right;">{{item?.totalGstAmount}}</span></div>
+             <div style="padding:10px 5px 10px 20px;">Shipping Charge<span style="float:right;">{{item?.totalShippingCharge || 0}}</span></div>
+             <div style="padding:10px 5px 10px 20px; background-color: #F4F3F1;"><b>Total<span style="float:right;">{{item?.totalAmount}}</span></b></div>
+          </div>
+    </div>
+    <div style="margin-top: 10px">
+          <img src="{{item.seller_details?.signature}}" style="max-width:100px;margin-bottom:8px;">
+          <div style="margin-bottom:12px;">Authorised Signatory</div>
+          <div style="font-size: 16px;">Terms & Conditions:</div>
+          <div>We declare that this invoice shows the actual price of the goods described and that particulars are true and correct.</div>
+    </div>
+ </ng-container>
+ </div>

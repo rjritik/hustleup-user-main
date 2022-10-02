@@ -1,0 +1,250 @@
+<div class="row">
+    <!-- / _begin > Page Navigation Sidebar < SHB / -->
+    <section class="slidebar">
+        <div class="row slidebar-scroll m-0">
+            <div class="menu">
+                <div class="new-create-add" (clickOutside)="onClickedchannelBoxOutside($event)">
+                    <div (click)="ChannelPopup('Private')" class="new-char-contact btn-new-message"><img src="./assets/images/icons/inbox-icons/plus.svg" alt="" class="channel-plus-icon">
+                        <span>New Channel</span>
+                    </div>
+                </div>
+                <div class="searchBar" *ngIf="privateChannelList?.length !== 0">
+                    <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="Search" [(ngModel)]="searchChannelName"/>
+                    <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                        <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                    </button>           
+                </div>                                             
+                <ul class="user-available-list">
+                    <li class="user-available-list-items" *ngFor="let item of privateChannelList | searchChannel:searchChannelName"
+                    (click)="channelChatDetails(item)" [ngClass]="{'activeuserclass': item._id == this.activeChannelChatDetail?._id && activeChannelChatBoolean == true}">
+                        <span class="user-online-indicator">
+                            <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="private-chat"/>
+                        </span>
+                        <div class="d-flex align-items-center justify-content-between user-online-info">
+                            <label>{{item.name}}</label>
+                            <label class="receive-alert" *ngIf="item.discussionsUnreadCount+ item.updatesUnreadCount> 0">{{(item.discussionsUnreadCount + item.updatesUnreadCount) == 100 ? '99+' : (item.discussionsUnreadCount + item.updatesUnreadCount)}}</label>
+                        </div>
+                    </li>                                                                                     
+                </ul>
+                <ng-container *ngIf="( privateChannelList | searchChannel:searchChannelName) as result">
+                    <div *ngIf="result?.length == 0 || privateChannelList?.length == 0" class="send_both_imptybox_parent" >
+                        <div class="send_member_imptybox_main send_both_imptybox_main">
+                            <div class="send_member_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                                <img src="assets/images/icons/message.svg" height="50px">
+                            </div>
+                            <p>No Channel <br> found Create new channel.
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Navigation Sidebar < SHB / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <div class="main-content email-main-content py-0">
+        <div class="container-fluid position-relative">
+            <div class="row">
+                <div class="messages-list-wrapper comment-wrapper" *ngIf="activeChannelChatBoolean == true">
+                    <div class="row user-option-row">
+                        <div class="col-12 px-0 d-flex align-items-center">
+                            <div class="active sub-head-tabmenu col-6">
+                                <img src="assets/images/icons/inbox-icons/private-chat.svg" alt="private">
+                                <div class="sub-head-tabmenu-inner">
+                                    <div class="tabmenu-inner-dsc">{{activeChannelChatDetail.name}}
+                                            <!-- <img class="verify-user-approve" src="assets/images/icons/inbox-icons/approve.svg"> -->
+                                    <!-- <a href="#">Follow</a> -->
+                                    </div>
+                                    <div class="sub-head-followers position-relative cursor-pointer">
+                                        <div (click)="showMemberList()">
+                                            {{activeChannelChatDetail.totalMembers || 0}}<span>Members</span>
+                                        </div>
+                                        <div class="member-popup" *ngIf="memberListPopup">
+                                            <div class="d-flex py-2 pl-3 justify-content-between align-items-center">
+                                                <div>
+                                                    <h2 class="mb-0">All {{listType}} List</h2>
+                                                </div>
+                                                <div>
+                                                    <button type="button" class="close" (click)="closeMemberPopup()">
+                                                        <span class="contain-image">
+                                                            <img src="assets/images/icons/close.svg" style="width:24px;height:24px;" alt="close" />
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                
+                                            </div>  
+                                            <ul class="memberlist" infiniteScroll [infiniteScrollDistance]="0.5" [scrollWindow]="false" (scrolled)="onMemberScrollDown()">
+                                                <li class="d-flex align-items-center py-2 px-3" *ngFor="let item of membersList">
+                                                    <div class="mr-1">
+                                                        <img src="{{item.userDetail.profilePic}}" class="rounded-circle" width="24px" height="24px" alt="profilepicnotfound" onerror="this.src='assets/images/logo.svg'">
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-0 membername">{{item.userDetail.username}}</p>
+                                                        <p class="mb-0 member-fullname">{{item.userDetail.fullName}}</p>
+                                                    </div>
+                                                    <div class="member-button d-flex align-items-center" *ngIf="activeChannelChatDetail.isAdmin == true">
+                                                        <p class="mr-2" *ngIf="item.memberType == 'admin'">Admin</p>
+                                                        <button class="member-admin-btn btn btn-primary px-2" *ngIf="item.memberType == 'admin' && item.userDetail.username !== _AuthenticationService.currentUserValue.username" (click)="convertMemberTypeByAdmin(item)">Make User</button> 
+                                                        <button class="member-admin-btn btn btn-primary px-2" *ngIf="item.memberType == 'user'" (click)="convertMemberTypeByAdmin(item)">Make Admin</button>
+                                                        <button type="button" class="btn btn-outline-secondary" *ngIf="item.userDetail.username !== _AuthenticationService.currentUserValue.username" (click)="RemoveMember(item)">Remove</button>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sub-head-tabmenu col-6">
+                                <ul class="user-option more-catogary cursor-pointer">
+                                    <li (click)="adduser('user')" *ngIf="activeChannelChatDetail.isAdmin == true || activeChannelChatDetail.allowAddMember == true">
+                                        <a class="add-admin" >Add User</a>
+                                    </li>
+                                    <li (click)="adduser('admin')" *ngIf="activeChannelChatDetail.isAdmin == true">
+                                        <a class="add-admin" >Add Admin</a>
+                                    </li>
+                                    <li style="padding:0px;" *ngIf="activeChannelChatDetail.isAdmin == true">
+                                        <img src="./assets/images/icons/inbox-icons/line.svg" alt="">
+                                    </li>
+                                    <li>
+                                        <div class="drop-list">
+                                            <div class="dropdown">
+                                                <img class="dropdown-toggle" data-toggle="dropdown" src="./assets/images/icons/inbox-icons/three_dots.svg" alt="">
+                                                <div class="dropdown-menu dropdown-menu-right p-3 mt-2">
+                                                    <a class="dropdown-item notification-setting" (click)="notificationSettingOpen()">Notification settings</a>
+                                                    <a class="dropdown-item" *ngIf="activeChannelChatDetail.isAdmin == true" (click)="showAllAdminList()">show All AdminList</a>
+                                                    <a class="btn-new-message dropdown-item" *ngIf="activeChannelChatDetail.isAdmin == true" (click)="editPrivateChannel(activeChannelChatDetail)">Edit channel</a>
+                                                    <a class="dropdown-item" data-toggle="modal" data-target="#Remove-channel">Leave this channel</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div name="shb-page-toast" class="alert-msg">
+                                            <div class="alert alert-bg-white" role="alert" id="notification-setting" *ngIf="notificationSettingPopup">
+                                                Notification settings
+                                                <button type="button" class="close">
+                                                    <span class="contain-image"><img src="assets/images/icons/close.svg" alt="close" (click)="notificationSettingClose()" /></span>
+                                                </button>
+                                                <div class="notification-section">
+                                                    <div class="form-check form-check-inline notification-change">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" for="inlineRadio1">Only mentions & replies to your thread</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline notification-change">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                        <label class="form-check-label" for="inlineRadio2">All messages</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline notification-change">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                        <label class="form-check-label" for="inlineRadio3">Nothing</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                                
+                                    </li>
+                                </ul>                                        
+                            </div>
+                        </div>
+                        <ul class="tablist-main nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active update-disucussion" href="javascript:void(0)" role="tab" data-toggle="tab" (click)="privateDiscussionsTab()">
+                                    Discussions<span *ngIf="activeChannelChatDetail?.discussionsUnreadCount > 0">{{activeChannelChatDetail?.discussionsUnreadCount}}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  update-notificatioin" href="javascript:void(0)" role="tab" data-toggle="tab" (click)="privateUpdatesTab()">
+                                    Updates
+                                    <span *ngIf="activeChannelChatDetail?.updatesUnreadCount > 0">{{activeChannelChatDetail?.updatesUnreadCount}}</span>
+                                </a>
+                            </li>
+                        </ul>                                         
+                    </div>
+                    <div class="message-section tab-content">
+                        <app-channel-discussions *ngIf = "tabType == 'discussions'" [channelMsgdivHeight]="primeTableHeight" [discussData]="activeChannelTabDetail" (readChannelMessage) = "readChannelMessage($event)"></app-channel-discussions>
+                        <app-channel-updates *ngIf = "tabType == 'updates'" [channelMsgdivHeight]="primeTableHeight" [updatesData]="activeChannelTabDetail" (readChannelMessage) = "readChannelMessage($event)"></app-channel-updates>
+                        <div class="alert-msg">
+                            <div class="alert alert-bg-white" role="alert" id="auth-admin-add-remove" *ngIf="adduserdrop">
+                                <button type="button" class="close" (click)="closeUserPopup()">
+                                    <span class="contain-image"><img src="assets/images/icons/close.svg" alt="close" /></span>
+                                </button>
+                                <div class="auth-admin-section">
+                                    <div class="searchBar">
+                                        <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="Type username or name" (keyup)="SearchUser()" [(ngModel)]="SearchedUserName">
+                                        <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                                            <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                                        </button>           
+                                    </div>
+                                </div>
+                                <div class="authadmin-usersection">
+                                    <ul class="user-available-list msg-chat">
+                                        <li  *ngFor="let item of usersearchdata">
+                                            <div class="align-items-center msg-row no-gutters">
+                                                <div class="messaged-profile-thumb mr-2">
+                                                    <img  src="{{item.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="user-profile">
+                                                </div>
+                                                <div class="msg-subdsc">
+                                                    <div class="dsc-inner">
+                                                        <p class="mb-0 unread-name">{{item.username}}</p>
+                                                    </div>
+                                                    <p class="mb-0 unread-msg">{{item.fullName}}</p>
+                                                </div>
+                                                <div class="authadmin-usersection-btn"> 
+                                                    <a class="btn btn-primary" role="button" *ngIf="item.isUserExits == false" (click)="addMemberInPrivateChannel(item)">Add</a>
+                                                    <button type="button" class="cancel-no-effect btn btn-outline-secondary" *ngIf="item.isUserExits !== false">{{item.isUserExits}}</button>
+                                                    <!-- <a class="btn btn-danger" role="button" *ngIf="item.isUserExits == true">Remove</a> -->
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li *ngIf="userDetailNotAvail"> <h1>Record not found</h1></li>                                                                          
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="follow-update-discusss"  *ngIf="activeChannelChatDetail.isAdmin == false && tabType == 'updates'">
+                        <input disabled="" type="text" value="Only the admin has permission to type for updates, go to discussion board for writing">
+                        <!-- <button type="button" class="btn btn-primary followbtn-updatedelete m-0">Follow</button> -->
+                    </div>
+                    <div #heightBottomMsgDiv [ngClass]="{'bottombox-hide':activeChannelChatDetail.isAdmin == false && tabType == 'updates'}">
+                        <app-bottommessagebox [ActiveUserChatDetail]="activeChannelTabDetail" (newCloseQuote)="newCloseQuote($event)"></app-bottommessagebox>
+                    </div>
+                </div>
+                <div class="messages-list-wrapper comment-wrapper send_both_imptybox_parent" *ngIf="!activeChannelChatBoolean">
+                    <div class="send_message_imptybox_main send_both_imptybox_main">
+                        <div class="send_message_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                            <img src="assets/images/icons/message.svg" height="80px">
+                        </div>
+                        <p>Send message, photos, files, reply comments <br> make nots and have team collaboration etc.</p>
+                    </div>
+                </div>
+                <app-messagerightmenu class="mail-actions-bar side-menu-right-msg"></app-messagerightmenu>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > Page Main Content < SHB / -->  
+
+    <!-- / _begin > Static Backdrop For Sliding Sidebar < SHB / -->
+    <section class="d-none" id="sideOverHide"></section>
+    <!-- / _end > Static Backdrop For Sliding Sidebar < SHB / -->
+</div>
+
+<!-- / _begin > MODAL - Remove-channel Confirmation < SHB / -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" id="Remove-channel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-body pb-0">
+            <div class="images-search-close prod-closemain mb-3" (click)="cancelLeaveChannel()">
+                <img aria-label="Close" class="product-icon prod-close-icon mt-0" src="assets/images/icons/close.svg" alt="close">
+            </div>
+            <b>Are you sure for removing you from this channel?</b>
+            <p>(To rejoin the channel, you will have to re-invited or join again)</p>
+        </div>               
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-modal-cancel pl-5 pr-5" (click)="cancelLeaveChannel()">Cancel</button>
+            <button type="button" class="btn btn-deactivate-action pl-5 pr-5 ml-2" (click)="leaveChannel()">Remove</button>
+        </div>
+        </div>                
+    </div>
+</div>
+<!-- / _end > MODAL - Remove-channel Confirmation < SHB / -->
+
+<app-channelcreatebox *ngIf="channelbox" [channelDetail]= channelDetail (channelBox)="channelBox($event)"></app-channelcreatebox>

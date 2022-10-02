@@ -1,0 +1,90 @@
+<div class="main-msg-multiple chat" (click)="channelBoxInsideClick()">
+    <section class="email-message-box new-message-box message-box msg-box-adv Channel-Create-Box popup-show">
+        <form class="Create-Public-Private-Channel" id="channelform" [formGroup]="channelForm">
+            <div class="Public-Private-Channel-heading private-switch">{{channelHeading}}</div>
+            <p>Channel is a place for your team/group to communicate /collaborate on some topics, projects, ideas etc.</p>
+            <div class="Create-Public-Private-inner">
+                <div class="row" *ngIf="!switchChannelType">
+                    <div class="col-md-4 col-12">
+                        <label>Channel Profile Photo</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="file" placeholder="type-channel-name" (change)="onChange($event)" accept="image/png,image/jpg, image/jpeg">
+                    </div>
+                    <div class="col-md-2">
+                        <img class="channel-profile-pic" src="{{previewProfilePic}}"  onerror="this.src='assets/images/icons/inbox-icons/public-channel.svg'" alt="profile-pic">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12">
+                        <label>Channel name</label>
+                    </div>
+                    <div class="col-md-8 private-channel-main">
+                        <input class="channel-name" type="text" placeholder="type-channel-name" formControlName="channelName" (keyup)="channeNameChange($event)">
+                        <img class="private-switch" *ngIf="switchChannelType" src="assets/images/icons/inbox-icons/private-chat.svg" >
+                        <img class="public-switch" *ngIf="!switchChannelType" src="assets/images/icons/inbox-icons/public-channel.svg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12">
+                        <label>Describe channel</label>
+                    </div>
+                    <div class="col-md-8 col-12">
+                        <textarea class="channel-name-textarea" rows="4" placeholder="Channel description (optional)" formControlName="channelDescription"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12">
+                        <label for="">Channel URL</label>
+                    </div>
+                    <div class="col-md-8 col-12">
+                        <div class="channelurl-border"   [ngClass]="{ 'red-border-url-class':  isUrlAvailable }">
+                            <span class="prependtext">{{preText}}</span>
+                            <input type="text" class="channel-url" id="urlName" formControlName="urlName" (keyup)="typedUrl(f)">
+                        </div>
+                        <div class="channel-url-icon">
+                            <a class="private-switch" *ngIf="isUrlAvailable == false"><img src="assets/images/icons/inbox-icons/approve.svg" alt="true"></a>
+                            <a class="public-switch" *ngIf="isUrlAvailable == true"><img src="assets/images/icons/inbox-icons/not_available.svg" alt="false"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 make-channel-check">
+                        <label for="foreign_checkbox">Make channel private</label>
+                        <p *ngIf="!switchChannelType">Public channels can be viewed and followed by anyone. Make channel public if you wish to have discussion/collaboration publicly.</p>
+                        <span class="private-switch" *ngIf="switchChannelType">(A private channel cannot be made public later on).</span>
+                    </div>
+                    <div class="col-md-8 col-12">
+                        <label class="switch">
+                            <input type="checkbox" id="foreign_checkbox" (click)="switchbutton($event)"  class="primary" formControlName="channelCheckbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row private-switch" *ngIf="switchChannelType">
+                    <div class="col-md-4 col-10 checkbox-user-member-contend">
+                        <label for="checkbox-user-member-contend">Allow members to add users</label>
+                    </div>
+                    <div class="col-md-8 col-2 checkbox-user-member">
+                        <div class="custom-input-check">
+                          <input type="checkbox" class="form-control" id="checkbox-user-member-contend" formControlName="allowMember">
+                          <span class="check-checked"></span>
+                       </div>                                
+                    </div>
+                </div>            
+                <div class="btn-Create-Cancel">
+                    <button type="button" class="cancel-no-effect btn btn-outline-secondary mr-2 btn-Create-Cancel-channel" (click)="cancelChannel()">Cancel</button>
+                    <div class="spinner-border spinner-color" role="status" *ngIf="spinnerShow">
+                        <span class="visually-hidden"></span>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-Create-Cancel-channel position-relative" [disabled]="spinnerShow" *ngIf="updateChannelboolean == false" (click)="CreateChannel(f)">
+                        <div *ngIf="!spinnerShow">Create</div>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-Create-Cancel-channel position-relative" [disabled]="spinnerShow" *ngIf="updateChannelboolean == true" (click)="UpdateChannel(f)">
+                        <div *ngIf="!spinnerShow">update</div>
+                    </button>
+                </div>                                    
+            </div>
+        </form>
+    </section>
+</div>

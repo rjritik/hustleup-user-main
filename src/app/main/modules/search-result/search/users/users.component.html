@@ -1,0 +1,48 @@
+<div class="search-content">
+    
+    <div class="result-board">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-7 col-xl-8">
+                <p class="search-result mb-0">Showing search result for "{{searchresultfor}}"</p>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="result-items">
+        <div *ngIf="SearchedUserData?.length === 0" class="order-history-defalut product-sub-small">
+            <div class="order-history-defalut-img">
+                <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut"/>
+            </div>
+            <p>Searched User Not Found.</p>
+            <!-- <p>Upload images of any kinds of posts like looks & styles, fashion & designs, beauty & makeup, your personal photos, products, offer, & coupons, jokes, memes, quotes, literally anything...</p> -->
+        </div>
+       
+        <div class="row half-row">
+            <div  class="col-md-6 col-lg-8 col-xl-8">
+                <ul class="friend-list-dm pb-2">
+                    <li class="friend-list-dm-items" *ngFor="let item of SearchedUserData">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="post-uploader-profile cover-image">
+                                    <img src="{{item.profilePic}}" alt="post-profile" onerror="this.src='assets/images/logo.svg'">
+                                </div>
+                                <div>
+                                    <h5 class="username-display-dm mb-0">{{item.username}}</h5>
+                                    <label class="user-fullname-display mb-0">{{item.fullName}}</label>
+                                </div>
+                            </div>
+    
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button" *ngIf="item.isFollowing == false" (click)="UserFollow(item)">Follow</button>
+                                <button type="button" class="btn-button btn-send-post white-border-button" *ngIf="item.isFollowing == true" (click)="UserUnfollow(item)">Following</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>

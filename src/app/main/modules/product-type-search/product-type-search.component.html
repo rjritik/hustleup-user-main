@@ -1,0 +1,202 @@
+<app-header></app-header>
+<!-- / _begin > Main Content Container < SHB / -->
+<div class="container-xl content">
+
+    <!-- PAGE MAIN CONETNT STARTS Here -->
+    <section class="header-space first-sec">
+        <div class="flexible-content">
+            <div class="filter-sidebar">
+
+                <div class="filters-head">
+                    <div class="back-link-wrapper">
+                        <a class="back-link contain-image" href="javascipt:void(0)" (click)="BackClick()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="filter-flex" *ngIf="NotAvailData == false">
+                        <label class="filters-head-title">Filters</label>
+                        <button type="reset" class="clear-link" (click)="ProductClearAll()">Clear All</button>
+                    </div>
+                </div>
+
+                <div class="filter-brand filter-wrapper" *ngIf="NotAvailData == false">
+                    <div class="filter-flex filter-flex-btm position-relative">
+                        <label class="filters-head-title">Brands</label>
+                        <span class="search-brand contain-image" (click)="filtersearchabs = !filtersearchabs">
+                            <img src="assets/images/icons/icon-search.svg" alt="search" />
+                        </span>
+                        <span *ngIf="filtersearchabs" class="filter-search-abs">
+                            <input type="text" class="form-contorl" placeholder="Search brands"  [(ngModel)]="SearchedBrandtext">
+                            <span class="close-searh-input contain-image" (click)="CloseBrandSearch()">
+                                <img src="assets/images/icons/close.svg" alt="search" />
+                            </span>
+                        </span>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+                        <ng-container *ngFor="let item of BrandList |brandsearch:SearchedBrandtext;let i = index">
+                            <div class="check-items custom-input-check" *ngIf="brandmore?i < 4:i==i">
+                                <input type="checkbox" id="{{item.name}}"  class="form-control" name="AccessPoint01" (change)="BrandChange($event, item)" [checked]="BrandChecked(item)">
+                                <span class="check-checked"></span>
+                                <label for="{{item.name}}" class="terms-label">{{item.name}} ({{item.count}})</label>
+                            </div>
+                        </ng-container>
+
+                        <div class="check-items custom-input-check" *ngIf="BrandList.length >=5">
+                            <a class="plus-more-list" href="javascript:void(0)" (click)="BrandMoreClick()">{{brandmore?'+'+(BrandList.length-5):''}} {{brandmore?"More":"Less"}}</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="filter-price filter-wrapper" *ngIf="NotAvailData == false">
+                    <div class="filter-flex filter-flex-btm">
+                        <label class="filters-head-title">Price</label>
+                        <a class="clear-link" href="javascript:void(0)" (click)="PriceClear()">Clear</a>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+
+                        <div class="check-items custom-input-check" *ngFor="let item of PricesList;let i = index">
+                            <input type="checkbox" id="price{{i}}" class="form-control" name="AccessPoint01" (change)="PriceChange($event, item)" [checked]="PriceChecked(item)">
+                            <span class="check-checked"></span>
+                            <label for="price{{i}}" class="terms-label">INR {{item.minValue}} to {{item.maxValue}} ({{item.count}})</label>
+                        </div>
+
+                        <div class="price-between">
+                            <form class="price-set-flex CommisionRate" [formGroup]="PriceForm">
+                                <input type="number" class="input-price" placeholder="Min" formControlName="minprice" (change)="minmaxvalid()">
+                                <span class="mx-1">-</span>
+                                <input type="number" class="input-price" placeholder="Max" formControlName="maxprice" (change)="minmaxvalid()">
+                                <button type="submit" class="submit-price contain-image" (click)="SearchedPrice(f)">
+                                    <img src="assets/images/icons/dropdown_filled.svg" alt="price">
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="filter-color filter-wrapper" *ngIf="NotAvailData == false">
+                    <div class="filter-flex filter-flex-btm">
+                        <label class="filters-head-title">Color</label>
+                        <a class="clear-link" href="javascript:void(0)" (click)="ColorClear()">Clear</a>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+                        <ng-container *ngFor="let item of ColorList;let i = index">
+                            <div class="check-items custom-input-check" *ngIf="colormore?i < 4:i==i">
+                                <input type="checkbox" id="{{item.name}}" class="form-control" name="AccessPoint01" (change)="ColorChange($event, item)" [checked]="ColorChecked(item)">
+                                <span class="check-checked"></span>
+                                <label for="{{item.name}}" class="terms-label"><span class="color-circle" [style.background-color]="item.colorCode"></span> {{item.name}} ({{item.count}})</label>
+                            </div>
+                        </ng-container>
+                        
+
+                        <div class="check-items custom-input-check" *ngIf="ColorList.length >=5">
+                            <a class="plus-more-list" href="javascript:void(0)" (click)="ColorMoreClick()">{{colormore?'+'+(ColorList.length-5):''}} {{colormore?"More":"Less"}}</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="filter-ratings filter-wrapper" *ngIf="NotAvailData == false">
+                    <div class="filter-flex filter-flex-btm">
+                        <label class="filters-head-title">Ratings</label>
+                        <a class="clear-link" href="javascript:void(0)" (click)="RatingClear()">Clear</a>
+                    </div>
+
+                    <div class="checkbox-wrapper">
+                        <ng-container *ngFor="let item of RatingsList;let i = index">
+                            <div class="check-items custom-input-check">
+                                <input type="checkbox" id="rating{{i}}" class="form-control" name="AccessPoint01" [disabled]="item.minValue == 0" (change)="RatingChange($event, item)" [checked]="RatingChecked(item)">
+                                <span class="check-checked"></span>
+                                <label for="rating{{i}}" class="terms-label" *ngIf="item.minValue !== 0">{{item.minValue}} ★ & above ({{item.count}})</label>
+                                <label for="rating{{i}}" class="terms-label" *ngIf="item.minValue == 0">Below {{item.maxValue}} ★ we don't sell</label>
+                                
+                            </div>
+                        </ng-container>
+
+                    </div>
+                </div>
+
+                <div class="filter-discount filter-wrapper" *ngIf="NotAvailData == false">
+                    <div class="filter-flex filter-flex-btm">
+                        <label class="filters-head-title">Discount</label>
+                        <a class="clear-link" href="javascript:void(0)" (click)="DiscountClear()">Clear</a>
+                    </div>
+
+                    <div class="checkbox-wrapper" *ngFor="let item of DiscountList;let i = index">
+
+                        <div class="check-items custom-input-check">
+                            <input type="checkbox" id="discount{{i}}" class="form-control" name="AccessPoint01"(change)="DiscountChange($event, item)" [checked]="DiscountChecked(item)">
+                            <span class="check-checked"></span>
+                            <label for="discount{{i}}" class="terms-label">Upto {{item.maxValue}}% off</label>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="search-content w-100">
+
+                <div class="result-board">
+                    <div class="row align-items-center">
+                        <div class="col-md-8 col-lg-7 col-xl-8">
+                            <p class="search-result mb-0">Showing search result for "{{searchresultfor}}"</p>
+                        </div>
+                        <div class="col-md-4 col-lg-5 col-xl-4" *ngIf="NotAvailData == false">
+                            <ng-select2 [data]="Recommand"  [placeholder]="'Sort by: Recommanded'" width="100%"  [(ngModel)]="SelectRecommandation" (valueChanged)="RecommandValue($event)">
+                            </ng-select2>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="result-items">
+                    <div *ngIf="SearchedProductList?.length === 0" class="order-history-defalut product-sub-small">
+                        <div class="order-history-defalut-img">
+                            <img src="assets/images/icons/new-icons/products.svg" alt="order-history-defalut">
+                        </div>
+                        <p>No Products Found.</p>
+                    </div>
+                    <div class="row half-row">
+                        <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let item of SearchedProductList">
+                            <div class="product-items-wrapper hashtag-post-border-line" (click)="SelectedProductClick(item)">
+                                <div class="product-items-image">
+                                    <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag">
+                                      <owl-carousel [options]="SlideOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+                                        <div class="item" *ngFor="let items of item.productPhotos">
+                                          <img [src]="items.image"/>
+                                        </div>
+                                      </owl-carousel>
+                                    </div>
+                                  </div>
+            
+                                <div class="post-detail-wrap">
+                                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                                        <label class="post-uploader-name">{{item.brand_details?.brandName}}</label>
+                                    </div>
+                                    <p class="product-name" [title]="item.productName">{{item.productName}}</p>
+                                    <div class="price-block mt-0">
+                                        <label>{{item.variations[0]?.MRP |currency:currencyUnit:'symbol'}} <del>{{item.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}</del></label>
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- PAGE MAIN CONETNT ENDS Here -->
+
+</div>
+<!-- / _end > Main Content Container < SHB / -->

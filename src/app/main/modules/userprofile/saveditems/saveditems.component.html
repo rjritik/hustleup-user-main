@@ -1,0 +1,35 @@
+<div class="flex-hashtag-profile">
+    <div class="order-history-defalut m-0 order-history-savedicon">
+        <div class="order-history-defalut-img m-0 mr-4 mt-3">
+            <img src="assets/images/icons/icons-post-save.svg" alt="order-history-defalut">
+        </div>
+    </div>
+    <div class="hashtag-peofile-info-wrapper">
+        <h2 class="hashtag-main-title-name mb-0">Saved Items</h2>
+    </div>
+</div>
+<div class="hashtag-tabs">
+    <div class="tabs-items-flex">
+        <ul class="nav nav-pills mb-3" id="exTab1" role="tablist">
+            <li *ngIf="userroles == true" class="nav-item">
+            <a class="nav-link" [routerLink]="['Productsavelist']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/products.svg" alt="" /></span>Product</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link"[routerLink]="['Postimgsavelist']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/image.svg" alt="" /></span>Posts</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" [routerLink]="['Videosavelist']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/video.svg" alt="" /></span>Sizzles (Videos)</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" [routerLink]="['Blogsavelist']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/blog.svg" alt="" /></span>Blogs</a>
+            </li>
+        </ul>
+    </div>
+    <div id="pills-tabContent">
+        <router-outlet></router-outlet>
+    </div>
+</div>

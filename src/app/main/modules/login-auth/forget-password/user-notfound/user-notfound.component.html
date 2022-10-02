@@ -1,0 +1,44 @@
+    <!-- / _begin > Page Header / -->
+    <header class="user-action-header">
+        <div class="container">
+            <a class="brand-logo contain-image" [routerLink]="['/accounts/login']">
+                <img src="assets/images/logo.svg" alt="brand" />
+            </a>
+        </div>
+    </header>
+    <!-- / _end > Page Header / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <section class="forget-password-sec">
+        <div class="container">
+            <div class="center-screen-password password-card-padding">
+                <div class="forget-password-card mb-pb-2">
+                    <div class="forget-card-pad-y">
+                        <div class="user-not-found-wrapper">
+                            <p class="heading-no-user">We couldn't find your account with that information.</p>
+                            <p class="heading-no-user">Please try searching with your valid username, email or phone number again.</p>
+                        </div>
+                        <div class="formElement-bottomSpace">
+                            <input type="text" class="form-control action-input" placeholder="Username, email or phone number">
+                        </div>
+                        <div class="formElement-bottomSpace">
+                            <button type="submit" class="btn btn-action-forget">Find your account</button>
+                        </div>
+                    </div>
+
+                    <div class="divider-line-forget">
+                        <div class="forget-card-pad-y">
+                            <p class="an-account-heading">Don't have an account?</p>
+                            <div class="create-account">
+                                <a class="create-account-link" [routerLink]="['/accounts/signup']">Create an account</a>
+                                <a class="create-account-link" [routerLink]="['/accounts/business']">Create a business account</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Main Content < SHB / -->

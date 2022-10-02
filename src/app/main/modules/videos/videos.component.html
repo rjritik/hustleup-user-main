@@ -1,0 +1,336 @@
+<div class="row">
+  <div class="home-feed-post-wrapper">
+    <div *ngIf="singlepost == undefined">
+        <!-- <cdk-virtual-scroll-viewport
+          class="example-viewport"
+          itemSize="750"
+          (scrolledIndexChange)="currentIndex($event,homedata[$event])"
+        > -->
+        <!-- <div *cdkVirtualFor="let data of homedata,let i = index" class="home-feed-single-post"> -->
+        <div *ngFor="let data of homedata,let i = index" class="home-feed-single-post">
+            <div class="user-and-post-info-wrapper">
+                <div class="post-uploader-profile-info-wrapper">
+                    <div class="post-uploader-profile cover-image">
+                        <img src="{{data.userDetails[0]?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="post-profile"/>
+                    </div>
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="d-flex align-items-center">
+                            <label class="post-uploader-name">{{data.userDetails[0]?.username}}</label>
+                            <span *ngIf="data.isCurrent !== true" class="dot-circle"></span>
+                            <a *ngIf="data.isFollowing == true" class="follow-post-uploader text-black" href="javascript:void(0)">Following</a>
+                            <div *ngIf="data.isFollowing == false">
+                                <a *ngIf="data.isCurrent !== true" class="follow-post-uploader" href="javascript:void(0)" (click)="followuser(data)">Follow</a>
+                            </div>
+                        </div>
+                        <div class="post-timestamp">{{data.created_date | dateAgo}}</div>
+                    </div>
+                </div>
+
+                <div class="from-right post-dropDown">
+                    <div class="dropdown">
+                        <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                            <div class="post-option-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li class="dropdown-item d-flex align-items-center alert-copied" (click)="copylink(data._id)">
+                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-link-b.svg" alt="drop-icons-1" /></div>
+                                    <a class="menulabel dropText text-black">Copy Link</a>
+                                </li>
+                                <li *ngIf="data.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-mute" (click)="mutedaccount(data.userId)">
+                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-mute-b.svg" alt="drop-icons-2" /></div>
+                                    <a class="menulabel dropText text-black">Mute <b>@{{data.userDetails[0]?.username}}</b></a>
+                                </li>
+                                <li *ngIf="data.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-report" data-toggle="modal" data-target="#alertReport" (click)="openReportModal(data._id)">
+                                    <div class="dropIcons contain-image"><img src="assets/images/icons/icon-report-b.svg" alt="drop-icons-3" /></div>
+                                    <a class="menulabel dropText text-black">Report</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="post-gap-wrapper">
+            <div class="mb-1 contain-video card-vids">
+                <video id="plyrID{{i}}" controls crossorigin playsinline poster={{data.coverImg}} controlsList="nodownload" onloadedmetadata="this.muted=false">
+                    <source src={{data.video[0]?.link}} type="video/mp4">        
+                </video>
+            </div>
+    
+            <div class="home-feed-post-text-data-wrapper">
+            <ul class="home-feed-post-hashtag">
+                <li *ngFor="let hashtag of data.hashtag"><a href="javascript:void(0)" class="hashtag" (click)="hashtagclick(hashtag)">{{hashtag}}</a></li>
+            </ul>
+    
+            <div class="home-feed-post-caption">
+                <p>{{data.postTitle}}</p>
+            </div>
+            </div>
+    
+            <div class="home-feed-post-user-action mt-2">
+            <div class="home-feed-action-flex">
+                <div class="post-action post-like">
+                    <div class="post-icon changeImage">
+                        <img *ngIf="data.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likepost(data)" />
+                        <img *ngIf="data.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikepost(data)"/>
+                    </div>
+                    <label class="post-action-counter">{{data.totalLikes | numberFormat}}</label>
+                </div>
+                <div class="post-action post-comment">
+                    <div class="post-icon" (click)="commentpost(data)"><img src="assets/images/icons/icons-post-comment.svg"></div>
+                    <label class="post-action-counter">{{data.totalComments | numberFormat}}</label>
+                </div>
+                <div class="post-action post-share">
+                    <div class="post-icon post-send-icon" (click)="postshare(data)"><img src="assets/images/icons/icons-post-send.svg"></div>
+                </div>
+                <div class="post-action post-save">
+                    <div class="post-icon">
+                        <img *ngIf="data.isBookmarked == false" src="assets/images/icons/icons-post-save.svg" alt="" (click)="savepost(data)"/>
+                        <img *ngIf="data.isBookmarked == true" src="assets/images/icons/icons-post-saved.svg" alt="" (click)="unsavepost(data)"/>
+                    </div>
+                </div>
+                <div class="post-action post-promote" (click)="promoteposts(data)" *ngIf="data.userDetails && data.userDetails[0]?.role === 4">
+                    <div class="post-icon"><img src="assets/images/icons/icon-promote.svg"></div>
+                </div>
+                <div class="post-action buy-coffee" *ngIf="data.userDetails[0]?.role == 5 && IsInfluencer == false && data.userDetails[0]?.isCoffeeEnable == true">
+                    <div class="post-icon" (click)="CoffeeIconClick(data)"><img src="assets/images/icons/coffee.svg"></div>
+                </div>
+            </div>
+    
+            <div class="home-feed-post-shop-link">
+                <a class="home-feed-post-shop-btn" href="javascript:void(0)"  *ngIf ="data.isTaggedProducts == true || data.isTaggedUser == true" (click)="shoppop(data._id)">
+                    <span class="shop-btn-text">Shop</span>
+                    <span class="shop-btn-arrow"><img src="assets/images/icons/icons-post-shop-left-arrow.svg"></span>
+                </a>
+            </div>
+    
+            </div>
+        </div>
+        </div>
+    <!-- </cdk-virtual-scroll-viewport> -->
+    </div>
+    <div *ngIf="singlepost !== undefined" class="home-feed-single-post">
+        <div class="user-and-post-info-wrapper">
+            <div class="post-uploader-profile-info-wrapper">
+                <div class="post-uploader-profile cover-image">
+                    <img src="{{singlePostData.userDetails[0].profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="post-profile"/>
+                </div>
+                <div class="d-flex flex-column align-items-start">
+                    <div class="d-flex align-items-center">
+                        <label class="post-uploader-name">{{singlePostData.userDetails[0].username}}</label>
+                        <span *ngIf="singlePostData.isCurrent !== true" class="dot-circle"></span>
+                        <a *ngIf="singlePostData.isFollowing == true" class="follow-post-uploader text-black" href="javascript:void(0)">Following</a>
+                        <div *ngIf="singlePostData.isFollowing == false">
+                            <a *ngIf="singlePostData.isCurrent !== true" class="follow-post-uploader" href="javascript:void(0)" (click)="followuser(singlePostData)">Follow</a>
+                        </div>
+                    </div>
+                    <div class="post-timestamp">{{singlePostData.created_date | dateAgo}}</div>
+                </div>
+            </div>
+
+            <div class="from-right post-dropDown">
+                <div class="dropdown">
+                    <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                        <div class="post-option-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu">
+                        <ul>
+                            <li class="dropdown-item d-flex align-items-center alert-copied" (click)="copylink(singlePostData._id)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-link-b.svg" alt="drop-icons-1" /></div>
+                                <a class="menulabel dropText text-black">Copy Link</a>
+                            </li>
+                            <li *ngIf="singlePostData.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-mute" (click)="mutedaccount(singlePostData.userId)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-mute-b.svg" alt="drop-icons-2" /></div>
+                                <a class="menulabel dropText text-black">Mute <b>@{{singlePostData.userDetails[0].username}}</b></a>
+                            </li>
+                            <li *ngIf="singlePostData.isCurrent !== true" class="dropdown-item d-flex align-items-center alert-report" data-toggle="modal" data-target="#alertReport" (click)="openReportModal(singlePostData._id)">
+                                <div class="dropIcons contain-image"><img src="assets/images/icons/icon-report-b.svg" alt="drop-icons-3" /></div>
+                                <a class="menulabel dropText text-black">Report</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+      <div class="post-gap-wrapper">
+        <div class="mb-1 contain-video card-vids">
+          <video id="plyrIDsingle" controls crossorigin playsinline poster={{singlePostData.coverImg}}>
+              <source src={{singlePostData.video[0].link}} type="video/mp4">        
+          </video>
+          <!-- <video id="plyrID{{i}}" controls crossorigin playsinline poster={{data.coverImg}}>
+            <source src={{data.video.link}}>    
+               </video>           
+          -->
+          <!--  <a class="video-music-details" href="music-details.html">
+                    <img src="assets/images/icons/music_white.svg" alt="drop-icons-4" />
+                </a> -->
+        </div>
+  
+        <div class="home-feed-post-text-data-wrapper">
+        <ul class="home-feed-post-hashtag">
+            <li *ngFor="let hashtag of singlePostData.hashtag"><a href="javascript:void(0)" class="hashtag" (click)="hashtagclick(hashtag)">{{hashtag}}</a></li>
+        </ul>
+
+        <div class="home-feed-post-caption">
+            <p>{{singlePostData.postTitle}}</p>
+          </div>
+        </div>
+  
+        <div class="home-feed-post-user-action mt-2">
+          <div class="home-feed-action-flex">
+            <div class="post-action post-like">
+                <div class="post-icon changeImage">
+                    <img *ngIf="singlePostData.isLiked == false" src="assets/images/icons/icons-post-like-heart.svg" (click)="likepost(singlePostData)" />
+                    <img *ngIf="singlePostData.isLiked == true" src="assets/images/icons/icons-post-like-heart-filled.svg" (click)="unlikepost(singlePostData)"/>
+                </div>
+                <label class="post-action-counter">{{singlePostData.totalLikes | numberFormat}}</label>
+            </div>
+            <div class="post-action post-comment">
+                <div class="post-icon" (click)="commentpost(singlePostData)"><img src="assets/images/icons/icons-post-comment.svg"></div>
+                <label class="post-action-counter">{{singlePostData.totalComments | numberFormat}}</label>
+            </div>
+            <div class="post-action post-share">
+                <div class="post-icon post-send-icon" (click)="postshare(singlePostData)"><img src="assets/images/icons/icons-post-send.svg"></div>
+            </div>
+            <div class="post-action post-save">
+                <div class="post-icon">
+                    <img *ngIf="singlePostData.isBookmarked == false" src="assets/images/icons/icons-post-save.svg" alt="" (click)="savepost(singlePostData)"/>
+                    <img *ngIf="singlePostData.isBookmarked == true" src="assets/images/icons/icons-post-saved.svg" alt="" (click)="unsavepost(singlePostData)"/>
+                </div>
+            </div>
+            <div class="post-action post-promote" (click)="promoteposts(singlePostData)" *ngIf="singlePostData.userDetails && singlePostData.userDetails[0]?.role === 4">
+                <div class="post-icon"><img src="assets/images/icons/icon-promote.svg"></div>
+            </div>
+            <div class="post-action buy-coffee" *ngIf="singlePostData.userDetails[0].role == 5 && IsInfluencer == false && singlePostData.userDetails[0]?.isCoffeeEnable == true">
+              <div class="post-icon" (click)="CoffeeIconClick(singlePostData)"><img src="assets/images/icons/coffee.svg"></div>
+            </div>
+          </div>
+  
+          <div *ngIf="singlePostData.IsProduct == true && !IsSeller" class="home-feed-post-shop-link">
+            <a class="home-feed-post-shop-btn" href="javascript:void(0)" (click)="shoppop(singlePostData.userId)">
+                <span class="shop-btn-text">Shop</span>
+                <span class="shop-btn-arrow"><img src="assets/images/icons/icons-post-shop-left-arrow.svg"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <app-rightsidebar class="home-trend-table-wrapper"></app-rightsidebar>
+  <!-- / _begin > Static Backdrop For Sliding Sidebar < SHB / -->
+  <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+  <!-- / _end > Static Backdrop For Sliding Sidebar < SHB / -->
+</div>
+
+<div>
+    <app-videos-show-sidebar [iconClickType]="iconClickType" (closebar)="closesidebar()"></app-videos-show-sidebar>
+    
+    <section class="post-fixed-side-popup p-0" [ngClass]="productshop?'open':''" id="postSimilarProduct" [ngStyle]="{'right':productshop? '0px' : '-700px' }">
+    <div class="w-100 d-flex flex-column align-items-start justify-content-between sticky-close-head">
+        <button (click)="closesidebar()" class="close-popup-sidebar ml-auto pr-3"><img src="assets/images/icons/close.svg"/></button>
+        <ul class="nav nav-tabs nav-fill message-tabs w-100" id="similarProductTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="simi-product-tab" data-toggle="tab" href="#simi-product" role="tab" aria-selected="true">Product</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="taggedAccountProduct-tab" data-toggle="tab" href="#taggedAccountUser" role="tab" aria-selected="false">Account</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="simiProductTabContent">
+        <div class="tab-pane fade show active" id="simi-product" role="tabpanel" aria-labelledby="simi-product-tab">
+
+            <div class="container-fluid shop-side-menu" id="message">
+                <div class="row no-gutters">
+                    <ng-container *ngFor="let item of taggedProductList; let i = index">
+                        <div class="col-sm-6 col-12">
+                         <app-product-carousel [product]="item" (newItemEvent)="closesidebar()"></app-product-carousel>
+                        </div>
+                     </ng-container>
+                     <ng-container *ngIf="taggedProductList.length === 0">
+                         <div class="col-sm-6 col-12">
+                          No Products Available
+                         </div>
+                     </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="taggedAccountUser" role="tabpanel" aria-labelledby="taggedAccountProduct-tab">
+            <ul class="product-tagged-account-list">
+                <li class="friend-list-dm-items" *ngFor="let item of taggedUserList">
+                    <div class="d-flex align-items-center justify-content-between py-2">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <div class="post-uploader-profile cover-image">
+                             <img src="{{item.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="post-profile"/>
+                            </div>
+                            <div>
+                                <h5 class="username-display-dm mb-0">{{item.username}}</h5>
+                                <label class="user-fullname-display mb-0">{{item.fullName}}</label>
+                            </div>
+                        </div>
+
+                        <div class="d-inilne-block" *ngIf="item.isCurrent == false">
+                            <button type="button" class="btn-button btn-follow-tagged-account blue-button" *ngIf="item.isFollowing == false"  (click)="followUnfollowTaggedUser(item)">Follow</button>
+                            <button type="button" class="btn-button btn-follow-tagged-account white-border-button" *ngIf="item.isFollowing == true" (click)="followUnfollowTaggedUser(item)">Following</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="text-center" *ngIf="taggedUserList.length === 0">No taggedUser Found</li>
+            </ul>
+        </div>
+    </div>
+    </section>    
+</div>
+
+<div name="shb-page-modal">
+    <!-- / _begin > MODAL - Post Report < SHB / -->
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="alertReport">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header align-items-center">
+                    <h5 class="modal-title text-center mb-0">Report an issue</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <img src="assets/images/icons/close.svg" />
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="report-alert-list w-100">
+                         <li *ngFor="let item of reportIssue" (click)="addPostReport(item.issue)"><a class="report-alert-list-link">{{item.issue}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > MODAL - Post Report < SHB / -->
+
+    <!-- / _begin > MODAL - Thank you Reporting < SHB / -->
+    <div class="modal fade" tabindex="-1" aria-hidden="true" id="alertReported">
+        <div class="modal-dialog modal-dialog-centered modal-thanks">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="report-thanks-message">Thank you for reporting this post. We will review your issue and take necessary action.</p>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / _end > MODAL - Thank you Reporting < SHB / -->         
+</div>
+  <!-- / _end > COLLECTION [Custom Element] - All page modal collection < SHB / -->
+
+
+

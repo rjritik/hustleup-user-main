@@ -1,0 +1,50 @@
+<div class="search-content">
+    
+    <div class="result-board">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-7 col-xl-8">
+                <p class="search-result mb-0">Showing search result for "{{searchresultfor}}"</p>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="result-items">
+        <div *ngIf="SearchedHashtagsList?.length === 0" class="order-history-defalut product-sub-small">
+            <div class="order-history-defalut-img">
+                <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut"/>
+            </div>
+            <p>Searched Hashtags Not Found.</p>
+            <!-- <p>Upload images of any kinds of posts like looks & styles, fashion & designs, beauty & makeup, your personal photos, products, offer, & coupons, jokes, memes, quotes, literally anything...</p> -->
+        </div>
+       
+        <div class="row half-row">
+            <div  class="col-md-6 col-lg-8 col-xl-8">
+                <ul class="friend-list-dm pb-2">
+                    <li class="friend-list-dm-items" *ngFor="let item of SearchedHashtagsList">
+                        <div class="d-flex align-items-center justify-content-between py-2">
+                            <div class="d-flex align-items-center justify-content-start">
+                                <div class="hashtag-image-area">
+                                    <img src="assets/images/icons/hashtag.svg" alt="hash" />
+                                </div>
+                                <div id="repost-public-channel">
+                                    <label class="user-fullname-display mb-0">{{item.hashtagName}}</label>
+                                    <h5 class="username-display-dm mb-0">{{item.counter| thousandSuff}} Hashtag</h5>
+                                    
+                                </div>
+                            </div>
+    
+                            <div class="d-inilne-block">
+                                <button type="button" class="btn-button btn-send-post btn-send-post blue-button" *ngIf="item.isFollowing == false"  (click)="FollowHashtags(item)">Follow</button>
+                                <button type="button" class="btn-button btn-send-post white-border-button" *ngIf="item.isFollowing == true"  (click)="FollowingHashtags(item)">Following</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+

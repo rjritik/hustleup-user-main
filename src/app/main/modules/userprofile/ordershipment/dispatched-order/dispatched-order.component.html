@@ -1,0 +1,128 @@
+<div class="col-12 p-0">
+  <div class="admin-table admin-table-y">
+     <table>
+        <thead>
+           <tr>
+              <th>Order Date</th>
+              <th>Order Details</th>
+              <th>Qty & Price</th>
+              <th>Order Status</th>
+              <th>Shipped Date</th>
+              <th *ngIf="IsSeller">Action</th>
+           </tr>
+        </thead>
+         <tbody>
+            <ng-container *ngFor="let productitem of DispatchedOrderList,let indexs = index">
+               <tr *ngFor="let item of productitem.items;  let i = index" [ngClass]="[productitem.items.length > 1?'Confirm-Order-multiple':'', productitem.items.length === i + 1?'Confirm-Order-lastborder':'']">
+                  <td>{{item.created_date | date}}</td>
+                  <td>
+                     <div class="order-detail-product-main">
+                        <div class="order-detail-productinner-img" *ngFor="let subitem of item.product_details">
+                           <img src="{{subitem.productPhotos[0].image}}" alt="not Image" />
+                        </div>
+                        <div class="order-detail-productinner-dscription">
+                        <p><b>Order ID :<span>{{item.orderNumber}}</span></b></p>
+                        <p>SKU :<span>{{item.sku}}</span></p>
+                        <p>Product ID :<span>{{item.product_details[0].productId}}</span></p>
+                        <p>Buyer :<span>{{item.user_details[0].username}}</span></p>
+                        </div>
+                     </div>
+                  </td>
+                  <td>
+                     <div class="order-detail-productinner-dscription">
+                     <p>Qty :<span>{{item.quantity}}</span></p>
+                     <p>Color :<span>{{item.color_details?.colorName}}</span></p>
+                     <p>Size :<span>{{item.size}}</span></p>
+                     <p>Price :<span>{{item.totalPrice |currency:currencyUnit:'symbol'}}</span></p>
+                     </div>
+                  </td>
+                  <td>
+                     <div class="order-status">
+                        <!-- <div [ngClass]="{'order-status-icon-blue':item.OrderStatus =='Delivered','order-status-icon-grey':item.OrderStatus =='Dispached','order-status-icon-red-border':item.OrderStatus =='Returned','order-status-icon-red':item.OrderStatus =='Cancelled'}"></div>
+                        <p>{{item.OrderStatus}}</p> -->
+                        <div [ngClass]="{'order-status-icon-grey':item.status == 3}"></div>
+                        <p>Dispatched</p>
+                     </div>
+                  </td>
+                  <td>{{item.ShippedDate}}</td>
+                  <td *ngIf="IsSeller">
+                     <div *ngIf="productitem.items.length === i + 1" class="order-invoice order-dispatched-cancelled">
+                        <button (click)="PrintInvoice(item)" type="button" class="cancel-no-effect btn btn-outline-secondary">
+                        Print Invoice
+                        </button>
+                        <button (click)="CarrierDetailClick(productitem)" type="button" class="cancel-no-effect btn btn-outline-secondary Carrier-Details">
+                        Carrier Details
+                        </button>
+                        <button type="button" class="cancel-no-effect btn btn-outline-secondary" (click)="ContactBuyer(productitem)">
+                        Contact Buyer
+                        </button>
+                     </div>
+                  </td>
+               </tr>
+            </ng-container>
+            <tr *ngIf="DispatchedOrderList.length == 0">
+               <td colspan="6" class="text-center" style="font-weight: 500;">No Records Found</td>
+            </tr>
+         </tbody>
+     </table>
+       <!-- <div class="pagination_rounded">
+            <ul>
+                <li> <a href="#" class="prev"> <i class="fa fa-angle-left" aria-hidden="true"></i> Prev </a> </li>
+                <li><a href="#">1</a> </li>
+                <li class="hidden-xs"><a href="#">2</a> </li>
+                <li class="hidden-xs"><a href="#">3</a> </li>
+                <li class="hidden-xs"><a href="#">4</a> </li>
+                <li class="hidden-xs"><a href="#">5</a> </li>
+                <li class="visible-xs"><a href="#">...</a> </li>
+                <li><a href="#">6</a> </li>
+                <li><a href="#" class="next"> Next <i class="fa fa-angle-right" aria-hidden="true"></i></a> </li>
+            </ul>
+       </div> -->
+  </div>
+</div>
+<div *ngIf="docslength === 0" class="order-history-defalut">
+   <div class="order-history-defalut-img"><img src="assets/images/icons/order_shipment.svg" alt="order-history-defalut"></div>
+   <p>You have not received any orders yet. Even buyers who come to your store can directly buy & checkout from here too. You can ship through Self Drop.</p>
+   <p>When you got orders, you will have three options to ship, request for pick up, self shipment and self drop.</p>
+  </div>
+  <div *ngIf="docslength !== 0" class="col-12 p-0">
+   <div class="page-pagination-Ordershipment">
+      <div class="data-list-items-row-limit display-flex-center-row justify-content-end">
+         <select class="form-control select items-show-limit-select"  (change)="SelectItemsPerPage($event)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+         </select>
+         <label class="mb-0">Items </label>
+         <label class="page-count mb-0">{{PageNo}} / {{totalPages}} pages</label>
+         <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onFirst()"><i class="fa fa-angle-double-left DoubleAngle" aria-hidden="true"></i></button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasPrevPage  == false}" (click)="onPrevious()" ><img src="assets/images/icons/icons-arrow-left.svg" alt="left" /></button></li>
+               <li class="page-item"><button class="page-link active" href="javascript:void(0)">{{PageNo}}</button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onNext()"><img src="assets/images/icons/icons-arrow-right.svg" alt="right" /></button></li>
+               <li class="page-item"><button class="page-link" [ngClass]="{'not-allowed' : hasNextPage  == false}" (click)="onLast()"><i class="fa fa-angle-double-right DoubleAngle" aria-hidden="true"></i></button></li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade action-modal delete-item-modal" id="contactbuyer" tabindex="-1" role="dialog" aria-labelledby="contactbuyer" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+         <div class="images-search-close d-flex justify-content-end">
+             <img data-dismiss="modal" aria-label="Close" class="product-icon mt-0" src="assets/images/icons/close.svg" alt="close" />
+         </div>
+          <b>Buyer's Contact Detail</b>
+          <p class="mt-3">Name:-{{BuyerName}}</p>
+          <p class="mt-3">E-mail:-{{BuyerEmail}}</p>
+          <p class="mt-3">phone:-{{BuyerMobile}}</p>
+        </div>
+      </div>
+   </div>
+ </div>
+
+ <app-invoicedata [PrintInvoicedata]="invoiceform" style="display: none;"></app-invoicedata>

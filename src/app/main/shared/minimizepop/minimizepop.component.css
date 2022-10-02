@@ -1,0 +1,46 @@
+.images-upload-minipop{
+    padding: 15px;
+}
+.images-upload-minipop .imag-minipop-inner{
+    flex: 0 0 20%;
+    max-width: 20%;
+    height: 120px;
+    padding:4px;
+    position: relative;
+}
+.images-upload-minipop .imag-minipop-inner img{
+    min-height: 100%;
+    max-height: 100%;
+    width: 100%;
+}
+.images-minipop-scroll{
+    overflow-y: auto;
+    height: calc(100% - 138px);
+    overflow-x: hidden !important;
+}
+.produc-upload-msg{
+    width: 168px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+.product-dsc-pop{
+    margin-top: 5px;
+    text-align: left;
+}
+.product-dsc-pop h4{
+    font-weight: 500;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+.product-dsc-pop p{
+    margin-bottom: 2px;
+}
+.product-dsc-pop label{
+    margin-bottom: 0;
+    font-weight: 500;
+}
+.produc-upload-msg:hover .trash{
+    opacity: 1;
+}

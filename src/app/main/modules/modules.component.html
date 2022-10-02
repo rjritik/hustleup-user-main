@@ -1,0 +1,23 @@
+<app-header></app-header>
+<!-- / _begin > Main Content Container < SHB / -->
+<div class="container-xl content overflow-hidden">
+  <div class="d-flex">
+    <!-- / _begin > Page Main Content < SHB / -->
+    <app-leftsidebar [ngStyle]="{'left':sliderbarOpen? '0px':''}" class="slidebar"></app-leftsidebar>
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+    <section [ngClass]="sideRightOverHide?'':'d-none'"  id="sideOverHide" (click)="closeRihgtSidebar()"></section>
+    <div class="main-content p-0">
+      <div class="container-fluid">
+          <router-outlet></router-outlet>
+      </div>
+    </div>
+    <app-navbarsub *ngIf="menuShowingResponsive" [ngStyle]="{'right':rightSliderBarOpen? '0px':''}" class="slidebar-right"></app-navbarsub>
+    <!-- / _end > Page Main Content < SHB / -->
+  </div>
+</div>
+<!-- / _end > Main Content Container < SHB / -->
+<!-- / _begin > Shop Cart Slidebar < SHB / -->
+
+<!-- / _end > Shop Cart Slidebar < SHB / -->
+<section [ngClass]="cartSideOverHide?'':'d-none'" id="sideOverHide" (click)="closeCartSidebar()"></section>
+<app-cart-sidebar></app-cart-sidebar>

@@ -1,0 +1,53 @@
+<div class="search-content">
+    
+    <div class="result-board">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-7 col-xl-8">
+                <p class="search-result mb-0">Showing search result for "{{searchresultfor}}"</p>
+            </div>
+            <div class="col-md-4 col-lg-5 col-xl-4" *ngIf="SearchedProductList?.length !== 0">
+                <ng-select2 [data]="Recommand"  [placeholder]="'Sort by: Recommanded'" width="100%"  [(ngModel)]="SelectRecommandation" (valueChanged)="RecommandValue($event)">
+                </ng-select2>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="result-items">
+        <div *ngIf="SearchedProductList?.length === 0" class="order-history-defalut product-sub-small">
+            <div class="order-history-defalut-img">
+                <img src="assets/images/icons/new-icons/products.svg" alt="order-history-defalut"/>
+            </div>
+            <p>No Products Found.</p>
+        </div>
+        <div class="row half-row">
+            <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let item of SearchedProductList">
+                <div class="product-items-wrapper hashtag-post-border-line" (click)="ProductClick(item)">
+                    <div class="product-items-image">
+                        <div class="hover-carousel owl-carousel owl-theme owl-loaded owl-drag">
+                          <owl-carousel [options]="SlideOptions" [carouselClasses]="['owl-theme', 'sliding']" >
+                            <div class="item" *ngFor="let items of item.productPhotos">
+                              <img [src]="items.image"/>
+                            </div>
+                          </owl-carousel>
+                        </div>
+                      </div>
+
+                    <div class="post-detail-wrap">
+                        <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                            <label class="post-uploader-name">{{item.brand_details?.brandName}}</label>
+                        </div>
+                        <p class="product-name" [title]="item.productName">{{item.productName}}</p>
+                        <div class="price-block mt-0">
+                            <label>{{item.variations[0]?.MRP |currency:currencyUnit:'symbol'}} <del>{{item.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}</del></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,77 @@
+<nav>
+    <div class="row">
+        <ul class="col-12">
+            <li *ngFor="let item of navmenulist">
+                <a (mouseover)="titlehover()">{{item.title}}</a>
+                <div class="mega-menu" aria-hidden="true" role="menu" [ngClass]="{'hoverpopuphide' : producttypeclicked == true}">
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 1">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 2">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 3">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 4">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 5">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="nav-column">
+                        <ng-container *ngFor="let subitem of item.menuSubCategories; let i=index">
+                            <ng-container *ngIf="subitem.menuColumn == 6">
+                                <h6>{{subitem.title}}</h6>
+                                <ul class="nav-menu-sublist" *ngFor="let protype of subitem.productTypes;let j = index">
+                                    <li role="menuitem" (click)="ProductTypeClick(protype)"><a>{{protype.title}}</a></li>
+                                </ul>
+                                <hr/>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,78 @@
+<div class="user-social-life-wrapper" *ngIf="userprofiledata?.website">
+    <ul class="user-pro-social-flex">
+        <li>
+            <a class="social-link-website" target="_blank" href="https://{{userprofiledata.website}}">
+                <span class="link-badge-image"><img src="assets/images/icons/icon-link-b.svg"/></span>
+                <span>{{userprofiledata.website}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- align-items-start -->
+<div class="flex-hashtag-profile">
+    <div class="hashtag-profile-image profile-image-bg cover-image p-0">
+        <img src={{userprofiledata?.profilePic}} alt="hash"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120" style="width: 70%;" fill="#707070">
+            <path d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z"></path>
+        </svg>
+    </div>
+    <div class="hashtag-peofile-info-wrapper">
+        <div class="hashtag-peofile-info-title">
+            <h2 class="hashtag-main-title-name mb-0">{{userprofiledata?.fullName}}</h2>
+            <h3 class="head-pageInfo-username">@{{userprofiledata?.username}}</h3>
+        </div>
+        <div class="d-flex align-items-center flex-wrap follow-m-call-map">
+            <button *ngIf="userprofiledata?.isFollowing == true" class="btn btn-secondary mb-2  mr-3 main-top-popup">Following</button>
+            <div *ngIf="userprofiledata?.isFollowing == false">
+                <button *ngIf="userprofiledata?.isCurrent !== true" class="btn btn-primary btn-follow-hashtag mb-2 mr-3" (click)="followuser(userprofiledata)">Follow</button>
+            </div>
+            <button class="btn btn-secondary mb-2 main-top-popup">Message</button>
+            <!--  <button class="btn btn-secondary mb-2 ml-3">Call</button>-->
+            <div *ngIf="userprofiledata?.phoneForCustomer.length !== 0" class="from-right call-act mb-2 ml-3">
+            <div class="dropdown">
+                <div class="btn btn-secondary" mat-button [matMenuTriggerFor]="menu">Call</div>
+                <mat-menu #menu="matMenu">
+                    <button *ngIf="userprofiledata?.phoneForCustomer.length > 0" mat-menu-item>{{userprofiledata?.phoneForCustomer[0].phone}}</button>
+                    <button *ngIf="userprofiledata?.phoneForCustomer.length === 2" mat-menu-item>{{userprofiledata?.phoneForCustomer[1].phone}}</button>
+                </mat-menu>
+            </div>
+            </div>
+            <button class="btn btn-secondary mb-2 ml-3">Visit Channel</button>
+            <button class="btn btn-secondary mb-2 ml-3">
+                <img src="assets/images/icons/map.svg" width="20" alt="img">
+            </button>
+        </div>
+        <div class="d-flex flex-row align-items-center flex-wrap flex-sm-nowrap">
+            <div class="product-statastics">{{userprofiledata?.totalFollowing}} Followings</div>
+            <div class="product-statastics">{{userprofiledata?.totalfollowers}} Followers</div>
+            <div class="product-statastics d-flex">1.5K
+                <span class="product-info-icon contain-image"><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="" /> </span>
+            </div>
+        </div>
+        <p *ngIf="userprofiledata?.bio != ''" class="text-md profile-description">{{userprofiledata?.bio}}</p>
+    </div>
+</div>
+<div class="hashtag-tabs user-profile-upload">
+    <div class="tabs-items-flex">
+        <ul class="nav nav-pills mb-3" id="exTab1" role="tablist">
+            <li class="nav-item" *ngIf="IsUser == false">
+            <a class="nav-link" [routerLink]="['productprofile']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/products.svg" alt="" /></span>Product</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link"[routerLink]="['postsprofile']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/image.svg" alt="" /></span>Posts</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" [routerLink]="['videoprofile']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/video.svg" alt="" /></span>Sizzles (Videos)</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" [routerLink]="['blogsprofile']" routerLinkActive="active">
+            <span class="hashtag-tab-icon contain-image"><img src="assets/images/icons/new-icons/blog.svg" alt="" /></span>Blogs</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,40 @@
+/* for selfdropprintpagestart */
+
+table, td, th {  
+    border: 2px solid #ddd;
+    text-align: left;
+  }
+  table,td,th {
+    border-right: none; 
+    border-left: none ;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    padding: 15px;
+  }
+  .order-detail-product-main{
+      display: flex;
+      align-items: center;
+  }
+  .order-detail-productinner-img img {
+      margin-right: 7px;
+  }
+  .order-detail-product-main img {
+      height: 80px;
+      width: 60px;
+  }
+  .order-detail-productinner-dscription p {
+      margin-bottom: 3px;
+      margin-top: 0
+  }
+  textarea:focus-visible{
+      border: none;
+      outline: none;
+  }
+
+  /* for selfdropprintpageend */

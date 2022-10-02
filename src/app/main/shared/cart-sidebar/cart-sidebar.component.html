@@ -1,0 +1,83 @@
+<section  class="shopping-cart animate__animated" [ngClass]="[cartshow?'animate__fadeInRight':'animate__fadeOutRight']" *ngIf="carthide">
+    <div class="shopping-header">
+        <h3>Shopping Cart<span class="cart-item-counter">({{cartlengthnumber}})</span></h3>
+        <span class="shopping-cart-close contain-image"><img src="assets/images/icons/close.svg" (click)="cartclose()"></span>
+    </div>
+    <div class="shopping-item">
+        <!-- / _begin > Shop Cart Empty Cart Details < SHB / -->
+        <div class="shopping-empty" *ngIf="isavailcartdata">
+            <div class="icon-empty-cart contain-image">
+                <img src="assets/images/icons/empty_cart.svg">
+            </div>
+            <label class="empty-cart-label">Your cart is empty.</label>
+            <button class="btn btn-user-action w-auto" id="goToCart" (click)="startshopping()">Start Shopping</button>
+            <button *ngIf="cartlengthsavednumber >= 1" class="btn btn-user-action w-auto mt-3" (click)="viewsavelist()">View Savelist</button>
+        </div>
+        <!-- / _end > Shop Cart Empty Cart Details < SHB / -->
+
+        <!-- / _begin > Shop Cart List < SHB / -->
+        <div *ngIf="isavailcartdata == false" class="shopping-cart-container">
+            <ng-container *ngFor="let item of CartList;let i = index">
+                <div *ngIf="item.isSaved == false" class="shopping-cart-list">
+                    <div class="shopping-cart-list-item" *ngFor="let subitem of item.product_details">
+                        <div class="shopping-item-image-thumbnail cover-image">
+                            <img src="{{subitem.productPhotos[0]?.image}}" onerror="this.src='assets/images/logo.svg'" alt="cart-thumbnail" />
+                        </div>
+                        <div class="shopping-item-details-wrapper">
+                            <div class="shopping-item-header-flex">
+                                <h4 class="shopping-item-name">{{subitem.productName}}</h4>
+                                <a class="shopping-item-remove contain-image" data-toggle="modal" data-target="#modalConfirmCartRemove">
+                                    <img src="assets/images/icons/icon-delete-b.svg" alt="icon-shopping-item-remove" (click)="SelectedRemoveCartItem(item,i)" />
+                                </a>
+                            </div>
+                            <label class="shopping-item-price">{{item.basePrice|currency:currencyUnit:'symbol'}}</label>
+                            <label class="shopping-item-color">Color: {{item.color_details?.colorName}}</label>
+    
+                            <div class="shopping-quantity-flex">
+                                <label class="shopping-item-size">Size: {{item.size}}</label>
+                                <div class="shopping-quantity-box">
+                                    <button class="shopping-quantity-decreaser"><img class="shopping-quantity-decreaser-page" src="assets/images/icons/minus.svg" (click)="DecreaseQty(item)" alt="minus" [ngClass]="{'not-allowed' : item.quantity <=1}"></button>
+                                    <span class="shopping-quantity-number">{{item.quantity}}</span>
+                                    <button class="shopping-quantity-increaser"><img class="shopping-quantity-increaser-page" src="assets/images/icons/plus_black.svg" (click)="IncreaseQty(item)" alt="plus" [ngClass]="{'not-allowed' : item.quantity >=3}"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="shopping-cart-total">
+                <label class="shopping-cart-total-label">Total</label>
+                <label class="shopping-cart-total-price">{{totalamount|currency:"INR":"symbol"}}</label>
+            </div>
+
+            <div class="shopping-cart-action pb-4">
+                <button type="button" class="btn btn-white mb-2" id="viewCart" (click)="ViewCart()">View Cart</button>
+                <button type="button" class="btn btn-blue" data-dismiss="modal" (click)="BuyNowCart()">Buy Now</button>
+            </div>
+        </div>
+        <!-- / _end > Shop Cart List < SHB / -->
+    </div>
+</section>
+<div class="modal fade shb-modal" id="modalConfirmCartRemove" data-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="images-search-close">
+                    <img data-dismiss="modal" aria-label="Close" class="product-icon mt-0" src="assets/images/icons/close.svg" alt="close">
+                </div>                        
+                <ul class="addtocart-dsc">
+                    <li class="mb-3 mt-2">Are you sure you want to remove this item?</li>
+                    <li class="mb-4">You can move the item in Savelist for later purchase.</li>
+                </ul>
+                <div class="addtocart-remove">
+                    <button type="button" class="add-more-from-savelist mr-3 pr-3">
+                    <img src="assets/images/icons/icons-post-save.svg" alt="">
+                    <span data-dismiss="modal" (click)="MoveToSavedList()">Move to Savelist</span>
+                    </button>
+                    <button type="button" class="btn btn-deactivate-action pl-4 pr-4" data-dismiss="modal" (click)="RemoveFromCart()">Remove</button>                            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

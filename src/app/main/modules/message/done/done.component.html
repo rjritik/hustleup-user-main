@@ -1,0 +1,897 @@
+<div class="row">
+    <!-- / _begin > Page Navigation Sidebar < SHB / -->
+    <section class="slidebar">
+        <div class="row slidebar-scroll m-0">
+            <div class="menu">
+                <div class="new-create-add" (click)='NewMsgBox()'>
+                    <div class="new-char-contact main-top-popup"><img src="./assets/images/icons/inbox-icons/plus.svg"
+                            alt="" class="channel-plus-icon">
+                        <span>New Message</span>
+                    </div>
+                </div>
+                <div *ngIf="ChatMemberList?.length == 0" class="send_both_imptybox_parent" >
+                    <div class="send_member_imptybox_main send_both_imptybox_main">
+                        <div class="send_member_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                            <img src="assets/images/icons/message.svg" height="50px">
+                        </div>
+                        <p>No member <br> found select new member.
+                        </p>
+                    </div>
+                </div>
+                <div class="searchBar" *ngIf="ChatMemberList?.length !== 0">
+                    <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="Search"
+                        [(ngModel)]="SearchChatMembertext" />
+                    <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                        <img src="./assets/images/icons/icon-search.svg" alt="" width="15">
+                    </button>
+                </div>
+                <ul class="user-available-list msg-chat">
+                    <li *ngFor="let item of ChatMemberList | chatMember:SearchChatMembertext"
+                        (click)="userchatdetails(item)"
+                        [ngClass]="{'activeuserclass': item._id == this.ActiveUserChatDetail?._id && activechatboolean == true}">
+                        <div class="align-items-center msg-row no-gutters">
+                            <div class="pending-message" *ngIf="item.user_details?.messageCount > 0 ||item.user_details?.replayMessagesCount > 0 ">{{(item.user_details.messageCount || 0)+(item.user_details.replayMessagesCount || 0)}}</div>
+                            <div class="messaged-profile-thumb mr-2">
+                                <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="user-profile" />
+                            </div>
+                            <div class="w-100 msg-subdsc">
+                                <div class="dsc-inner">
+                                    <p class="mb-0 unread-name">{{item.user_details.username}}</p>
+                                    <label class="mb-0 date">{{item.messages?.created_date | Srtdate}}</label>
+                                </div>
+                                <p class="mb-0 unread-msg">{{item.messages?.message}}</p>
+                            </div>
+                        </div>
+                        <div class="Replying-shape">
+                            <div class="drop-list message-sub-drop">
+                                <div class="dropdown">
+                                    <img class="dropdown-toggle" data-toggle="dropdown"
+                                        src="./assets/images/icons/inbox-icons/three_dots.svg" alt="">
+                                    <div class="dropdown-menu dropdown-menu-right p-3 mt-2">
+                                        <a class="dropdown-item Mark-asDone-notificaton"
+                                            (click)="markAsUndone()">Mark as Unread</a>
+                                        <a class="dropdown-item move-tospam-notificaton"
+                                            (click)="moveToSpam()">Move to Spam</a>
+                                        <a class="dropdown-item delete-allmsg-notificaton" 
+                                            data-toggle="modal" data-target="#deleteallmessage">
+                                            Delete all Messages
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <img src="./assets/images/icons/forward-outline-white.svg" alt="comment-action-icon"/> -->
+                        </div> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Navigation Sidebar < SHB / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <div class="main-content email-main-content py-0">
+        <div class="container-fluid position-relative">
+            <div class="row">
+                <div class="messages-list-wrapper comment-wrapper" *ngIf="activechatboolean == true">
+                    <div class="row py-2 user-option-row">
+                        <div class="col-12 d-flex align-items-center">
+                            <div class="msg-row align-items-center">
+                                <div class="messaged-profile-thumb">
+                                    <img src="{{ActiveUserChatDetail.user_details?.profilePic}}"
+                                        onerror="this.src='assets/images/logo.svg'" alt="user-profile" />
+                                </div>
+                                <p class="mb-0 read-name text-left pl-2">{{ActiveUserChatDetail.user_details?.username}}</p>
+                            </div>
+                            <div class="ml-auto">
+                                <ul class="user-option">
+                                    <li tooltip="Mark as Unread" flow="down" class="msg-marked-unread"
+                                        (click)="markAsUndone()"><img src="assets/images/message/message.svg" alt="unread">
+                                    </li>
+                                    <li tooltip="Move to Spam" flow="down" class="msg-moved-spam"
+                                        (click)="moveToSpam()"><img src="assets/images/message/spam.svg" alt="spam">
+                                    </li>
+                                    <li style="padding:0px;"><img src="./assets/images/icons/inbox-icons/line.svg"
+                                            alt=""></li>
+                                    <li tooltip="Create a new message box" flow="down" (click)='createNewMsgBox()'><img
+                                            class="main-top-popup"
+                                            src="./assets/images/icons/inbox-icons/compose_popup.svg" alt=""></li>
+                                    <li tooltip="Open messages in chat box" flow="down" (click)='composemsgdown()'><img
+                                            class="main-down-user" src="./assets/images/icons/inbox-icons/minimize.svg"
+                                            alt=""></li>
+                                    <li>
+                                        <div class="drop-list message-sub-drop">
+                                            <div class="dropdown">
+                                                <img class="dropdown-toggle" data-toggle="dropdown"
+                                                    src="./assets/images/icons/inbox-icons/three_dots.svg" alt="">
+                                                <div class="dropdown-menu dropdown-menu-right p-3 mt-2">
+                                                    <a class="dropdown-item Mark-asDone-notificaton"
+                                                        (click)="markAsUndone()">Mark as Unread</a>
+                                                    <a class="dropdown-item move-tospam-notificaton"
+                                                        (click)="moveToSpam()">Move to Spam</a>
+                                                    <a class="dropdown-item delete-allmsg-notificaton" 
+                                                        data-toggle="modal" data-target="#deleteallmessage">
+                                                        Delete all Messages
+                                                    </a>
+                                                    <a class="dropdown-item">View Profile</a> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- / _begin > COLLECTION [Custom Element] - All page toast collection < SHB / -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <div class="comment-section  inbox-cmt-section"  #myList infiniteScroll [infiniteScrollDistance]="0.5" [scrollWindow]="false" (scrolledUp)="onScrollUp()" (scrolled)="onScroll()" 
+                            [ngStyle]="{ 'max-height': 'calc(100vh - ' + primeTableHeight + 'px' + ')','min-height': 'calc(100vh - ' + primeTableHeight + 'px' + ')' }">
+                            <div *ngIf="singleChatMessageList?.length === 0 && UnreadMessageList?.length === 0"> No Conversation Available</div>
+                            <div class="commented-area"  #readmessage *ngFor="let item of singleChatMessageList;let i = index">
+                                <div class="comment-singular comment-border"  [ngStyle]="item.productDetails?{'display':'inline-flex'}:{}">
+                                    <div class="commenter-profile cover-image">
+                                        <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="user-profile"/>
+                                    </div>
+                                    <div class="commenter-info">
+                                        <div class="commenter-name-wrapper">
+                                            <div class="commenter-name">
+                                                {{item.user_details.username}}
+                                                <img class="verify-user-approve"
+                                                    src="assets/images/icons/inbox-icons/approve.svg"
+                                                    *ngIf="item.user_details.isProfileVerified == true">
+                                                <label class="mb-0 commenting-time">{{item.created_date | Srtdate}}</label>
+                                                <div class="reposted-status" *ngIf="item.isEdited == true">Edited</div>
+                                                <div class="reposted-status" *ngIf="item.repostedMessageId">[Reposted]</div>
+                                            </div>
+                                            <div class="side-post-comment-option-wrapper">
+                                                <div class="right-side-menu">
+                                                    <div class="share-comment-compare" title="create Quote" (click)="createQuote(item)">
+                                                        <img src="./assets/images/icons/quotes.svg" alt="quotes-icon">
+                                                    </div>
+                                                    <div class="share-comment-compare" (click)="GetAllrepliesList(item)" title="create Reply">
+                                                        <img src="./assets/images/icons/forward-outline.svg"  alt="reply-image">
+                                                    </div>
+                                                    <div class="share-comment-compare" attr.tooltip="{{item.repostedMessageId ? 'Undo Repost':'Repost'}}" flow="down" *ngIf="!item.repostedMessageId ||item.isReposted" (click)="createRepost(item,i)">
+                                                        <img class="repost-public-channel"src="./assets/images/icons/repost.svg" alt="repost-icon">
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <div class="btn p-0" data-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <div class="menuicon comment-option-icon contain-image">
+                                                                <img src="./assets/images/icons/three_dots.svg"
+                                                                    alt="dropdown-line" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown-menu">
+                                                            <ul>
+                                                                <li class="dropdown-item d-flex align-items-center edit-comment-item"
+                                                                    *ngIf="item.self_message == true "
+                                                                    (click)="EditMessage(item)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-pencil-b.svg"
+                                                                            alt="drop-icons-1"></div>
+                                                                    <div class="menulabel dropText">Edit</div>
+                                                                </li>
+                                                                <li class="dropdown-item d-flex align-items-center"
+                                                                    data-toggle="modal"
+                                                                    data-target="#deleteCommentConfirmModal"
+                                                                    (click)="DeleteMessage(item,i)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-delete-b.svg"
+                                                                            alt="drop-icons-2"></div>
+                                                                    <div class="menulabel dropText">Delete</div>
+                                                                </li>
+                                                                <li class="dropdown-item d-flex align-items-center"
+                                                                    (click)="CopyMessage(item)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-copy-b.svg"
+                                                                            alt="drop-icons-3"></div>
+                                                                    <div class="menulabel dropText">Copy</div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <p class="comment-text text-break w-95">{{item.message}}</p>
+                                        <div *ngIf="selectedEditItem?._id == item._id">
+                                            <div class="comment-singular comment-border mr-2">
+                                                <textarea class="edit-message-area" [(ngModel)]="editedTypedText" rows="1"></textarea>
+                                                <span class="d-flex pr-0 align-self-end justify-content-end" (click)="editEmojiOpen()">
+                                                    <img src="./assets/images/icons/emoji1.svg" height="24" width="24" alt="">
+                                                </span>
+                                                <emoji-mart class="emoji-box inbox-emoji-box"
+                                                    *ngIf="editEmojimessagebox" (emojiSelect)="editedAddEmoji($event)"
+                                                    title="Pick your emoji…">
+                                                </emoji-mart>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end mt-1">
+                                                <button type="reset" class="btn-popup-cancel-text-link"
+                                                    data-dismiss="modal" aria-label="Close"
+                                                    (click)="cancelEditMessage()">Cancel
+                                                </button>
+                                                <button type="submit" class="btn-popup-save-text-link"
+                                                    data-dismiss="modal" aria-label="Close"
+                                                    (click)="saveEditMessage()">Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="comments-child-comments" >
+                                            <div class="comment-singular comment-border" (click)="quotedmessageClick(item.quotesMessage_details)" *ngIf="item.quotesMessage_details">
+                                                <div class="commenter-profile cover-image" >
+                                                    <img src="{{item.quotesMessage_details.quotesUserDetail?.profilePic}}"
+                                                        onerror="this.src='assets/images/logo.svg'"
+                                                        alt="profilepic not found">
+                                                </div>
+                                                <div class="commenter-info">
+                                                    <div class="commenter-name">{{item.quotesMessage_details.quotesUserDetail?.username}}
+                                                        <label class="mb-0 commenting-time">{{item.quotesMessage_details?.created_date | date:'shortTime'}}</label>
+                                                    </div>
+                                                    <p class="comment-text">{{item.quotesMessage_details?.message}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="item.documents" class="public-upload-section col-12">
+                                            <div class="images-send row alltype-file-upload">
+                                                <div class="col-12 col-sm-6 col-xl-4" *ngFor="let docItem of item.documents">
+                                                    <div class="card">
+                                                        <div class="alltype-inner">
+                                                            <img src="assets/images/icons/file.svg"><span>{{docItem?.type}}</span>
+                                                        </div>
+                                                        <div class="filetype-dsc">
+                                                            <p>{{docItem?.fileName}}</p><span>{{docItem?.size|fileSize}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="msg-img-downarrow">
+                                                        <a href={{docItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg" alt="downarrow"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="item.images" class="public-upload-section col-12">
+                                            <div class="images-send row">
+                                                <div class="col-6 col-md-4 col-xl-3" *ngFor="let imageItem of item.images">
+                                                    <a href="javascript:void(0)"><img src="{{imageItem?.url}}"></a>
+                                                    <div class="msg-img-downarrow">
+                                                        <a href={{imageItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg" alt="downarrow"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="embed-product-preview mt-2 ml-auto mr-auto" *ngIf="item.productDetails">
+                                            <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element">{{item.productDetails?.productName}}</p>
+                                            <div class="mb-2">
+                                                <div class="product-items-image">
+                                                    <owl-carousel [options]="slideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                                                        <div class="item" *ngFor="let items of item.productDetails.productPhotos">
+                                                            <img class="rounded" [src]="items.image"/>
+                                                        </div>
+                                                    </owl-carousel>
+                                                </div>
+
+                                                <div class="post-detail-wrap pl-0 pr-0">
+                                                    <div class="price-block mt-0">
+                                                        <label>{{item.productDetails?.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}
+                                                            <del>{{item.productDetails?.variations[0]?.MRP |currency:'INR&nbsp;':'code'}}</del>
+                                                            <span>({{item.productDetails?.variations[0]?.discount}}%Off)</span></label>
+                                                        <div class="msg-slider-btn">
+                                                            <button type="button" class="btn btn-outline-secondary">
+                                                                <img src="assets/images/icons/icons-post-save.svg">
+                                                                Wishlist
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary mt-0 mb-0">Buy Now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-option mt-2" *ngIf="item.replyCount > 0">
+                                            <div [ngClass]="{'now-chat-red':item.replayUnreadCount}"></div>
+                                            <a class="post-fixed-replies msg-replies post-comment" (click)="GetAllrepliesList(item)">{{item.replyCount}} Replies</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- video show start -->
+                                <!-- <div class="comment-singular comment-border single-section-upload">
+                                        <div class="commenter-profile cover-image">
+                                            <img src="assets/images/profile2.jpg" alt="commenter">
+                                        </div>
+                                        <div class="commenter-info">
+                                            <div class="commenter-name-wrapper">
+                                                <div class="commenter-name">
+                                                    atman.1994
+                                                    <label class="mb-0 commenting-time">20 May, 2021</label>
+                                                </div>                                                   
+                                                <div class="side-post-comment-option-wrapper">
+                                                    <div class="right-side-menu">
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/message/message.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/quotes.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/forward-outline.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/repost.svg" alt="comment-action-icon"></div>
+                                                        <div class="dropdown">
+                                                            <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                                <div class="menuicon comment-option-icon contain-image">
+                                                                    <img src="./assets/images/icons/three_dots.svg" alt="comment-action-icon">
+                                                                </div>
+                                                            </div>
+                                                            <div class="dropdown-menu" >
+                                                                <ul>
+                                                                    <li class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1"></div>
+                                                                        <div class="menulabel dropText">Edit</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteCommentConfirmModal">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2"></div>
+                                                                        <div class="menulabel dropText">Delete</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3"></div>
+                                                                        <div class="menulabel dropText">Copy</div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>       
+                                                    </div>                                                         
+                                                </div>
+                                            </div>
+                                            <div class="public-upload-section msg-section-0hw">
+                                                <div class="product-items-wrapper hashtag-post-border-line">
+                                                    <div class="post-items-video cover-image">
+                                                    <img src="assets/images/hashtags-solo/hashtag-post-09.jpg" alt="product-items">
+                                                    <div class="abs-video-views">
+                                                        <div class="video-view-icons contain-image">
+                                                            <img src="assets/images/icons/video-w.svg">
+                                                        </div>
+                                                        <label>18.3 K</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="post-detail-wrap">
+                                                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                                                        <label class="post-uploader-name">redspicy007</label>
+                                                        <div class="hashtag-save-icon"><img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg"></div>
+                                                    </div>
+                                                    <p class="product-name single-line-clamp" title="Black full sleave sweater">red obsession, check out my new look in red.</p>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>     -->
+                                <!-- video show End -->
+                                <!-- postimage show start -->
+                                <!-- <div class="comment-singular comment-border single-section-upload">
+                                
+                                        <div class="commenter-profile cover-image">
+                                            <img src="assets/images/profile2.jpg" alt="commenter" />
+                                        </div>
+                                
+                                        <div class="commenter-info">
+                                            <div class="commenter-name-wrapper">
+                                                <div class="commenter-name">
+                                                    atman.1994 <img class="verify-user-approve" src="assets/images/icons/inbox-icons/approve.svg">
+                                                    <label class="mb-0 commenting-time">20 May, 2021</label>
+                                                </div>                                                   
+                                                <div class="side-post-comment-option-wrapper">
+                                                    <div class="right-side-menu">
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/message/message.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/quotes.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/forward-outline.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/repost.svg" alt="comment-action-icon"></div>
+                                                        <div class="dropdown">
+                                                            <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                                <div class="menuicon comment-option-icon contain-image">
+                                                                    <img src="./assets/images/icons/three_dots.svg" alt="comment-action-icon">
+                                                                </div>
+                                                            </div>
+                                                            <div class="dropdown-menu">
+                                                                <ul>
+                                                                    <li class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1"></div>
+                                                                        <div class="menulabel dropText">Edit</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteCommentConfirmModal">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2"></div>
+                                                                        <div class="menulabel dropText">Delete</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3"></div>
+                                                                        <div class="menulabel dropText">Copy</div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>       
+                                                    </div>                                                         
+                                                </div>
+                                            </div>
+                                            <div class="product-items-wrapper hashtag-post-border-line msg-section-0hw">
+                                                <div class="product-items-image">
+                                                    <img src="assets/images/hashtags-solo/hashtag-post-06.jpg" alt="product-items">
+                                                    <div class="abs-tag-icon">
+                                                    <span class="tag-icon-holder tag-icon-cart">
+                                                    </span>
+                                                    <a href="javascript:void()" class="abs-product-details-link">View Product</a>
+                                                    </div>
+                                                </div>
+                                                <div class="post-detail-wrap">
+                                                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                                                    <label class="post-uploader-name">madgirl_22</label>
+                                                    <div class="hashtag-save-icon"><img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg"></div>
+                                                    </div>
+                                                    <p class="product-name single-line-clamp" title="Black full sleave sweater">Denim top and bottom wears</p>
+                                                </div>
+                                            </div>                                          
+                                            <div class="comment-option mt-2">
+                                                <a class="post-fixed-replies msg-replies post-comment">12 Replies</a>
+                                                <div class="d-flex align-items-center comment-action-space">
+                                                    <div class="comment-action-icon contain-image changeImage">
+                                                        <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                        <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                    </div>
+                                                    <label class="counter-comment-action">23</label>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                                    <div class="comment-action-icon contain-image">
+                                                        <img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon">
+                                                    </div>
+                                                    <label class="counter-comment-action">2</label>
+                                                </div>
+                                            </div>
+                                            <div class="comments-child-comments">
+                                                <div class="comment-singular comment-border">
+                                                    <div class="commenter-profile cover-image">
+                                                        <img src="assets/images/profile3.jpg" alt="commenter">
+                                                    </div>
+                                                    <div class="commenter-info">
+                                                        <div class="commenter-name">mrnowhere<label class="mb-0 commenting-time">10:03 AM</label></div>
+                                                        <p class="comment-text">Wow branded things ha! how many
+                                                            brande
+                                                            thing are there? tell me please I am making the list
+                                                            branded
+                                                            things ca n you please list out for me? waiting for your
+                                                            reply. :)</p>
+                                                        <div class="comment-option">
+                                                            <div class="d-flex align-items-center comment-action-space">
+                                                                <div class="comment-action-icon contain-image changeImage">
+                                                                    <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                                    <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                                </div>
+                                                                <label class="counter-comment-action">23</label>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                                                <div class="comment-action-icon contain-image">
+                                                                    <img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon">
+                                                                </div>
+                                                                <label class="counter-comment-action">2</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                
+                                                <div class="comment-singular comment-border">
+                                                    <div class="commenter-profile cover-image">
+                                                        <img src="assets/images/profile5.jpg" alt="commenter">
+                                                    </div>
+                                                    <div class="commenter-info">
+                                                        <div class="commenter-name">retailnetso<label class="mb-0 commenting-time">10:23 PM</label></div>
+                                                        <p class="comment-text">What is the warranty period of this
+                                                            product, do your cover the warranty in the foreign
+                                                            countries
+                                                            as well ?</p>
+                                                        <div class="comment-option">
+                                                            <div class="d-flex align-items-center comment-action-space">
+                                                                <div class="comment-action-icon contain-image changeImage">
+                                                                    <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                                    <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                                </div>
+                                                                <label class="counter-comment-action">12</label>
+                                                            </div>
+                                                            <div class="comment-action-icon contain-image comment-action-space">
+                                                                <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                                
+                                            <div class="post-comment-editor-wrap">
+                                
+                                                <div class="position-relative">
+                                                    <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply "></textarea>
+                                                    <div class="d-flex flex-row align-items-center comment-input-action">
+                                                        <span class="input-action-icon contain-image"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                                    <button type="reset" class="post-fixed-comment-btn comment-btn-cancel">Cancel</button>
+                                                    <button type="submit" class="post-fixed-comment-btn comment-btn-submit">Reply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>      
+                                
+                                    <div class="comment-singular comment-border single-section-upload">
+                                
+                                        <div class="commenter-profile cover-image">
+                                            <img src="assets/images/profile2.jpg" alt="commenter">
+                                        </div>
+                                
+                                        <div class="commenter-info">
+                                            <div class="commenter-name-wrapper">
+                                                <div class="commenter-name">
+                                                    atman.1994 <img class="verify-user-approve" src="assets/images/icons/inbox-icons/approve.svg">
+                                                    <label class="mb-0 commenting-time">20 May, 2021</label>
+                                                </div>                                                   
+                                                <div class="side-post-comment-option-wrapper">
+                                                    <div class="right-side-menu">
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/message/message.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/quotes.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/forward-outline.svg" alt="comment-action-icon"></div>
+                                                        <div class="share-comment-compare"><img src="./assets/images/icons/repost.svg" alt="comment-action-icon"></div>
+                                                        <div class="dropdown">
+                                                            <div class="btn p-0" data-toggle="dropdown" aria-expanded="false">
+                                                                <div class="menuicon comment-option-icon contain-image">
+                                                                    <img src="./assets/images/icons/three_dots.svg" alt="comment-action-icon">
+                                                                </div>
+                                                            </div>
+                                                            <div class="dropdown-menu" >
+                                                                <ul>
+                                                                    <li class="dropdown-item d-flex align-items-center edit-comment-item">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-pencil-b.svg" alt="drop-icons-1"></div>
+                                                                        <div class="menulabel dropText">Edit</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteCommentConfirmModal">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-delete-b.svg" alt="drop-icons-2"></div>
+                                                                        <div class="menulabel dropText">Delete</div>
+                                                                    </li>
+                                                                    <li class="dropdown-item d-flex align-items-center">
+                                                                        <div class="dropIcons contain-image"><img src="assets/images/icons/icon-copy-b.svg" alt="drop-icons-3"></div>
+                                                                        <div class="menulabel dropText">Copy</div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>       
+                                                    </div>                                                         
+                                                </div>
+                                            </div>
+                                            <div class="product-items-wrapper hashtag-post-border-line msg-section-0hw">
+                                                <div class="blog-items-post cover-image">
+                                                    <img src="assets/images/hashtags-solo/hashtag-post-10.jpg" alt="blog-cover" class="object-position-top">
+                                                </div>
+                                                <div class="post-detail-wrap">
+                                                    <div class="post-uploader-info d-flex align-items-start justify-content-between w-100">
+                                                    <label class="post-uploader-name">payalmehra</label>
+                                                    <div class="hashtag-save-icon">
+                                                        <img id="postSave" onclick="changeImage()" src="assets/images/icons/icons-post-save.svg">
+                                                    </div>
+                                                    </div>
+                                                    <p class="post-blog-title two-line-clamp text-black">Check the new updates of whatsapp with us to stay updated.</p>
+                                                </div>
+                                            </div>                                       
+                                            <div class="comment-option mt-2">
+                                                <a class="post-fixed-replies msg-replies post-comment">12 Replies</a>
+                                                <div class="d-flex align-items-center comment-action-space">
+                                                    <div class="comment-action-icon contain-image changeImage">
+                                                        <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                        <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                    </div>
+                                                    <label class="counter-comment-action">23</label>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                                    <div class="comment-action-icon contain-image">
+                                                        <img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon">
+                                                    </div>
+                                                    <label class="counter-comment-action">2</label>
+                                                </div>
+                                            </div>
+                                            <div class="comments-child-comments">
+                                                <div class="comment-singular comment-border">
+                                                    <div class="commenter-profile cover-image">
+                                                        <img src="assets/images/profile3.jpg" alt="commenter">
+                                                    </div>
+                                                    <div class="commenter-info">
+                                                        <div class="commenter-name">mrnowhere<label class="mb-0 commenting-time">10:03 AM</label></div>
+                                                        <p class="comment-text">Wow branded things ha! how many
+                                                            brande
+                                                            thing are there? tell me please I am making the list
+                                                            branded
+                                                            things ca n you please list out for me? waiting for your
+                                                            reply. :)</p>
+                                                        <div class="comment-option">
+                                                            <div class="d-flex align-items-center comment-action-space">
+                                                                <div class="comment-action-icon contain-image changeImage">
+                                                                    <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                                    <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                                </div>
+                                                                <label class="counter-comment-action">23</label>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-start comment-action-space">
+                                                                <div class="comment-action-icon contain-image">
+                                                                    <img src="./assets/images/icons/emoji1.svg" alt="comment-action-icon">
+                                                                </div>
+                                                                <label class="counter-comment-action">2</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                
+                                                <div class="comment-singular comment-border">
+                                                    <div class="commenter-profile cover-image">
+                                                        <img src="assets/images/profile5.jpg" alt="commenter">
+                                                    </div>
+                                                    <div class="commenter-info">
+                                                        <div class="commenter-name">retailnetso<label class="mb-0 commenting-time">10:23 PM</label></div>
+                                                        <p class="comment-text">What is the warranty period of this
+                                                            product, do your cover the warranty in the foreign
+                                                            countries
+                                                            as well ?</p>
+                                                        <div class="comment-option">
+                                                            <div class="d-flex align-items-center comment-action-space">
+                                                                <div class="comment-action-icon contain-image changeImage">
+                                                                    <img src="assets/images/icons/icons-post-like-heart.svg" alt="comment-action-icon">
+                                                                    <img src="assets/images/icons/icons-post-like-heart-filled.svg" style="display: none;">
+                                                                </div>
+                                                                <label class="counter-comment-action">12</label>
+                                                            </div>
+                                                            <div class="comment-action-icon contain-image comment-action-space">
+                                                                <img src="assets/images/icons/icons-post-comment.svg" alt="comment-action-icon">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                                
+                                            <div class="post-comment-editor-wrap">
+                                
+                                                <div class="position-relative">
+                                                    <textarea rows="1" class="form-control post-comment-editor" placeholder="Type your reply "></textarea>
+                                                    <div class="d-flex flex-row align-items-center comment-input-action">
+                                                        <span class="input-action-icon contain-image"><img src="assets/images/icons/icon-emoji.svg" alt=""></span>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-end mt-1 mr-1">
+                                                    <button type="reset" class="post-fixed-comment-btn comment-btn-cancel">Cancel</button>
+                                                    <button type="submit" class="post-fixed-comment-btn comment-btn-submit">Reply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  -->
+                                <!-- postimage show End -->
+                            </div>
+                            <div class="new-message-public" *ngIf="UnreadMessageList.length !== 0"><a href="javascript:void(0)" >New Message</a></div>
+                            <div class="commented-area" id="unreadMessage{{i}}" *ngFor="let item of UnreadMessageList;let i = index">
+                                <div class="comment-singular comment-border"  [ngStyle]="item.productDetails?{'display':'inline-flex'}:{}">
+                                    <div class="commenter-profile cover-image">
+                                        <img src="{{item.user_details?.profilePic}}" onerror="this.src='assets/images/logo.svg'" alt="user-profile"/>
+                                    </div>
+                                    <div class="commenter-info">
+                                        <div class="commenter-name-wrapper">
+                                            <div class="commenter-name">
+                                                {{item.user_details.username}}
+                                                <img class="verify-user-approve"
+                                                    src="assets/images/icons/inbox-icons/approve.svg"
+                                                    *ngIf="item.user_details.isProfileVerified == true">
+                                                <label class="mb-0 commenting-time">{{item.created_date | Srtdate}}</label>
+                                                <div class="reposted-status" *ngIf="item.isEdited == true">Edited</div>
+                                                <div class="reposted-status" *ngIf="item.repostedMessageId">[Reposted]</div>
+                                            </div>
+                                            <div class="side-post-comment-option-wrapper">
+                                                <div class="right-side-menu">
+                                                   
+                                                    <div class="share-comment-compare" title="create Quote" (click)="createQuote(item)">
+                                                        <img src="./assets/images/icons/quotes.svg" alt="quote-image">
+                                                    </div>
+                                                    <div class="share-comment-compare" title="create Reply"
+                                                        (click)="GetAllrepliesList(item)"><img
+                                                            src="./assets/images/icons/forward-outline.svg"
+                                                            alt="reply-image"></div>
+                                                    <div class="share-comment-compare" attr.tooltip="{{item.repostedMessageId ? 'Undo Repost':'Repost'}}" flow="down" *ngIf="!item.repostedMessageId ||item.isReposted" (click)="createRepost(item,i)"><img
+                                                            class="repost-public-channel"
+                                                            src="./assets/images/icons/repost.svg"
+                                                            alt="repost-image"></div>
+                                                    <div class="dropdown">
+                                                        <div class="btn p-0" data-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            <div class="menuicon comment-option-icon contain-image">
+                                                                <img src="./assets/images/icons/three_dots.svg"
+                                                                    alt="dropdown-line" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="dropdown-menu">
+                                                            <ul>
+                                                                <!-- <li class="dropdown-item d-flex align-items-center edit-comment-item"
+                                                                    *ngIf="item.self_message == true "
+                                                                    (click)="EditMessage(item)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-pencil-b.svg"
+                                                                            alt="drop-icons-1"></div>
+                                                                    <div class="menulabel dropText">Edit</div>
+                                                                </li>
+                                                                <li class="dropdown-item d-flex align-items-center"
+                                                                    data-toggle="modal"
+                                                                    data-target="#deleteCommentConfirmModal"
+                                                                    (click)="DeleteMessage(item,i)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-delete-b.svg"
+                                                                            alt="drop-icons-2"></div>
+                                                                    <div class="menulabel dropText">Delete</div>
+                                                                </li> -->
+                                                                <li class="dropdown-item d-flex align-items-center"
+                                                                    (click)="CopyMessage(item)">
+                                                                    <div class="dropIcons contain-image"><img
+                                                                            src="assets/images/icons/icon-copy-b.svg"
+                                                                            alt="drop-icons-3"></div>
+                                                                    <div class="menulabel dropText">Copy</div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <p class="comment-text text-break w-95">{{item.message}}</p>
+                                        <div class="comments-child-comments" >
+                                            <div class="comment-singular comment-border" (click)="quotedmessageClick(item.quotesMessage_details)" *ngIf="item.quotesMessage_details">
+                                                <div class="commenter-profile cover-image" >
+                                                    <img src="{{item.quotesMessage_details.quotesUserDetail?.profilePic}}"
+                                                        onerror="this.src='assets/images/logo.svg'"
+                                                        alt="profilepic not found">
+                                                </div>
+                                                <div class="commenter-info">
+                                                    <div class="commenter-name">{{item.quotesMessage_details.quotesUserDetail?.username}}<label
+                                                            class="mb-0 commenting-time">{{item.quotesMessage_details?.created_date | date:'shortTime'}}</label></div>
+                                                    <p class="comment-text">{{item.quotesMessage_details?.message}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="selectedEditItem?._id == item._id">
+                                            <div class="comment-singular comment-border mr-2">
+                                                <textarea class="edit-message-area" [(ngModel)]="editedTypedText"
+                                                    rows="1"></textarea>
+                                                <span class="d-flex pr-0 align-self-end justify-content-end"
+                                                    (click)="editEmojiOpen()">
+                                                    <img src="./assets/images/icons/emoji1.svg" height="24" width="24"
+                                                        alt="">
+                                                </span>
+                                                <emoji-mart class="emoji-box inbox-emoji-box"
+                                                    *ngIf="editEmojimessagebox" (emojiSelect)="editedAddEmoji($event)"
+                                                    title="Pick your emoji…"></emoji-mart>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-end mt-1">
+                                                <button type="reset" class="btn-popup-cancel-text-link"
+                                                    data-dismiss="modal" aria-label="Close"
+                                                    (click)="cancelEditMessage()">Cancel</button>
+                                                <button type="submit" class="btn-popup-save-text-link"
+                                                    data-dismiss="modal" aria-label="Close"
+                                                    (click)="saveEditMessage()">Save</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="public-upload-section col-12" *ngIf="item.documents">
+                                            <div class="images-send row alltype-file-upload">
+                                                <div class="col-12 col-sm-6 col-xl-4"
+                                                    *ngFor="let docItem of item.documents">
+                                                    <div class="card">
+                                                        <div class="alltype-inner"><img
+                                                                src="assets/images/icons/file.svg"><span>{{docItem?.type}}</span>
+                                                        </div>
+                                                        <div class="filetype-dsc">
+                                                            <p>{{docItem?.fileName}}</p><span>{{docItem?.size|fileSize}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="msg-img-downarrow">
+                                                        <a href={{docItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg" alt="downarrow"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="public-upload-section col-12" *ngIf="item.images">
+                                            <div class="images-send row">
+                                                <div class="col-6 col-md-4 col-xl-3"
+                                                    *ngFor="let imageItem of item.images">
+                                                    <a href="javascript:void(0)" title=""><img src="{{imageItem?.url}}"></a>
+                                                    <div class="msg-img-downarrow">
+                                                        <a href={{imageItem?.url}}><img src="./assets/images/icons/msg-img-downarrow.svg" alt="downarrow"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="embed-product-preview mt-2 ml-auto mr-auto" *ngIf="item.productDetails">
+                                            <p class="mb-2 embed-preview-title blog-product-slider editable medium-editor-element">{{item.productDetails?.productName}}</p>
+                                            <div class="mb-2">
+                                                <div class="product-items-image">
+                                                    <owl-carousel [options]="slideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']">
+                                                        <div class="item" *ngFor="let items of item.productDetails.productPhotos">
+                                                            <img class="rounded" [src]="items.image"/>
+                                                        </div>
+                                                    </owl-carousel>
+                                                </div>
+
+                                                <div class="post-detail-wrap pl-0 pr-0">
+                                                    <div class="price-block mt-0">
+                                                        <label>{{item.productDetails?.variations[0]?.sellingPrice |currency:currencyUnit:'symbol'}}
+                                                            <del>{{item.productDetails?.variations[0]?.MRP |currency:'INR&nbsp;':'code'}}</del><span>({{item.productDetails?.variations[0]?.discount}}%Off)</span>
+                                                        </label>
+                                                        <div class="msg-slider-btn">
+                                                            <button type="button" class="btn btn-outline-secondary">
+                                                                <img id="postSave" src="assets/images/icons/icons-post-save.svg">
+                                                                Wishlist
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary mt-0 mb-0">Buy Now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-option mt-2">
+                                            <a class="post-fixed-replies msg-replies post-comment" (click)="GetAllrepliesList(item)">{{item.replyCount}} Replies</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-block" #hightbottommsg>
+                        <app-bottommessagebox [ActiveUserChatDetail]="ActiveUserChatDetail" (newCloseQuote)="newCloseQuote($event)"></app-bottommessagebox>
+                    </div>
+                </div>
+                <div class="messages-list-wrapper comment-wrapper send_both_imptybox_parent"
+                    *ngIf="!activechatboolean">
+                    <div class="send_message_imptybox_main send_both_imptybox_main">
+                        <div class="send_message_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                            <img src="assets/images/icons/message.svg" height="80px">
+                        </div>
+                        <p>Send message, photos, files, reply comments <br> make nots and have team collaboration etc.</p>
+                    </div>
+                </div>
+                <app-messagerightmenu class="mail-actions-bar side-menu-right-msg"></app-messagerightmenu>
+            </div>
+        </div>
+        <!-- / _end > Page Main Content < SHB / -->
+        <!-- / _begin > MODAL - Delete Confirmation < SHB / -->
+        <div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteCommentConfirmModal">
+            <div class="modal-dialog modal-dialog-centered modal-delete-confirmation-comment">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this message?</p>
+                        <div class="d-flex align-items-center justify-content-end mt-1">
+                            <button type="reset" class="btn-popup-cancel-text-link" data-dismiss="modal"
+                                aria-label="Close" (click)="cancelDeleteMessage()">Cancel</button>
+                            <button type="submit" class="btn-popup-delete-text-link" data-dismiss="modal"
+                                aria-label="Close" (click)="confirmDeleteMessage()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / _end > MODAL - Delete Confirmation < SHB / -->
+        <!-- / _end > TOAST - Link Copied < SHB / -->
+        <div class="modal fade" tabindex="-1" aria-hidden="true" id="deleteallmessage">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">
+                        <div class="images-search-close prod-closemain mb-3">
+                            <img data-dismiss="modal" aria-label="Close" class="product-icon prod-close-icon mt-0"
+                                src="assets/images/icons/close.svg" alt="close" />
+                        </div>
+                        <b>Are you sure you want to delete all messages ? </b>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-modal-cancel pl-5 pr-5"
+                             (click)="cancelDeleteAllMessage()">Cancel</button>
+                        <button type="button" class="btn btn-deactivate-action pl-5 pr-5 ml-2"
+                             (click)="confirmDeleteAllMessage()">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- / _begin > Static Backdrop For Sliding Sidebar < SHB / -->
+    <section [ngClass]="sideoverhide?'':'d-none'"  id="sideOverHide" (click)="closesidebar()"></section>
+    <!-- / _end > Static Backdrop For Sliding Sidebar < SHB / -->
+</div>
+<app-minimizepop></app-minimizepop>
+<app-message-reply [selectedReply]="selectedReply" (closeSidebarEvent)="closesidebar()" (scrollDownEvent)="replyScrollDown()"></app-message-reply>

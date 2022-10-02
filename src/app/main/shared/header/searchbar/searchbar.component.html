@@ -1,0 +1,13 @@
+<form *ngIf="withoutlogin" method="post" class="search search-engine">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search for products, users, videos and more" [(ngModel)]="SearchedText" (keyup)="TypedTextKeyup()"  autocomplete="off">
+        <div class="input-group-prepend">
+            <span class="input-group-text" (click)="SearchedIconclick()"><img src="assets/images/icons/icon-search.svg" height="20" /></span>
+        </div>
+    </div>
+    <ul class="search-dataview" [ngClass]="popupclicked?'':'d-none'">
+        <li (click)="searchtextpopupclick()"><p>{{SearchedText}}</p><img src="assets/images/icons/icon-search.svg" /></li>
+        <li *ngFor="let item of SearchViewData" (click)="showpopupitemclick(item)"><p class="font-weight-bold">{{item.name}}</p><span>({{item.records}})</span></li> <!--  <img src="assets/images/icons/icon-search.svg" /> -->
+        <li *ngIf="SearchViewData?.length === 0"><p>No Records Found.</p></li>
+    </ul>
+</form>

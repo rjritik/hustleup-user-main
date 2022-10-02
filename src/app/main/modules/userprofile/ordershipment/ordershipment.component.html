@@ -1,0 +1,68 @@
+<div class="user-social-life-wrapper">
+    <ul class="user-pro-social-flex">
+       <li class="user-profile-title">
+          <p>Order Shipment</p>
+       </li>
+    </ul>
+    <div class="ordershipment-searchbarid mb-3">
+      <div class="shipmentdate-main">
+         <div class="ordershipment-date">
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" (dateChange)="onStartDate($event)" [max]="today" [(ngModel)]="StartDate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker  #picker1></mat-datepicker>
+            </mat-form-field>
+            <!-- 
+               <div class="report-earning-date-inner">
+                 <input type="text" value="May 16, 2021">
+               </div> 
+            -->
+            <div ><span class="ordershipment-date-inner-span">To</span><mat-form-field>
+               <input matInput [matDatepicker]="picker2" placeholder="MM-DD-YYYY" (dateChange)="onEndDate($event)" [max]="today" [(ngModel)]="EndDate">
+               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+               <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field></div>
+         </div>
+      </div>
+      <div class="ordershipment-search-main">
+         <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{SelectedDropdownItem}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+               <div *ngFor="let item of DropdownItem">
+                  <a class="dropdown-item" (click)="selected(item)">{{item}}</a>
+               </div>
+            </div>
+         </div>
+         <div class="ordershipment-search-inner">
+            <input type="text" name="searchbar" [(ngModel)]="typedText" placeholder="Search"/>
+            <img class="cursor-pointer" (click)="typetextfunc()" src="assets/images/icons/icon-search.svg" alt="search"/>
+         </div>
+      </div>
+    </div>
+    <div class="shipment-tabs-manu">
+       <div class="nav-tabs-shipment">
+          <div class="nav-tabs-shipment-innersection">
+             <ul class="nav nav-tabs" role="shipment">
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="['NewOrder']" routerLinkActive="active" role="tab">New Orders <span>{{NewOrderscount != undefined ? "(" + NewOrderscount + ")" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</span></a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="['PendingOrder']" routerLinkActive="active" role="tab">Pending Orders <span>{{PendingOrderscount != undefined ? "(" + PendingOrderscount + ")" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</span></a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="['ProcessedOrder']" routerLinkActive="active" role="tab">Processed Orders <span>{{ProcessedOrderscount != undefined ? "(" + ProcessedOrderscount + ")" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</span></a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="['DispatchedOrder']" routerLinkActive="active"role="tab">Dispatched Orders <span>{{DispatchedOrderscount != undefined ? "(" + DispatchedOrderscount + ")" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</span></a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" [routerLink]="['Cancel-Return']" routerLinkActive="active" role="tab">Cancelled / Returned <span>{{CancelledReturnedcount != undefined ? "(" + CancelledReturnedcount + ")" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}}</span></a>
+             </li>
+             </ul>
+          </div>
+          <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

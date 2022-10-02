@@ -1,0 +1,102 @@
+<div class="admin-table admin-table-y mt-0 select-delivery-address-main"> 
+    <button type="button" class="add-more-from-savelist mt-3 mb-2" data-toggle="modal" data-target=".add-address-shopping" (click)="AddNewAddress()">
+        <span>Add New Address</span>
+    </button>
+    <div class="order-history-defalut" *ngIf="NotavailAddress">
+      <div class="order-history-defalut-img">
+        <img src="assets/images/icons/address.svg" alt="order-history-defalut" />
+      </div>
+      <p>
+        You have not added your address yet. Add address to get orders delivered
+        at your location. And also to get your products picked up by our courier
+        partners if you are a seller.
+      </p>
+      <a href="javascript:void(0)" (click)="AddNewAddress()">Add New Address</a>
+    </div>
+    <div class="col-12 col-sm-11" *ngIf="!NotavailAddress">
+        <div class="row">
+           <div class="address-div col-md-6 p-2" *ngFor="let item of OrderAddressList; let i = index">
+              <div class="address-div-inner">
+                <input class="btn-address-delivery" type="radio" [checked]="item.isDefault" (change)="MakeDefaultAddress(item)" >
+                 <p class="label1">{{ item.firstName + " " + item.lastName }}
+                 </p>
+                 <p>
+                  {{ item.address }} <br />
+                  {{ item.street }} <br />
+                  {{ item.city }}<br />
+                  {{ item.state + " " + item.pincode }} <br />
+                  {{ item.country }} <br />
+                  Phone {{ item.mobile }}
+                 </p>
+              </div>
+           </div>
+        </div>
+     </div>
+</div>
+
+<!-- / _end > Product Details Section < SHB / -->
+<div class="modal fade action-modal  add-address-shopping" id="add-address-shopping" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered shipment-model" role="document">
+      <div class="modal-content">
+         <div class="modal-body">
+               <div class="user-social-life-wrapper">
+                  <ul class="user-pro-social-flex">
+                     <li class="user-profile-title m-0">
+                        <p>Add a new address</p>
+                     </li>
+                  </ul>
+               </div>
+               <div class="row">
+                  <div class="col-12">
+                     <form class="address-form mt-3" [formGroup]="OrderAddressForm">
+                        <div class="form-row address-input">
+                           <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="Enter First Name" formControlName="firstname">
+                           </div>
+                           <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="lastname">
+                           </div>
+                        </div>
+                        <input type="text" class="form-control address-input" placeholder="Enter Address" formControlName="address">
+                        <input type="text" class="form-control address-input" placeholder="Enter Street/Apartment/Suite" formControlName="street"> 
+                        <div class="form-row address-input">
+                           <div class="col-md-3">
+                              <input type="text" class="form-control" placeholder="Enter Pin/Zip Code" formControlName="pincode" (keyup)="checkPincode()">
+                           </div>
+                           <div class="col-md-9">
+                              <input type="text" class="form-control" placeholder="Select Country" formControlName="country" readonly>
+                          </div>
+                        </div>                                       
+                        <div class="form-row address-input">
+                           <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="Enter State/Province" formControlName="state" readonly>
+                           </div>
+                           <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="Enter city" formControlName="city" readonly>
+                           </div>
+                        </div>
+                        <div class="form-row address-input mb-0">
+                           <div class="col-md-6">
+                              <input type="text" class="form-control address-input" placeholder="Enter Mobile Number" formControlName="mobile">           
+                           </div>
+                           <div class="col-md-6">
+                              <input type="text" class="form-control address-input" placeholder="Enter Email Address" formControlName="email">                    
+                           </div>
+                        </div>
+                        <div class="custom-input-check">
+                              <input type="checkbox" class="form-control" id="shipping-address" formControlName="isDefault">
+                              <span class="check-checked"></span>
+                              <label for="shipping-address" class="terms-label">Use this as my default shipping address
+                              </label>
+                        </div>
+                        <div class="d-flex flex-row align-items-center justify-content-end flex-wrap mt-2">
+                           <button type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel" (click)="CancelAddress()">Cancel</button>
+                           <button type="button" class="btn btn-primary" (click)="OrderAddAddress(f)">Add address</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+         </div>
+      </div>
+   </div>
+</div>

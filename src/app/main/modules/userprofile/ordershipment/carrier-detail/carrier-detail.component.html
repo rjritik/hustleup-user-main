@@ -1,0 +1,112 @@
+<div id="CarrierDetails">
+  <div class="user-social-life-wrapper">
+     <ul class="user-pro-social-flex mb-3">
+        <li class="user-profile-title">
+           <p>
+              <a (click)="CarrierDetailBack()" class="shipment-backicon">
+              <img src="assets/images/icons/back_bold_arrow.svg" alt="order-ship">
+              </a>
+              Carrier Details
+           </p>
+        </li>
+     </ul>
+     <div class="row">
+        <div class="col-12">
+           <div class="admin-table admin-table-y">
+              <table>
+                 <thead>
+                    <tr>
+                       <th>Order Date</th>
+                       <th>Order Details</th>
+                       <th>Qty & Price</th>
+                       <th>Payment Mode</th>
+                       <th>Ship to</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                  <tr *ngFor="let item of SelectedCarrierDetail">
+                     <td>{{item.created_date| date}}</td>
+                     <td>
+                        <div class="order-detail-product-main">
+                           <div class="order-detail-productinner-img" *ngFor="let subitem of item.product_details">
+                              <img src="{{subitem.productPhotos[0].image}}" alt="images" />
+                           </div>
+                           <div class="order-detail-productinner-dscription">
+                             <p><b>Order ID :<span>{{item.orderNumber}}</span></b></p>
+                             <p>SKU :<span>{{item.sku}}</span></p>
+                             <p>Product ID :<span>{{item.product_details[0].productId}}</span></p>
+                             <!-- <p>Buyer :<span>{{item.OrderDetail[0].Buyer}}</span></p> -->
+                          </div>
+                        </div>
+                     </td>
+                     <td>
+                        <div class="order-detail-productinner-dscription">
+                        <p>Qty :<span>{{item.quantity}}</span></p>
+                        <p>Color :<span>{{item.color_details?.colorName}}</span></p>
+                        <p>Size :<span>{{item.size}}</span></p>
+                        <p>Price :<span>{{item.totalPrice |currency:currencyUnit:'symbol'}}</span></p>
+                     </div>
+                     </td>
+                     <td>{{item.paymentMode}}</td>
+                     <td>
+                      <div class="ship-to-dscription" *ngFor="let subAdr of item.address_details">
+                             <p>{{subAdr.firstName+" "+subAdr.lastName}}</p>
+                             <p>{{subAdr.address }}</p> 
+                             <p>{{subAdr.street }}</p> 
+                             <p> {{subAdr.city }}</p> 
+                             <p>{{subAdr.state + " " + subAdr.pincode }}</p> 
+                             <p>{{subAdr.country }}</p> 
+                             <p>Phone {{subAdr.mobile }} </p>
+                      </div>
+                     </td>
+                  </tr>
+                 </tbody>
+              </table>
+           </div>
+           <div class="invoice-package-details border-bottom-0" *ngFor="let item of SelectedCarrierDetail">
+              <ul class="user-pro-social-flex mt-3 mb-2">
+                 <li class="user-profile-title">
+                    <p>Carrier Details</p>
+                 </li>
+              </ul>
+              <form>
+                 <div class="admin-form-table table">
+                    <div class="form-row">
+                       <div class="form-group col-sm-2">
+                          <label>Courier Partner :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <label>{{item.orderselfships_details.courierPartnerName}}</label>
+                       </div>
+                    </div>
+                    <div class="form-row">
+                       <div class="form-group col-sm-2">
+                          <label>Tracking ID :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <label>{{item.orderselfships_details.trackingId}}</label>
+                       </div>
+                    </div>
+                    <div class="form-row shipping-details-inner">
+                       <div class="form-group col-sm-2">
+                          <label>Shipment Date :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <label>{{item.orderselfships_details.shipmentDate | date}}</label>
+                       </div>
+                    </div>
+                    <div class="form-row shipping-details-inner">
+                       <div class="form-group col-sm-2">
+                          <label>Shipment Status :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <label>Delivered / Not Delivered<a class="ml-3" href="javascript:void(0)">Check</a></label>
+                       </div>
+                    </div>
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<div *ngIf="pandetailmain">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>PAN / Tax Details</p>
+            <button (click)="AddPanDetail()" type="button" class="btn btn-primary PANTaxDetails-open" *ngIf = "NotAvailPanDetail"><!-- <img src="assets/images/icons/plus.svg" width="20px"> -->Add My PAN Details</button>
+         </li>
+      </ul>
+   </div>
+   <div class="order-history-defalut mb-2" *ngIf = "NotAvailPanDetail">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/pan_tax_details.svg" alt="order-history-defalut"></div>
+      <p>Add your PAN details for availing various features and benefits like setting up your online store, selling products, earning commissions, having coffee from fans and followers etc.</p>
+      <a href="javascript:void(0)" (click)="AddPanDetail()">Add PAN/Tax Details</a>
+   </div>
+   <div class="col-12 col-sm-11 mt-3">
+      <div class="row">
+            <div class="pan-details-view muted-user-main d-flex" *ngIf="!NotAvailPanDetail">
+               <div class="pan-details-view-sub">
+                  <div class="logo-brand-titlelink">
+                     <label class="font-weight-bold brand-title-name">Permanent Account Number (PAN)</label>
+
+                  </div>
+                  <div class="brand-information pan-card">
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Name as per PAN</label>
+                        <label class="brand-detail-text">{{nameAsPerPAN}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">PAN</label>
+                           <label class="brand-detail-text">{{PANNummber}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Date of Birth</label>
+                        <label class="brand-detail-text">{{dateOfBirthAsPerPAN |date }}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">Father's Name</label>
+                        <label class="brand-detail-text">{{fatherName}}</label>
+                     </div>
+                     <div class="brand-details-row">
+                        <label class="brand-detail-title">PAN Copy</label>
+                        <label class="brand-detail-text">
+                           <a href="{{PANFile}}" class="link-proof">
+                           <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                           View PAN Card
+                           </a>
+                        </label>
+                     </div>
+                  </div>
+               </div>
+            </div>
+      </div>
+   </div>
+</div>
+
+ <div *ngIf="PANTaxDetailsCreate" id="PANTaxDetails-Create">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Your PAN Details</p>
+         </li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <form class="mt-3" id="address-form"
+         [formGroup]="Panform">
+            <div class="admin-form-table table">
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>PAN Number</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write your Permanent Account Number (PAN)" formControlName="PANNummber">
+                     <!-- <label class="mt-1 text-danger" *ngIf="f.controls.PANNummber.invalid && f.controls.PANNummber.touched">PAN Number field is required</label> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Your name</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write your name as per PAN" formControlName="nameAsPerPAN">
+                     <!-- <label class="mt-1 text-danger" *ngIf="f.controls.nameAsPerPAN.invalid && f.controls.nameAsPerPAN.touched">PAN Name field is required</label> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Father's Name</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" name="" class="form-control form-control-big input-field" placeholder="Write your father's name" formControlName="fatherName">
+                     <!-- <label class="mt-1 text-danger" *ngIf="f.controls.fatherName.invalid && f.controls.fatherName.touched">fatherName field is required</label> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Date of birth as per PAN</label>
+                  </div>
+                  <div class="form-group col-sm-3">
+                     <div class="calender-main-div">
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" formControlName="dateOfBirthAsPerPAN" [max]="today">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+
+                        <!-- <input type="date" class="form-control form-control-big input-field" placeholder="MM-DD-YYYY" formControlName="dateOfBirthAsPerPAN" /> -->
+                        <!-- <label class="mt-1 text-danger" *ngIf="f.controls.dateOfBirthAsPerPAN.invalid && f.controls.dateOfBirthAsPerPAN.touched">DOB field is required</label> -->
+                        <!-- <img src="./assets/images//icons/calendar.svg" class="calendar-icon" alt=""> -->
+                     </div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Upload PAN copy</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <button type="button" class="btn btn-outline-primary pl-4 pr-4 p-2"(click)="fileInput.click()"><span>Upload</span><input #fileInput type="file"  formControlName="PANFile"  (change)="onFileInput($event)" accept="image/png, application/pdf, image/jpeg" style="display:none;" /></button>
+                     <span class="file-info">{{ PanFileName }}</span>
+                     <small class="d-flex mt-1" *ngIf="PanFileName == null" [ngClass]="UploadPanStatement?'text-danger':''">(Jpeg or Png format only)</small>
+                     <!-- <div *ngIf = "Filenameshow">Selected FileName is :--{{PanFileName}}</div> -->
+                     <!-- <label class="mt-1 text-danger" *ngIf="f.controls.PANFile.invalid && f.controls.PANFile.touched">PAN File with jpeg or png formate required</label> -->
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <div class="custom-input-check">
+                        <input type="checkbox" id="panadd-dsc" class="form-control" formControlName="panchkBox">
+                        <span class="check-checked"></span>
+                        <label for="panadd-dsc" class="terms-label"> I do hereby declare that PAN furnished/stated above is correct and
+                              belongs to me, registered as an account holder with dosell.me. I further
+                              declare that I
+                              shall solely be held responsible for the consequences, in case of any
+                              false
+                              PAN declaration.</label>
+                              <label class="mt-1 text-danger" *ngIf="f.controls.panchkBox.invalid && f.controls.panchkBox.touched">checkbox field is required</label>
+                     </div>
+                  </div>
+               </div>
+               <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                  <button (click)="PanDetailCancel()" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel PANTaxDetails-cancel">Cancel</button>
+                  <button type="submit" class="btn btn-primary" (click)="AddMyAddress(f)">Submit</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,10 @@
+.example-viewport {
+    /* height: calc(100vh - 94px); */
+    /* top: 94px; */
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+}
+cdk-virtual-scroll-viewport::-webkit-scrollbar {
+    display: none;
+}

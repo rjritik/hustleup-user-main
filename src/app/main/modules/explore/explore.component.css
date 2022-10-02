@@ -1,0 +1,24 @@
+.example-viewport {
+    /* height: calc(100vh - 170px); */
+    width: 100%;
+    box-sizing: border-box;
+}
+cdk-virtual-scroll-viewport::-webkit-scrollbar {
+    display: none;
+}
+ngx-horizontal-scroll-menu{
+    background-color: #fff;
+}
+
+.fixed-header-explore{
+    position: fixed;
+    top: 94px;
+    z-index: 1;
+    box-shadow: 0px 15px 10px -15px #ddd;
+    -webkit-box-shadow: 0px 15px 10px -15px #ddd;
+    -webkit-transition: all 0.3s ease;      
+    -moz-transition: all 0.3s ease;              
+    -o-transition: all 0.3s ease; 
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}

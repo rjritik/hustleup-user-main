@@ -1,0 +1,181 @@
+<div class="media-content-wrap tab-pane" id="SelfShipment">
+  <div class="user-social-life-wrapper">
+     <ul class="user-pro-social-flex mb-3">
+        <li class="user-profile-title">
+           <p>
+              <a (click)="shipmentback()" class="shipment-backicon">
+              <img src="assets/images/icons/back_bold_arrow.svg" alt="order-ship">
+              </a>
+              Self Shipment
+           </p>
+        </li>
+     </ul>
+     <div class="row">
+        <div class="col-12">
+           <div class="admin-table admin-table-y">
+              <table>
+                 <thead>
+                    <tr>
+                       <th>Order Date</th>
+                       <th>Order Details</th>
+                       <th>Qty & Price</th>
+                       <th>Payment Mode</th>
+                       <th>Ship to</th>
+                    </tr>
+                 </thead>
+                 <tbody>
+                  <tr *ngFor="let item of SelectedSelfShipDetail">
+                     <td>{{item.created_date| date}}</td>
+                    <td>
+                       <div class="order-detail-product-main">
+                          <div class="order-detail-productinner-img" *ngFor="let subitem of item.product_details">
+                              <img src="{{subitem.productPhotos[0].image}}" alt="images" />
+                           </div>                          
+                          <div class="order-detail-productinner-dscription">
+                           <p><b>Order ID :<span>{{item.orderNumber}}</span></b></p>
+                           <p>SKU :<span>{{item.sku}}</span></p>
+                           <p>Product ID :<span>{{item.product_details[0].productId}}</span></p>
+                           <!-- <p>Buyer :<span>{{item.OrderDetail[0].Buyer}}</span></p> -->
+                        </div>
+                       </div>
+                    </td>
+                    <td>
+                        <div class="order-detail-productinner-dscription">
+                           <p>Qty :<span>{{item.quantity}}</span></p>
+                           <p>Color :<span>{{item.color_details?.colorName}}</span></p>
+                           <p>Size :<span>{{item.size}}</span></p>
+                           <p>Price :<span>{{item.totalPrice |currency:currencyUnit:'symbol'}}</span></p>
+                        </div>
+                    </td>
+                    <td>{{item.paymentMode}}</td>
+                     <td>
+                        <div class="ship-to-dscription" *ngFor="let subAdr of item.address_details">
+                           <p>{{subAdr.firstName+" "+subAdr.lastName}}</p>
+                           <p>{{subAdr.address }}</p> 
+                           <p>{{subAdr.street }}</p> 
+                           <p> {{subAdr.city }}</p> 
+                           <p>{{subAdr.state + " " + subAdr.pincode }}</p> 
+                           <p>{{subAdr.country }}</p> 
+                           <p>Phone {{subAdr.mobile }} </p>
+                        </div>
+                     </td>
+                 </tr>
+                 </tbody>
+              </table>
+           </div>
+           <div class="invoice-package-details border-bottom-0">
+              <ul class="user-pro-social-flex mt-3 mb-2 ">
+                 <li class="user-profile-title">
+                    <p>Shipping Details</p>
+                 </li>
+              </ul>
+              <div class="invoice-data-main">
+               <div >Invoice No :<span> {{SelectedSelfShipDetail[0].invoices_details[0].invoiceNumber}}</span></div>
+               <div class="ml-5">Invoice Date :<span> {{SelectedSelfShipDetail[0].invoices_details[0].invoiceDate |date}}</span></div>
+              </div>
+              <!-- <div class="invoice-data-main" *ngFor="let item of SelectedSelfShipDetail">
+               <ng-container *ngFor="let subitem of item.invoices_details">
+                  <div >Invoice No :<span> {{subitem.invoiceNumber}}</span></div>
+                  <div class="ml-5">Invoice Date :<span> {{subitem.invoiceDate |date}}</span></div>
+                </ng-container>
+              </div> -->
+              <form class="mt-3" [formGroup]="ShippingForm">
+                 <div class="admin-form-table table">
+                    <div class="form-row mb-4">
+                       <div class="form-group col-sm-2">
+                          <label>Courier Partner :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <div class="form-control-big select2-val">
+                             <ng-select2 [data]="courierpartner" width="100%" formControlName="carrierid" [placeholder]="'SelectCourierName'"></ng-select2><br/>
+                          </div>
+                          <p class="add-newcourier-parnter">Not in the list ?
+                             <a href="javascript:void(0)" class="add-new-courier" data-toggle="modal" data-target="#add-new-courier">Add new courier parnter</a>
+                          </p>
+                       </div>
+                    </div>
+                    <div class="form-row">
+                       <div class="form-group col-sm-2">
+                          <label>Tracking ID (AWB) :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <input type="text" class="form-control form-control-big input-field" placeholder="Write courier tracking number (AWB)" formControlName="trackingid">
+                       </div>
+                    </div>
+                    <div class="form-row shipping-details-inner">
+                       <div class="form-group col-sm-2">
+                          <label>Shipment Date :</label>
+                       </div>
+                       <div class="form-group col-sm-5">
+                          <div class="calender-main-div w-100">
+                            <mat-form-field>
+                              <input matInput [matDatepicker]="picker1" placeholder="MM-DD-YYYY" formControlName="shipmentdate" [min]="today">
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker  #picker1></mat-datepicker>
+                            </mat-form-field>
+                             <!-- <input type="text" name="" class="form-control form-control-big input-field" value="Date">
+                             <img src="./assets/images/icons/calendar.svg" class="calendar-icon" alt=""> -->
+                          </div>
+                       </div>
+                    </div>
+                    <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap mt-4">
+                       <button type="button" class="btn btn-primary h-40 w-auto" (click)="ConfirmShipment(f)">
+                       Confirm Shipment
+                       </button>
+                    </div>
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<!-- model- Order Shipment -->
+<div class="modal fade action-modal delete-item-modal" id="add-new-courier" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered add-new-courier-model" role="document">
+     <div class="modal-content">
+        <div class="modal-body p-5">
+           <ul class="user-pro-social-flex">
+              <li class="user-profile-title">
+                 <p>Add new courier partner</p>
+              </li>
+           </ul>
+           <div class="col-12 p-0">
+              <form class="mt-5" [formGroup]="AddCourierPartnerForm">
+                 <div class="admin-form-table table">
+                    <div class="form-row">
+                       <div class="form-group col-sm-4">
+                          <label>Courier Partner Name :</label>
+                       </div>
+                       <div class="form-group col-sm-8">
+                          <input type="text" class="form-control input-field" placeholder="Write new courier partner name" formControlName="partnername">
+                       </div>
+                    </div>
+                    <div class="form-row">
+                       <div class="form-group col-sm-4">
+                          <label>Website/URL :</label>
+                       </div>
+                       <div class="form-group col-sm-8">
+                          <input type="text" class="form-control input-field" placeholder="Enter Courier partner website/URL" formControlName="websiteurl">
+                       </div>
+                    </div>
+                    <div class="form-row">
+                       <div class="form-group col-sm-4">
+                       </div>
+                       <div class="form-group col-sm-8">
+                          <p><b>Note :</b> Please enter the details correctly. Do not enter wrong information or non existing courier partner.</p>
+                       </div>
+                    </div>
+                    <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap mt-3">
+                       <button type="button" class="btn btn-primary w-auto pl-4 pr-4" (click)="AddCourierPartnerSubmit(partnerform)">
+                       Submit
+                       </button>
+                    </div>
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>

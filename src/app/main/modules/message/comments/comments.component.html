@@ -1,0 +1,173 @@
+<div class="row">
+    <!-- / _begin > Page Navigation Sidebar < SHB / -->
+    <section class="slidebar">
+        <div class="row  m-0">
+            <div class="menu">
+                <!-- <div class="new-create-add" (click)='composemsg()'>
+                    <div class="new-char-contact btn-new-message"><img src="./assets/images/icons/inbox-icons/plus.svg" alt="" class="channel-plus-icon">
+                        <span>New Message</span>
+                    </div>
+                </div> -->
+                <div class="searchBar mt-3">
+                    <input id="searchQueryInput" type="text" placeholder="Search" (keyup)="searchPosts()" [(ngModel)]="searchPostsName" />
+                    <button id="searchQuerySubmit" (click)="searchPosts()">
+                        <img src="./assets/images/icons/icon-search.svg" alt="search-ion" width="15">
+                    </button>  
+                </div>
+                <ul class="user-available-list msg-chat comment-main comment-list-scroll" *ngIf="postList.length !== 0" infiniteScroll [scrollWindow]="false"
+                    [infiniteScrollDistance]="0.5" (scrolled)="onScrollDown()">
+                    <li *ngFor="let item of postList" (click)="singlePostsDetail(item)"
+                        [ngClass]="{'activeuserclass': item._id == this.activePostsDetail?._id && activePostsBoolean}">
+                        <div class="align-items-center msg-row no-gutters">
+                            <div class="d-flex" *ngIf="item.images">
+                                <div class="messaged-profile-thumb mr-2" *ngIf="item.images">
+                                    <img *ngIf="item.images.length <= 1" class="hastage-icon-type" src="assets/images/hastags-Icons/image_white.svg" alt="">
+                                    <img *ngIf="item.images.length > 1" class="hastage-icon-type" src="assets/images/hastags-Icons/multi_image_white.svg" alt="">
+                                    <img src="{{item.images[0]?.image}}" onerror="this.src='assets/images/logo.svg'" alt="post-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.postTitle">{{item.postTitle.length < 24 ? item.postTitle : item.postTitle.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.video">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/sizzle_white.svg" alt="video-icon" />
+                                    <img src="{{item.coverImg}}" alt="video-coverImg" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.postTitle">{{item.postTitle.length < 24 ? item.postTitle:item.postTitle.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.content">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/blog_white.svg" alt="blog-icon">
+                                    <img src="{{item.coverImg}}" onerror="this.src='assets/images/logo.svg'" alt="blog-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name">Blog</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;" [title]="item.description">{{item.description.length < 24 ? item.description : item.description.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.productName">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/product_tag.svg" alt="">
+                                    <img src="{{item.productPhotos[0]?.image}}" onerror="this.src='assets/images/logo.svg'" alt="product-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.productName">{{item.productName.length < 24 ?item.productName : item.productName.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;" [title]="item.productId">{{item.productId?.length < 24 ? item.productId : item.productId.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.variations[0].sellingPrice |currency:currencyUnit:'symbol'}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="user-available-list msg-chat comment-main comment-list-scroll" *ngIf="searchedPostList.length !== 0" infiniteScroll [scrollWindow]="false"
+                    [infiniteScrollDistance]="0.5" (scrolled)="onScrollDown()">
+                    <li *ngFor="let item of searchedPostList" (click)="singlePostsDetail(item)"
+                        [ngClass]="{'activeuserclass': item._id == this.activePostsDetail?._id && activePostsBoolean}">
+                        <div class="align-items-center msg-row no-gutters">
+                            <div class="d-flex" *ngIf="item.images">
+                                <div class="messaged-profile-thumb mr-2" *ngIf="item.images">
+                                    <img *ngIf="item.images.length <= 1" class="hastage-icon-type" src="assets/images/hastags-Icons/image_white.svg" alt="">
+                                    <img *ngIf="item.images.length > 1" class="hastage-icon-type" src="assets/images/hastags-Icons/multi_image_white.svg" alt="">
+                                    <img src="{{item.images[0]?.image}}" onerror="this.src='assets/images/logo.svg'" alt="post-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.postTitle">{{item.postTitle.length < 24 ? item.postTitle : item.postTitle.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.video">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/sizzle_white.svg" alt="video-icon" />
+                                    <img src="{{item.coverImg}}" alt="video-coverImg" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.postTitle">{{item.postTitle.length < 24 ? item.postTitle:item.postTitle  .substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.content">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/blog_white.svg" alt="blog-icon">
+                                    <img src="{{item.coverImg}}" onerror="this.src='assets/images/logo.svg'" alt="blog-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name">Blog</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;" [title]="item.description">{{item.description.length < 24 ? item.description : item.description.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.advanceCategory}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex" *ngIf="item.productName">
+                                <div class="messaged-profile-thumb mr-2">
+                                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/product_tag.svg" alt="">
+                                    <img src="{{item.productPhotos[0]?.image}}" onerror="this.src='assets/images/logo.svg'" alt="product-image" />
+                                </div>
+                                <div>
+                                    <p class="mb-0 unread-name" [title]="item.productName">{{item.productName.length < 24 ?item.productName : item.productName.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;" [title]="item.productId">{{item.productId.length < 24 ? item.productId : item.productId.substring(0,25)+"..."}}</p>
+                                    <p class="comment-rate mb-0" style="font-size: 13px;">{{item.variations[0].sellingPrice |currency:currencyUnit:'symbol'}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div *ngIf="postList?.length == 0 && searchedPostList.length == 0">
+                    <div class="send_member_imptybox_main send_both_imptybox_main">
+                        <div
+                            class="send_member_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                            <img src="assets/images/icons/message.svg" height="50px">
+                        </div>
+                        <p>No Post <br> found Create new Posts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- / _end > Page Navigation Sidebar < SHB / -->
+
+    <!-- / _begin > Page Main Content < SHB / -->
+    <div class="main-content email-main-content py-0">
+        <div class="container-fluid position-relative">
+            <div class="row">
+                <div class="messages-list-wrapper comment-wrapper" *ngIf="activePostsBoolean == true">
+                    <div class="row py-2 user-option-row comment-section-head">
+                        <div class="col-12 d-flex align-items-center">
+                            <div class="msg-row align-items-center">
+                                <div class="messaged-profile-thumb">
+                                    <img src="assets/images/message/comment.svg" alt="comment">
+                                </div>
+                                <p class="mb-0 read-name text-left pl-2">{{activePostsDetail.totalComments| thousandSuff}}&nbsp;Comments</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message-section">
+                        <app-post-image-comment *ngIf="activePostsDetail.images" [activePostsDetail]="activePostsDetail" (totalCommentCount)="totalCommentCount($event)"></app-post-image-comment>
+                        <app-post-video-comment *ngIf="activePostsDetail.video" [activePostsDetail]="activePostsDetail" (totalCommentCount)="totalCommentCount($event)"></app-post-video-comment>
+                        <app-post-blog-comment *ngIf="activePostsDetail.content" [activePostsDetail]="activePostsDetail" (totalCommentCount)="totalCommentCount($event)"></app-post-blog-comment>
+                        <app-post-product-comment *ngIf="activePostsDetail.productName" [activePostsDetail]="activePostsDetail" (totalCommentCount)="totalCommentCount($event)"></app-post-product-comment>
+                    </div>
+                </div>
+                <div class="messages-list-wrapper comment-wrapper send_both_imptybox_parent"
+                    *ngIf="!activePostsBoolean">
+                    <div class="send_message_imptybox_main send_both_imptybox_main">
+                        <div class="send_message_imptybox send_both_imptybox d-flex justify-content-center align-items-center">
+                            <img src="assets/images/icons/message.svg" height="80px">
+                        </div>
+                        <p>Send comments, reply comments <br> make nots and have team collaboration etc.
+                        </p>
+                    </div>
+                </div>
+                <app-messagerightmenu class="mail-actions-bar side-menu-right-msg"></app-messagerightmenu>
+            </div>
+        </div>
+        <!-- / _end > Page Main Content < SHB / -->
+    </div>
+</div>
+<app-minimizepop></app-minimizepop>

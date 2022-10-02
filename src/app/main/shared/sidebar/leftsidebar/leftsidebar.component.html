@@ -1,0 +1,82 @@
+<section>
+    <ul class="menu">
+        <li class="new-button-li">
+            <div class="dropdown">
+                <div class="btn btn-primary new-button" data-toggle="dropdown">
+                    <div class="menuicon"><img src="assets/images/icons/plus.svg" width="20px" /></div>
+                    <div class="menulabel">New</div>
+                </div>
+                <div class="dropdown-menu">
+                    <ul>
+                        <a *ngIf="!IsUserNdInfluencer" [routerLink]="['/addproduct']" routerLinkActive="active">
+                            <li class="dropdown-item sidebar-nav-link">
+                                <div class="menuicon contain-image"><img src="assets/images/icons/products.svg" width="20px" /></div>
+                                <div class="menulabel">Product</div>
+                            </li>
+                        </a>
+                        <a [routerLink]="['/images-upload']" routerLinkActive="active">
+                            <li class="dropdown-item sidebar-nav-link">
+                                <div class="menuicon contain-image"><img src="assets/images/icons/image.svg" width="20px" /></div>
+                                <div class="menulabel">Image</div>
+                            </li>
+                        </a>
+                        <a [routerLink]="['/video-upload']" routerLinkActive="active">
+                            <li class="dropdown-item sidebar-nav-link">
+                                <div class="menuicon contain-image"><img src="assets/images/icons/video.svg" width="20px" /></div>
+                                <div class="menulabel">Video</div>
+                            </li>
+                        </a>
+                        <a [routerLink]="['/blog-upload']" routerLinkActive="active">
+                            <li class="dropdown-item sidebar-nav-link">
+                                <div class="menuicon contain-image"><img src="assets/images/icons/blog.svg" width="20px" /></div>
+                                <div class="menulabel">Blog</div>
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li [routerLink]="['/home']" routerLinkActive="active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/home.svg" /></span>
+                <label class="menulabel">Home</label>
+            </a>
+        </li>
+        <li [routerLink]="['/video']" routerLinkActive="active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/video.svg" /></span>
+                <label class="menulabel">Sizzles (Videos)</label>
+            </a>
+        </li>
+        <li [routerLink]="['/blog']" routerLinkActive="active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/blog.svg" /></span>
+                <label class="menulabel">Blogs</label>
+            </a>
+        </li>
+        <li [routerLink]="['/explore']" routerLinkActive="active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/explore.svg" /></span>
+                <label class="menulabel">Explore</label>
+            </a>
+        </li>
+        <li [routerLink]="['/hastags']" routerLinkActive="active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/hashtag.svg"/></span>
+                <label class="menulabel">Hashtags</label>
+            </a>
+        </li>
+        <li [routerLink]="['/map']" routerLinkActive="router-link-active">
+            <a class="sidebar-nav-link">
+                <span class="menuicon contain-image"><img src="assets/images/icons/map-pin-line.svg" /></span>
+                <label class="menulabel">Map</label>
+            </a>
+        </li>
+        <li [routerLink]="['/message/privatechannel']">
+            <a class="sidebar-nav-link" routerLinkActive="active">
+                <span class="menuicon contain-image"><img src="assets/images/icons/inbox-icons/message.svg"/></span>
+                <label class="menulabel">Message</label>
+            </a>
+        </li>
+    </ul>
+</section>

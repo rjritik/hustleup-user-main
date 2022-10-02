@@ -1,0 +1,43 @@
+<!-- / _begin > Page Main Content < SHB / -->
+<div class="pr-2 mt-3 hastagespage">
+    <div class="media-content-wrap">
+
+        <div class="flex-hashtag-profile" *ngFor="let item of hashtagdetaildata">
+            <div class="hashtag-profile-image contain-image">
+                <img src="assets/images//icons/hashtag.svg" alt="hash" />
+            </div>
+            <div class="hashtag-peofile-info-wrapper">
+                <h2 class="hashtag-main-title-name">{{item.hashtagName}}</h2>
+                <button class="btn btn-primary btn-follow-hashtag" *ngIf="item.isFollowing == false"  (click)="FollowHashtags(item)">Follow</button>
+                <button class="btn btn-primary btn-follow-hashtag" *ngIf="item.isFollowing == true"  (click)="FollowingHashtags(item)">Following</button>
+                <label class="counter-hashtag">{{item.counter| thousandSuff}} Hashtag</label>
+            </div>
+        </div>
+
+        <div class="hashtag-tabs">
+            <div class="tabs-items-flex">
+                <ul class="nav nav-pills mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['hashtags-productdetails']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/new-icons/products.svg" alt="" /></span>Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  [routerLink]="['hashtags-postdetails']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/image.svg" alt="" /></span>Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  [routerLink]="['hashtags-videodetails']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/new-icons/video.svg" alt="" /></span>Sizzles (Videos)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  [routerLink]="['hashtags-blogdetails']" routerLinkActive="active">
+                            <span class="hashtag-tab-icon contain-image"><img src="assets/images//icons/new-icons/blog.svg" alt="" /></span>Blogs</a>
+                    </li>
+                </ul>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>
+<!-- / _end > Page Main Content < SHB / -->

@@ -1,0 +1,209 @@
+<div *ngIf="bankpaymentdetails">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Bank & Payments Details</p>
+            <button (click)="AddPaymentDetails()" type="button" class="btn btn-primary BankPayments-open" *ngIf="!bankDetailExists">
+               Add Bank & Payments Details
+            </button>
+         </li>
+      </ul>
+   </div>
+   <div class="order-history-defalut mb-2" *ngIf="!bankDetailExists">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/bank_payments.svg" alt="order-history-defalut"></div>
+      <p>No bank & payments details have been mapped yet</p>
+      <p>Add your bank & payment details to transfer your payments for sale of products, commission earnings, payments for coffee made by fans/followers etc.</p>
+      <a href="javascript:void(0)" (click)="AddPaymentDetails()">Add Your Bank & Payment Details</a>
+   </div>
+   <div class="col-12 col-sm-11 mt-3" *ngIf="bankDetailExists">
+      <div class="text-center" *ngIf="bankDetailStatus == 0">
+         <h3 class="text-danger">bank details have been submitted, subject to verification.</h3>
+      </div>
+      <div class="row" *ngIf="bankDetailStatus == 1">
+         <div class="col-sm-6 p-0 edit-img-icon" >
+            <div class="add-bank-account muted-user-main">
+               <div class="logo-brand-titlelink d-flex justify-content-between">
+                  <label class="font-weight-bold brand-title-name">Bank Details</label>
+                  <img
+                     title="Edit detail"
+                     class="add-new-Address"
+                     src="assets/images/icons/edit.svg"
+                     alt="edit"
+                     width="25px" height="25px"
+                     (click)="EditBusinessDetail(bankDetailList)"
+                  />
+               </div>
+               <div class="brand-information">
+                  <div class="brand-details-row">
+                     <label class="brand-detail-title">Account Holder Name</label>
+                     <label class="brand-detail-text">{{bankDetailList.accountHolderName}}</label>
+                  </div>
+                  <div class="brand-details-row">
+                     <label class="brand-detail-title">Account Number</label>
+                     <label class="brand-detail-text">{{bankDetailList.accountNumber}}</label>
+                  </div>
+                  <div class="brand-details-row">
+                     <label class="brand-detail-title">IFSC Code</label>
+                     <label class="brand-detail-text">{{bankDetailList.IFSCCode}}</label>
+                  </div>
+                  <div class="brand-details-row">
+                     <label class="brand-detail-title">Bank Name</label>
+                     <label class="brand-detail-text">{{bankDetailList.bankName}}</label>
+                  </div>
+                  <div class="brand-details-row">
+                     <label class="brand-detail-title">Cheque/Passbook Copy</label>
+                     <label class="brand-detail-text">
+                        <a href="javascript:void()" href="{{UploadedChequePassbookUrl}}" class="link-proof">
+                        <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                        View Cheque/Passbook
+                        </a>
+                     </label>
+                  </div>
+               </div>
+               <!-- Other Payments Details -->
+               <div class="logo-brand-titlelink mt-4" *ngIf="bankDetailList.payoneerId || bankDetailList.paypalId">
+                  <label class="font-weight-bold brand-title-name">Other Payments Details</label>
+               </div>
+               <div class="brand-information">
+                  <div class="brand-details-row" *ngIf="bankDetailList.payoneerId">
+                     <label class="brand-detail-title">Payoneer ID</label>
+                     <label class="brand-detail-text">{{bankDetailList.payoneerId}}</label>
+                  </div>
+                  <div class="brand-details-row" *ngIf="bankDetailList.paypalId">
+                     <label class="brand-detail-title">PayPal ID</label>
+                     <label class="brand-detail-text">{{bankDetailList.paypalId}}</label>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div *ngIf="bankDetailCreate">
+   <div class="user-social-life-wrapper">
+      <ul class="user-pro-social-flex">
+         <li class="user-profile-title">
+            <p>Bank & Payments Details</p>
+         </li>
+      </ul>
+   </div>
+   <div class="text-center" *ngIf="bankDetailStatus == 2">
+      <h3 class="text-danger">bank details has been rejected due to reason {{reason}}</h3>
+   </div>
+   <div class="row">
+      <div class="col-12">
+         <form class="mt-3" [formGroup]="BankDetailForm">
+            <div class="admin-form-table table">
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Account Holder Name</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write the account name" formControlName="accountHolderName">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Account Number</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write bank account number" formControlName="accountNumber">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>IFSC Code</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write bank IFSC code" formControlName="IFSCCode" (keyup)="verifyIfscCode(f.value.IFSCCode)">
+                     
+                  </div>
+               </div>
+               <div *ngIf="ifscVerifiedDetail">
+                  <div class="form-row">
+                     <div class="form-group col-sm-3">
+                        <label>BRANCH</label>
+                     </div>
+                     <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write bank IFSC code" formControlName="branch" readonly>
+                     </div>
+                  </div>
+                  <div class="form-row">
+                     <div class="form-group col-sm-3">
+                        <label>ADDRESS</label>
+                     </div>
+                     <div class="form-group col-sm-6">
+                        <textarea class="form-control form-control-big input-field" cols="2" rows="2"  formControlName="address" [attr.disabled] = true></textarea>
+                     </div>
+                  </div>
+                  <div class="form-row">
+                     <div class="form-group col-sm-3">
+                        <label>Bank Name</label>
+                     </div>
+                     <div class="form-group col-sm-6">
+                        <input type="text" class="form-control form-control-big input-field" placeholder="Write bank name" formControlName="bankName" readonly>
+                     </div>
+                  </div>
+               </div>
+               
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Upload Cheque/Passbook copy</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <button type="button" class="btn btn-outline-primary pl-4 pr-4 p-2 mr-2" (click)="fileInput.click()">
+                        <span>Upload</span>
+                        <input #fileInput type="file" (change)="onFileSelectChequePassbook($event)" accept="image/png, application/pdf, image/jpeg" style="display:none;"/>
+                     </button>
+                     <label *ngIf="UploadedChequePassbookUrl" class="brand-detail-text ">
+                        <a href="javascript:void()" href="{{UploadedChequePassbookUrl}}" class="link-proof">
+                        <img src="assets/images/icons/inbox-icons/attach.svg" alt="attch">
+                        View Cheque/Passbook
+                        </a>
+                     </label>
+                     <span class="file-info">{{ BankPassbookFileName }}</span>
+                     <small class="d-flex mt-1" *ngIf="BankPassbookFileName == null" [ngClass]="uploadaccountstatement?'text-danger':''">(Jpeg or Png format only)</small>
+                     
+                  </div>
+               </div>
+               
+               <ul class="user-pro-social-flex mt-5 mb-2">
+                  <li class="user-profile-title">
+                     <p>Other Payments Details (For out of India user's only)</p>
+                  </li>
+               </ul>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>Payoneer ID</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write your Payoneer ID (if you have)" formControlName="payoneerId">
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-sm-3">
+                     <label>PayPal ID</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                     <input type="text" class="form-control form-control-big input-field" placeholder="Write your PayPal ID (if you have)" formControlName="paypalId">
+                  </div>
+               </div>
+               <div class="admin-form-btn-group d-flex flex-row align-items-center justify-content-end flex-wrap">
+                  <button [disabled]="spinnerShow" (click)="BankDetailsCancel()" type="button" class="cancel-no-effect btn btn-outline-secondary btn-cancel BankPayments-cancel">Cancel</button>
+                  <button *ngIf="!isUpdate" (click)="AddBankDetail(f)" class="btn btn-primary" 
+                     [ngClass]="{'btn-not-allowed': spinnerShow}" [disabled]="spinnerShow">
+                     <span class="spinner-border spinner-border-sm" *ngIf="spinnerShow"></span>
+                     <span *ngIf="!spinnerShow">Submit</span> 
+                  </button>
+                  <button *ngIf="isUpdate" (click)="UpdateBankDetail(f)" class="btn btn-primary"
+                     [ngClass]="{'btn-not-allowed': spinnerShow}" [disabled]="spinnerShow">
+                     <span class="spinner-border spinner-border-sm" *ngIf="spinnerShow"></span>
+                     <span *ngIf="!spinnerShow">Update</span> 
+                  </button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

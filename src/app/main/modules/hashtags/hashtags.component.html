@@ -1,0 +1,56 @@
+<!-- / _begin > Page Main Content < SHB / -->
+<div class="hasthag-list-wrapper mt-3">
+    <div class="hashatg-list-row" *ngFor="let item of hashtagsList">
+      <div class="hashtag-list-header">
+          <div class="hashtag-info-flex">
+              <div class="hashtag-image-area">
+                  <img src="assets/images/icons/hashtag.svg" alt="hash" />
+              </div>
+              <div class="hashtag-title-info">
+                  <label class="hashtag-title">{{item.hashtagName}} </label>
+                  <!-- <label class="hashtag-subtitle">Trending Hashtags</label> -->
+              </div>
+          </div>
+          <div class="hashtag-counter">
+              <a class="more-post-visit">{{item.counter | thousandSuff}} <span><img src="assets/images/icons/blue-left-arrow.svg" alt="left-blue" /></span></a>
+          </div>
+          <a class="float-link" (click)="hashtagname(item)"></a>
+      </div>
+      <div class="hashtag-list-body">
+          <owl-carousel [options]="SlideOptionsproduct" [carouselClasses]="['owl-theme', 'sliding']" >  
+            <ng-container *ngFor="let subitem of item.data">
+                <a class="hashtag-post-wrapper cover-image" *ngIf="subitem.images"> 
+                    <img  *ngIf="subitem.images.length < 1"  class="hastage-icon-type" src="assets/images/hastags-Icons/image_white.svg" alt="">
+                    <img  *ngIf="subitem.images.length > 1" class="hastage-icon-type" src="assets/images/hastags-Icons/multi_image_white.svg" alt="">
+                    <img src="{{subitem.images[0]?.image}}" alt="hashtag-item" />
+                </a>
+                <a class="hashtag-post-wrapper cover-image" *ngIf="subitem.video">
+                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/sizzle_white.svg" alt="">
+                    <img src="{{subitem.coverImg}}" alt="hashtag-item" />
+                    <!-- <video controls style="width: 100%;">
+                        <source src={{subitem.video[0].link}} type="video/mp4">        
+                    </video> -->
+                </a>
+                <a class="hashtag-post-wrapper cover-image" *ngIf="subitem.productPhotos">
+                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/product_tag.svg" alt="">
+                    <img src="{{subitem.productPhotos[0].image}}" alt="hashtag-item" />
+                </a>
+                <a class="hashtag-post-wrapper cover-image" *ngIf="subitem.content">
+                    <img class="hastage-icon-type" src="assets/images/hastags-Icons/blog_white.svg" alt="">
+                    <img src="{{subitem.coverImg}}" alt="hashtag-item" />
+                </a>
+              </ng-container>
+          </owl-carousel>          
+
+      </div>
+      <hr />
+  </div>
+  <div *ngIf="hashtagsList.length === 0" class="order-history-defalut product-sub-small">
+    <div class="order-history-defalut-img">
+        <img src="assets/images/icons/new-icons/image.svg" alt="order-history-defalut"/>
+    </div>
+    <p>No Hashtags have been made yet</p>
+    <!-- <p>Upload images of any kinds of posts like looks & styles, fashion & designs, beauty & makeup, your personal photos, products, offer, & coupons, jokes, memes, quotes, literally anything...</p> -->
+</div>
+</div>
+<!-- / _end > Page Main Content < SHB / -->

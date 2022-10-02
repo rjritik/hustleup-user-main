@@ -1,0 +1,30 @@
+.embed-main-section .embed-product-preview{
+    background-color: #fff;
+}
+.embed-main-section .product-items-image img{
+    max-width: fit-content;
+    max-height: calc(100vh - 128px);
+    min-height: 280px;
+    margin: auto;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.embed-main-section.ShowWishBuyBtn .product-items-image img{
+    max-height: calc(100vh - 173px);
+}
+.embed-product-preview .msg-slider-btn{
+    justify-content: space-between !important;
+}
+.embed-product-preview .msg-slider-btn button{
+    min-width: calc(50% - 5px) !important;
+    height: 35px !important;
+}
+.product-items-image{
+    min-height: auto;
+}
+::ng-deep .marker-main-product .product-items-image{
+    display: flex;
+}

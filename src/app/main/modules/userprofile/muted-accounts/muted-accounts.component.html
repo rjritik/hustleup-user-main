@@ -1,0 +1,142 @@
+<div class="user-social-life-wrapper">
+    <ul class="user-pro-social-flex">
+       <li class="user-profile-title">
+          <p>Muted Accounts</p>
+       </li>
+    </ul>
+    <div class="order-history-defalut" *ngIf="NotavailList">
+      <div class="order-history-defalut-img"><img src="assets/images/icons/muted_accounts.svg" alt="order-history-defalut"></div>
+      <p>No accounts have been muted yet, that's great. If any user or post bothers you, you are free to mute, sweetly.</p>
+      <p>And please do not post any such content or do not bother anyone so that others do not have to mute your account.</p>
+   </div>
+ </div>
+ <div class="col-12 col-xl-10" *ngIf="!NotavailList">
+    <div class="row">
+       <div class="p-2 col-sm-6" *ngFor="let item of MutedAccountList;index as i">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="{{item.profilePic}}" onerror="src='assets/images/logo.svg'" alt="Profile Pic">
+                </div>
+                <a class="Unmute" (click)="UnmuteClick(item,i)">Unmute</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username mb-0">{{item.username}}</h3>
+                <!-- <span class="verified-tick"><img src="{{item.VerifiedTicksrc}}" alt="verified-account"></span> -->
+             </div>
+             <h3 *ngIf="item.fullName" class="profile-displayname mb-2">{{item.fullName}}</h3>
+             <p class="profile-desc">{{item.bio}}</p>
+             <ul class="profile-stats">
+                <li>{{item.totalFollowing}} Follwing</li>
+                <li>{{item.totalFollowers}} Followers</li>
+                <!-- <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li> -->
+             </ul>
+          </div>
+       </div>
+       <!-- <div class="p-2 col-sm-6">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="assets/images/user-profile.png" alt="post-profile">
+                </div>
+                <a class="Unmute">Unmute</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username">levisindia</h3>
+                <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account"></span>
+             </div>
+             <h3 class="profile-displayname">levis India</h3>
+             <p class="profile-desc">Fashion and quality at the best price in a sustainable way. For customer service please message me at the following numbers at the earliest or follow me at my</p>
+             <ul class="profile-stats">
+                <li>399 Follwing</li>
+                <li>12K Followers</li>
+                <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li>
+             </ul>
+          </div>
+       </div> -->
+       <!-- <div class="p-2 col-sm-6">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="assets/images/user-profile.png" alt="post-profile">
+                </div>
+                <a class="Unmuted">Unmuted</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username">levisindia</h3> -->
+                <!-- <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account"></span> -->
+             <!-- </div>
+             <h3 class="profile-displayname">levis India</h3>
+             <p class="profile-desc">Fashion and quality at the best price in a sustainable way. For customer service please message me at the following numbers at the earliest or follow me at my</p>
+             <ul class="profile-stats">
+                <li>399 Follwing</li>
+                <li>12K Followers</li>
+                <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li>
+             </ul>
+          </div>
+       </div> -->
+       <!-- <div class="p-2 col-sm-6">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="assets/images/user-profile.png" alt="post-profile">
+                </div>
+                <a class="Unmute">Unmute</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username">levisindia</h3>
+                <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account"></span>
+             </div>
+             <h3 class="profile-displayname">levis India</h3>
+             <p class="profile-desc">Fashion and quality at the best price in a sustainable way. For customer service please message me at the following numbers at the earliest or follow me at my</p>
+             <ul class="profile-stats">
+                <li>399 Follwing</li>
+                <li>12K Followers</li>
+                <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li>
+             </ul>
+          </div>
+       </div> -->
+       <!-- <div class="p-2 col-sm-6">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="assets/images/user-profile.png" alt="post-profile">
+                </div>
+                <a class="Unmute">Unmute</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username">levisindia</h3>
+                <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account"></span>
+             </div>
+             <h3 class="profile-displayname">levis India</h3>
+             <p class="profile-desc">Fashion and quality at the best price in a sustainable way. For customer service please message me at the following numbers at the earliest or follow me at my</p>
+             <ul class="profile-stats">
+                <li>399 Follwing</li>
+                <li>12K Followers</li>
+                <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li>
+             </ul>
+          </div>
+       </div> -->
+       <!-- <div class="p-2 col-sm-6">
+          <div class="muted-user-main">
+             <div class="d-flex align-items-center justify-content-between">
+                <div class="profile-image-holder cover-image">
+                   <img src="assets/images/user-profile.png" alt="post-profile">
+                </div>
+                <a class="Unmuted">Unmuted</a>
+             </div>
+             <div class="d-flex align-items-center justify-content-start profile-username-wrapper">
+                <h3 class="profile-username">levisindia</h3>
+                <span class="verified-tick"><img src="assets/images/icons/verified-account.svg" alt="verified-account"></span>
+             </div>
+             <h3 class="profile-displayname">levis India</h3>
+             <p class="profile-desc">Fashion and quality at the best price in a sustainable way. For customer service please message me at the following numbers at the earliest or follow me at my</p>
+             <ul class="profile-stats">
+                <li>399 Follwing</li>
+                <li>12K Followers</li>
+                <li>15.2K <span><img src="assets/images/icons/icons-post-like-heart-filled.svg" alt="like"></span></li>
+             </ul>
+          </div>
+       </div> -->
+    </div>
+ </div>

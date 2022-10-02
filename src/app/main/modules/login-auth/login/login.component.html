@@ -1,0 +1,71 @@
+<!-- / _begin > Page Header / -->
+<header class="user-action-header">
+    <div class="container">
+        <a class="brand-logo contain-image" [routerLink]="['/accounts/login']">
+            <img src="assets/images/logo.svg" alt="brand"/>
+        </a>
+    </div>
+</header>
+<!-- / _end > Page Header / -->
+<section class="user-action-section">
+    <div class="container">
+        <div class="row">
+            <div class='col-md-5 col-lg-6 order-2 order-md-1'>    
+                <app-owlcarousel></app-owlcarousel>
+            </div>
+            <div class="col-md-7 col-lg-6 order-1 order-md-2">
+                <!-- / _begin > Page Main Content < SHB / -->
+                <div class="user-action-card">
+                    <div class="top-section-action">
+                        <div class="user-action-card-heading-wrap">
+                            <h1 class="user-action-card-heading">Login</h1>
+                        </div>
+                        <form class="action-form" id="login-form" (ngSubmit)="loginform(f)" [formGroup]="logginForm">
+                            <div class="formElement-bottomSpace">
+                                <input type="text" class="form-control input-field user-action-input username" placeholder="Username, email or phone number" formControlName="emailphone">
+                                <label class="mt-1 text-danger" *ngIf="f.controls.emailphone.invalid && f.controls.emailphone.touched">
+                                    field is required
+                                </label>
+                            </div>
+                            <div class="formElement-bottomSpace mb-0">
+                                <input type="password" class="form-control input-field user-action-input m-0" placeholder="Password" formControlName="password">
+                                <label class="mt-1 text-danger" *ngIf="f.controls.password.invalid && f.controls.password.touched">
+                                    password is required
+                                </label>
+                            </div>
+
+                            <div class="formElement-bottomSpace text-right ">
+                                <a [routerLink]="['/accounts/forget-password']" routerLinkActive="router-link-active" class="forget-password-link">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-user-action">Login</button>
+                        </form>
+                    </div>
+
+                    <div class="user-action-internal-links-wrapper">
+                        <div class="bottom-section-action">
+                            <p class="an-account-heading">Don't have an account?</p>
+                            <div class="create-account">
+                                <a class="create-account-link" [routerLink]="['/accounts/signup']" routerLinkActive="router-link-active" >Create an account</a>
+                                <a class="create-account-link" [routerLink]="['/accounts/business']" routerLinkActive="router-link-active" >Create a business account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-download-box">
+                    <p class="app-download-box-heading">Get the app</p>
+                    <div class="app-download-store">
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-playstore.png" alt="playstore" />
+                        </a>
+                        <a class="app-download-store-link">
+                            <img src="assets/images/tickets/get-app-from-appstore.png" alt="appstore" />
+                        </a>
+                    </div>
+                </div>
+            <!-- / _end > Page Main Content End < SHB / -->
+            </div>
+        </div>
+        <!-- / _end > User Action Section < SHB / -->
+    </div>
+</section>
