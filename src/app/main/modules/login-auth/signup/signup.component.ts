@@ -29,7 +29,7 @@ export class SignupComponent implements OnInit,OnDestroy {
 
   phoneForm:any = new FormGroup({
   	phone: new FormControl(undefined, [Validators.required]),
-    email: new FormControl(undefined, [Validators.required,Validators.email]),
+    email: new FormControl(undefined, []),
     username: new FormControl(undefined, [Validators.required,Validators.minLength(6),Validators.maxLength(32),Validators.pattern("^[a-zA-Z0-9-]+$")]),
   });
 
@@ -89,6 +89,7 @@ export class SignupComponent implements OnInit,OnDestroy {
   }
 
   signup(f:any){
+    debugger;
     if(f.valid){
       const signupdata = {
         countryCode : this.sanitizer.sanitize(SecurityContext.HTML, f.value.phone.countryCode),

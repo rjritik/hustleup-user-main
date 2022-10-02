@@ -27,7 +27,7 @@ export class SignupOtpComponent implements OnInit{
   	phone: new FormControl(localStorage.getItem('mobile'),[Validators.required]),
 	  mobileotp: new FormControl(undefined, [Validators.required,Validators.minLength(6),Validators.maxLength(6)]),
     createpassword: new FormControl(undefined, [Validators.required,Validators.minLength(6)]),
-	  dob: new FormControl(undefined, [Validators.required, Validators.pattern(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/)]),
+	  age: new FormControl(undefined, []),
     gender: new FormControl('Male',[Validators.required]),
   });
 
@@ -66,13 +66,13 @@ export class SignupOtpComponent implements OnInit{
 
 
   signupotp(f:any){
+    debugger;
     if(f.valid){
       debugger;
       let data:any = {
-        email : this.sanitizer.sanitize(SecurityContext.HTML, localStorage.getItem("email")),
         otp : this.sanitizer.sanitize(SecurityContext.HTML, f.value.mobileotp),
         password : this.sanitizer.sanitize(SecurityContext.HTML, f.value.createpassword),
-        age : f.value.age,
+        age : this.sanitizer.sanitize(SecurityContext.HTML, f.value.age),
         gender : this.sanitizer.sanitize(SecurityContext.HTML, f.value.gender)
       }
       this._SignupService.activateAccount(data).subscribe((res:any)=>{
